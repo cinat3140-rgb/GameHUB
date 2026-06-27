@@ -34,8 +34,8 @@
             --green: #00cc33;
             --orange: #ffcc00;
         }
-        /* YENİ FELAKET TEMA (her yerde geçerli) */
-        .theme-admin {
+        /* Admin özel temaları */
+        .theme-admin-gold {
             --bg: #0d0d0d;
             --card: #1a1a1a;
             --accent: #ffd700;
@@ -49,13 +49,40 @@
             background-attachment: fixed;
             animation: adminBgShift 8s ease-in-out infinite alternate;
         }
+        .theme-admin-purple {
+            --bg: #0f0a14;
+            --card: #1a1126;
+            --accent: #c77dff;
+            --text: #e5d9f2;
+            --soft: #261a33;
+            --border: #9b5de5;
+            --green: #b388eb;
+            --orange: #f15bb5;
+            background: #0b0710;
+            background-image: linear-gradient(45deg, rgba(199,125,255,0.08) 0%, transparent 50%), linear-gradient(135deg, transparent 50%, rgba(154,93,229,0.08) 100%);
+            background-attachment: fixed;
+            animation: adminBgShift 10s ease-in-out infinite alternate;
+        }
+        .theme-admin-orange {
+            --bg: #1a0f07;
+            --card: #24180c;
+            --accent: #ff6d00;
+            --text: #ffe0c0;
+            --soft: #2e1f10;
+            --border: #ff8500;
+            --green: #ffb347;
+            --orange: #ff5500;
+            background: #140b04;
+            background-image: linear-gradient(45deg, rgba(255,109,0,0.08) 0%, transparent 50%), linear-gradient(135deg, transparent 50%, rgba(255,133,0,0.08) 100%);
+            background-attachment: fixed;
+            animation: adminBgShift 12s ease-in-out infinite alternate;
+        }
         @keyframes adminBgShift {
             0% { background-position: 0% 0%; }
             100% { background-position: 100% 100%; }
         }
-        /* Admin paneli içindeki ekstra parlamalar sadece admin giriş yapınca aktif olur */
+        /* Admin paneline özel parlamalar */
         body.admin-active .admin-panel {
-            border: 3px solid #ffd700;
             box-shadow: 0 0 40px rgba(255,215,0,0.4), inset 0 0 20px rgba(255,215,0,0.05);
             animation: panelGlow 2s ease-in-out infinite alternate;
         }
@@ -121,7 +148,9 @@
         .theme-dot.pink { background: #ff7eb3; }
         .theme-dot.hacker { background: #00ff41; }
         .theme-dot.default { background: #e94560; }
-        .theme-dot.admin { background: #ffd700; } /* YENİ */
+        .theme-dot.admin-gold { background: #ffd700; }
+        .theme-dot.admin-purple { background: #c77dff; }
+        .theme-dot.admin-orange { background: #ff6d00; }
         .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
         .section-title { font-size: 1.4rem; font-weight: 700; margin: 16px 0 10px; }
         .search-bar {
@@ -240,7 +269,13 @@
         <div class="theme-dot pink" onclick="setTheme('pink')" title="Pembe"></div>
         <div class="theme-dot hacker" onclick="setTheme('hacker')" title="Hacker"></div>
         <div class="theme-dot default" onclick="setTheme('default')" title="Normal"></div>
-        <div class="theme-dot admin" onclick="setTheme('admin')" title="Felaket"></div>
+        <!-- Admin tema bölümü -->
+        <span id="adminThemeLabel" class="hidden" style="font-size:0.7rem;margin-left:6px;">Admin Tema:</span>
+        <div id="adminThemeDots" class="hidden" style="display:inline-flex;gap:2px;">
+            <div class="theme-dot admin-gold" onclick="setTheme('admin-gold')" title="Altın"></div>
+            <div class="theme-dot admin-purple" onclick="setTheme('admin-purple')" title="Mor"></div>
+            <div class="theme-dot admin-orange" onclick="setTheme('admin-orange')" title="Turuncu"></div>
+        </div>
         <div class="online-counter"><span class="dot"></span> <span id="onlineText">1 çevrimiçi</span></div>
         <button onclick="openModal('loginModal')">🔑 Giriş</button>
         <button onclick="openModal('registerModal')">✨ Kayıt</button>
@@ -388,17 +423,22 @@
 
     // Tema yönetimi
     window.setTheme = function(t) {
+        // Admin değilse admin temalarını engelle
+        if (!isAdmin() && (t === 'admin-gold' || t === 'admin-purple' || t === 'admin-orange')) {
+            t = 'default';
+        }
         document.body.className = '';
         if (t === 'pink') document.body.classList.add('theme-pink');
         else if (t === 'hacker') document.body.classList.add('theme-hacker');
-        else if (t === 'admin') document.body.classList.add('theme-admin');
-        // Varsayılan tema için class yok
+        else if (t === 'admin-gold') document.body.classList.add('theme-admin-gold');
+        else if (t === 'admin-purple') document.body.classList.add('theme-admin-purple');
+        else if (t === 'admin-orange') document.body.classList.add('theme-admin-orange');
+        // varsayılan tema için ek class yok
         safeSet('gh_theme', t);
         applyAdminPanelGlow();
     };
 
     function applyAdminPanelGlow() {
-        // Admin girişi varsa admin paneline ekstra ışıltı
         if (isAdmin()) {
             document.body.classList.add('admin-active');
         } else {
@@ -406,10 +446,13 @@
         }
     }
 
-    // Başlangıçta temayı yükle
-    const savedTheme = safeGet('gh_theme', 'default');
+    // Başlangıçta temayı yükle, eğer admin değilse ve admin teması kayıtlıysa varsayılana döndür
+    let savedTheme = safeGet('gh_theme', 'default');
+    if (!isAdmin() && (savedTheme === 'admin-gold' || savedTheme === 'admin-purple' || savedTheme === 'admin-orange')) {
+        savedTheme = 'default';
+        safeSet('gh_theme', savedTheme);
+    }
     setTheme(savedTheme);
-    if (isAdmin()) document.body.classList.add('admin-active');
 
     // Çevrimiçi sayaç
     setInterval(() => {
@@ -649,9 +692,23 @@
         document.getElementById('btnLogout').classList.toggle('hidden', !user);
         document.querySelectorAll('.nav-links button:not(#btnLogout)').forEach(b => b.classList.toggle('hidden', !!user));
         document.querySelector('.online-counter').classList.remove('hidden');
+
+        // Admin tema seçeneklerini göster/gizle
+        document.getElementById('adminThemeLabel').classList.toggle('hidden', !admin);
+        document.getElementById('adminThemeDots').classList.toggle('hidden', !admin);
+
         document.getElementById('mainContent').classList.toggle('hidden', admin);
         document.getElementById('adminContainer').classList.toggle('hidden', !admin);
         applyAdminPanelGlow();
+
+        // Admin değilse ve tema admin teması ise varsayılana döndür
+        if (!admin) {
+            const currentTheme = safeGet('gh_theme', 'default');
+            if (currentTheme === 'admin-gold' || currentTheme === 'admin-purple' || currentTheme === 'admin-orange') {
+                setTheme('default');
+            }
+        }
+
         if (admin) showAdminSection('add');
         renderGames(document.getElementById('searchInput').value);
     }
