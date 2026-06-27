@@ -294,6 +294,25 @@
             z-index: 999; font-size: 0.85rem;
         }
         .hidden { display: none !important; }
+
+        /* Bölüm butonları için aktif sınıf */
+        .section-btn {
+            background: var(--soft);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 7px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: 0.15s;
+        }
+        .section-btn.active {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
         @media (max-width: 600px) {
             .game-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
             .nav-links button { padding: 5px 10px; font-size: 0.75rem; }
@@ -321,10 +340,10 @@
 <div class="container" id="mainContent">
     <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Oyun ara...">
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;">
-        <button onclick="showSection('games')" style="background:var(--accent);color:#000;padding:7px 14px;border-radius:6px;border:none;cursor:pointer;font-weight:700;font-size:0.8rem;">🎮 Oyunlar</button>
-        <button onclick="showSection('compare')" style="background:var(--soft);color:var(--text);padding:7px 14px;border-radius:6px;border:1px solid var(--border);cursor:pointer;font-weight:600;font-size:0.8rem;">⚖️ Karşılaştır</button>
-        <button onclick="showSection('pctest')" style="background:var(--soft);color:var(--text);padding:7px 14px;border-radius:6px;border:1px solid var(--border);cursor:pointer;font-weight:600;font-size:0.8rem;">🖥️ PC Test</button>
-        <button onclick="showSection('comments')" style="background:var(--soft);color:var(--text);padding:7px 14px;border-radius:6px;border:1px solid var(--border);cursor:pointer;font-weight:600;font-size:0.8rem;">💬 Yorumlar</button>
+        <button class="section-btn active" onclick="showSection('games')">🎮 Oyunlar</button>
+        <button class="section-btn" onclick="showSection('compare')">⚖️ Karşılaştır</button>
+        <button class="section-btn" onclick="showSection('pctest')">🖥️ PC Test</button>
+        <button class="section-btn" onclick="showSection('comments')">💬 Yorumlar</button>
     </div>
     <div id="gamesSection"><div class="section-title">🔥 Popüler Oyunlar</div><div class="game-grid" id="gameGrid"></div></div>
     <div id="compareSection" class="feature-box hidden">
@@ -420,27 +439,24 @@
 <script>
     // Admin şifresi (gizli)
     const ADMIN_PASSWORD = atob('R2FtZUh1YjIwMjQhQWRtaW4=');
-    
+
     // Güvenli localStorage okuma
     function safeGet(key, defaultValue) {
         try {
             const raw = localStorage.getItem(key);
             if (!raw) return defaultValue;
             const parsed = JSON.parse(raw);
-            // Eğer bir dizi bekliyorsak ve dizi değilse varsayılanı döndür
             if (Array.isArray(defaultValue) && !Array.isArray(parsed)) return defaultValue;
             return parsed;
         } catch (e) {
             return defaultValue;
         }
     }
-    
+
     function safeSet(key, value) {
         try {
             localStorage.setItem(key, JSON.stringify(value));
-        } catch (e) {
-            // Depolama doluysa vs. hata vermesin
-        }
+        } catch (e) {}
     }
 
     const defaultGames = [
@@ -452,21 +468,17 @@
     ];
 
     function getGames() {
-        // Önce localStorage'dan oku, geçerli değilse varsayılanı kaydet ve döndür
         const stored = safeGet('gh_games', null);
         if (stored && Array.isArray(stored) && stored.length > 0) {
             return stored;
         } else {
-            // Varsayılanı yaz ve döndür
             safeSet('gh_games', defaultGames);
             return [...defaultGames];
         }
     }
 
     function saveGames(games) {
-        if (Array.isArray(games)) {
-            safeSet('gh_games', games);
-        }
+        if (Array.isArray(games)) safeSet('gh_games', games);
     }
 
     function getUsers() { return safeGet('gh_users', []); }
@@ -479,7 +491,7 @@
     function setAdmin(v) { localStorage.setItem('gh_admin', v ? 'true' : 'false'); }
 
     // Tema
-    window.setTheme = function(t){
+    window.setTheme = function(t) {
         document.body.className = '';
         if (isAdmin()) {
             document.body.classList.add('admin-mode');
@@ -489,11 +501,10 @@
         }
         safeSet('gh_theme', t);
     };
-    
+
     function applyAdminMode() {
         if (isAdmin()) {
             document.body.classList.add('admin-mode');
-            // Tema sınıflarını kaldır
             document.body.classList.remove('theme-pink', 'theme-hacker');
         } else {
             document.body.classList.remove('admin-mode');
@@ -503,7 +514,6 @@
         }
     }
 
-    // Başlangıçta temayı uygula
     const savedTheme = safeGet('gh_theme', 'default');
     if (isAdmin()) {
         document.body.classList.add('admin-mode');
@@ -511,7 +521,7 @@
         setTheme(savedTheme);
     }
 
-    // Çevrimiçi sayacı
+    // Çevrimiçi sayaç
     setInterval(() => {
         let sessions = safeGet('gh_sessions', {});
         const now = Date.now();
@@ -654,7 +664,9 @@
         showToast('✅ Yorum eklendi!');
     };
 
+    // Bölüm değiştirme ve aktif buton
     window.showSection = function(section) {
+        // Gizle/göster
         document.getElementById('gamesSection').classList.add('hidden');
         document.getElementById('compareSection').classList.add('hidden');
         document.getElementById('pctestSection').classList.add('hidden');
@@ -663,6 +675,16 @@
         else if (section === 'compare') document.getElementById('compareSection').classList.remove('hidden');
         else if (section === 'pctest') document.getElementById('pctestSection').classList.remove('hidden');
         else if (section === 'comments') document.getElementById('commentsSection').classList.remove('hidden');
+
+        // Aktif buton stilini güncelle
+        document.querySelectorAll('.section-btn').forEach(btn => btn.classList.remove('active'));
+        // Butonların onclick özniteliğinden faydalanarak doğru butonu bul
+        const buttons = document.querySelectorAll('.section-btn');
+        buttons.forEach(btn => {
+            if (btn.getAttribute('onclick').includes(`'${section}'`)) {
+                btn.classList.add('active');
+            }
+        });
     };
 
     window.login = function() {
@@ -787,7 +809,6 @@
         const games = getGames();
         games.push(newGame);
         saveGames(games);
-        // Temizle
         ['addTitle','addDesc','addImage','addDownload','addCategory','addSize','addCpu','addRam','addGpu'].forEach(id => document.getElementById(id).value = '');
         showToast('✅ Oyun eklendi!');
         renderGames();
