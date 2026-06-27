@@ -45,9 +45,7 @@
             --green: #ffcc00;
             --orange: #ffaa00;
             background: #0a0a0a;
-            background-image: 
-                linear-gradient(45deg, rgba(255,215,0,0.05) 0%, transparent 50%),
-                linear-gradient(135deg, transparent 50%, rgba(255,140,0,0.07) 100%);
+            background-image: linear-gradient(45deg, rgba(255,215,0,0.05) 0%, transparent 50%), linear-gradient(135deg, transparent 50%, rgba(255,140,0,0.07) 100%);
             background-attachment: fixed;
             animation: adminBgShift 8s ease-in-out infinite alternate;
         }
@@ -141,7 +139,7 @@
             color: #000;
             box-shadow: 0 0 20px #ffaa00;
         }
-        /* Diğer stiller aynen korunuyor */
+        /* Genel stiller */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -420,7 +418,31 @@
 <div style="position:fixed;bottom:14px;right:14px;width:30px;height:30px;background:var(--card);border:1px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:300;color:var(--accent);font-size:0.8rem;font-weight:bold;" onclick="openModal('adminLoginModal')" title="Admin">⚙</div>
 
 <script>
+    // Admin şifresi (gizli)
     const ADMIN_PASSWORD = atob('R2FtZUh1YjIwMjQhQWRtaW4=');
+    
+    // Güvenli localStorage okuma
+    function safeGet(key, defaultValue) {
+        try {
+            const raw = localStorage.getItem(key);
+            if (!raw) return defaultValue;
+            const parsed = JSON.parse(raw);
+            // Eğer bir dizi bekliyorsak ve dizi değilse varsayılanı döndür
+            if (Array.isArray(defaultValue) && !Array.isArray(parsed)) return defaultValue;
+            return parsed;
+        } catch (e) {
+            return defaultValue;
+        }
+    }
+    
+    function safeSet(key, value) {
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+        } catch (e) {
+            // Depolama doluysa vs. hata vermesin
+        }
+    }
+
     const defaultGames = [
         { id: '1', title: 'Cyber Quest 2077', desc: 'Distopik açık dünya aksiyon.', image: 'https://picsum.photos/seed/cyber/400/250', download: '#', category: 'Aksiyon', size: '70 GB', minCpu: 'i5-10400F', minRam: '16', minGpu: 'RTX 2060' },
         { id: '2', title: 'Fantasy Lands Online', desc: 'Devasa MMORPG.', image: 'https://picsum.photos/seed/fantasy/400/250', download: '#', category: 'MMORPG', size: '45 GB', minCpu: 'i3-9100', minRam: '8', minGpu: 'GTX 1050' },
@@ -428,94 +450,148 @@
         { id: '4', title: 'Shadow Tactics', desc: 'Gizlilik stratejisi.', image: 'https://picsum.photos/seed/stealth/400/250', download: '#', category: 'Strateji', size: '18 GB', minCpu: 'i3-8100', minRam: '4', minGpu: 'Intel UHD 630' },
         { id: '5', title: 'Zombie Frontier X', desc: 'Hayatta kalma.', image: 'https://picsum.photos/seed/zombie/400/250', download: '#', category: 'Hayatta Kalma', size: '55 GB', minCpu: 'i7-8700', minRam: '16', minGpu: 'RTX 2070' },
     ];
-    function S(k,d){ let v=localStorage.getItem(k); return v ? JSON.parse(v) : d; }
-    function G(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
-    function getGames(){ return S('gh_games', defaultGames); }
-    function saveGames(g){ G('gh_games', g); }
-    function getUsers(){ return S('gh_users', []); }
-    function saveUsers(u){ G('gh_users', u); }
-    function getComments(){ return S('gh_comments', []); }
-    function saveComments(c){ G('gh_comments', c); }
-    function getCurrentUser(){ return S('gh_user', null); }
-    function setCurrentUser(u){ G('gh_user', u); }
-    function isAdmin(){ return localStorage.getItem('gh_admin') === 'true'; }
-    function setAdmin(v){ localStorage.setItem('gh_admin', v); }
 
-    // Tema ayarlama
+    function getGames() {
+        // Önce localStorage'dan oku, geçerli değilse varsayılanı kaydet ve döndür
+        const stored = safeGet('gh_games', null);
+        if (stored && Array.isArray(stored) && stored.length > 0) {
+            return stored;
+        } else {
+            // Varsayılanı yaz ve döndür
+            safeSet('gh_games', defaultGames);
+            return [...defaultGames];
+        }
+    }
+
+    function saveGames(games) {
+        if (Array.isArray(games)) {
+            safeSet('gh_games', games);
+        }
+    }
+
+    function getUsers() { return safeGet('gh_users', []); }
+    function saveUsers(u) { safeSet('gh_users', u); }
+    function getComments() { return safeGet('gh_comments', []); }
+    function saveComments(c) { safeSet('gh_comments', c); }
+    function getCurrentUser() { return safeGet('gh_user', null); }
+    function setCurrentUser(u) { safeSet('gh_user', u); }
+    function isAdmin() { return localStorage.getItem('gh_admin') === 'true'; }
+    function setAdmin(v) { localStorage.setItem('gh_admin', v ? 'true' : 'false'); }
+
+    // Tema
     window.setTheme = function(t){
         document.body.className = '';
-        if(isAdmin()) document.body.classList.add('admin-mode'); // admin teması korunur
-        else {
-            if(t==='pink') document.body.classList.add('theme-pink');
-            else if(t==='hacker') document.body.classList.add('theme-hacker');
+        if (isAdmin()) {
+            document.body.classList.add('admin-mode');
+        } else {
+            if (t === 'pink') document.body.classList.add('theme-pink');
+            else if (t === 'hacker') document.body.classList.add('theme-hacker');
         }
-        G('gh_theme', t);
+        safeSet('gh_theme', t);
     };
-    // Admin modunu güncelle
+    
     function applyAdminMode() {
-        if(isAdmin()) document.body.classList.add('admin-mode');
-        else document.body.classList.remove('admin-mode');
+        if (isAdmin()) {
+            document.body.classList.add('admin-mode');
+            // Tema sınıflarını kaldır
+            document.body.classList.remove('theme-pink', 'theme-hacker');
+        } else {
+            document.body.classList.remove('admin-mode');
+            const savedTheme = safeGet('gh_theme', 'default');
+            if (savedTheme === 'pink') document.body.classList.add('theme-pink');
+            else if (savedTheme === 'hacker') document.body.classList.add('theme-hacker');
+        }
     }
 
-    setTheme(S('gh_theme','default'));
+    // Başlangıçta temayı uygula
+    const savedTheme = safeGet('gh_theme', 'default');
+    if (isAdmin()) {
+        document.body.classList.add('admin-mode');
+    } else {
+        setTheme(savedTheme);
+    }
 
-    setInterval(()=>{
-        let s = S('gh_sessions',{});
-        let n = Date.now();
-        for(let k in s){ if(n - s[k] > 15000) delete s[k]; }
-        s['self'] = n;
-        G('gh_sessions', s);
-        document.getElementById('onlineText').textContent = Object.keys(s).length + ' çevrimiçi';
+    // Çevrimiçi sayacı
+    setInterval(() => {
+        let sessions = safeGet('gh_sessions', {});
+        const now = Date.now();
+        for (let key in sessions) {
+            if (now - sessions[key] > 15000) delete sessions[key];
+        }
+        sessions['self'] = now;
+        safeSet('gh_sessions', sessions);
+        document.getElementById('onlineText').textContent = Object.keys(sessions).length + ' çevrimiçi';
     }, 5000);
 
-    window.showToast = function(m){
-        let t = document.getElementById('toast');
-        t.textContent = m; t.classList.remove('hidden');
-        setTimeout(()=> t.classList.add('hidden'), 2000);
+    window.showToast = function(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 2000);
     };
-    window.openModal = function(id){ document.getElementById(id).classList.remove('hidden'); };
-    window.closeModal = function(id){ document.getElementById(id).classList.add('hidden'); };
-    document.addEventListener('click', function(e){ if(e.target.classList.contains('modal-overlay')) e.target.classList.add('hidden'); });
 
-    function renderGames(filter=''){
-        let g = getGames().filter(x=> x.title.toLowerCase().includes(filter.toLowerCase()) || x.category.toLowerCase().includes(filter.toLowerCase()));
-        document.getElementById('gameGrid').innerHTML = g.map(x=> `
-            <div class="game-card" onclick="openGameDetail('${x.id}')">
-                <div class="img-wrap">${x.image ? `<img src="${x.image}" onerror="this.innerHTML='🎮'">` : '🎮'}</div>
-                <div class="info"><h3>${x.title}</h3><span class="category-tag">${x.category}</span></div>
-            </div>
-        `).join('') || '<p style="grid-column:1/-1;text-align:center;">😔 Oyun bulunamadı</p>';
+    window.openModal = function(id) { document.getElementById(id).classList.remove('hidden'); };
+    window.closeModal = function(id) { document.getElementById(id).classList.add('hidden'); };
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal-overlay')) e.target.classList.add('hidden');
+    });
+
+    function renderGames(filter = '') {
+        const games = getGames();
+        const f = filter.toLowerCase();
+        const filtered = games.filter(g => 
+            g.title.toLowerCase().includes(f) || 
+            g.category.toLowerCase().includes(f)
+        );
+        const grid = document.getElementById('gameGrid');
+        if (filtered.length === 0) {
+            grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;">😔 Oyun bulunamadı</p>';
+        } else {
+            grid.innerHTML = filtered.map(g => `
+                <div class="game-card" onclick="openGameDetail('${g.id}')">
+                    <div class="img-wrap">${g.image ? `<img src="${g.image}" onerror="this.innerHTML='🎮'">` : '🎮'}</div>
+                    <div class="info"><h3>${g.title}</h3><span class="category-tag">${g.category}</span></div>
+                </div>
+            `).join('');
+        }
         updateSelects();
     }
-    document.getElementById('searchInput').addEventListener('input', ()=> renderGames(document.getElementById('searchInput').value));
 
-    function updateSelects(){
-        let g = getGames();
-        let o = g.map(x=> `<option value="${x.id}">${x.title}</option>`).join('');
-        document.getElementById('compareGame1').innerHTML = '<option value="">Oyun 1 seç</option>'+o;
-        document.getElementById('compareGame2').innerHTML = '<option value="">Oyun 2 seç</option>'+o;
-        document.getElementById('testGameSelect').innerHTML = '<option value="">Oyun seç</option>'+o;
-        document.getElementById('editSelect').innerHTML = '<option value="">Oyun seç</option>'+o;
+    document.getElementById('searchInput').addEventListener('input', function() {
+        renderGames(this.value);
+    });
+
+    function updateSelects() {
+        const games = getGames();
+        const opts = games.map(g => `<option value="${g.id}">${g.title}</option>`).join('');
+        document.getElementById('compareGame1').innerHTML = '<option value="">Oyun 1 seç</option>' + opts;
+        document.getElementById('compareGame2').innerHTML = '<option value="">Oyun 2 seç</option>' + opts;
+        document.getElementById('testGameSelect').innerHTML = '<option value="">Oyun seç</option>' + opts;
+        document.getElementById('editSelect').innerHTML = '<option value="">Oyun seç</option>' + opts;
         renderComments();
     }
 
-    window.openGameDetail = function(id){
-        let g = getGames().find(x=> x.id === id);
-        if(!g) return;
+    window.openGameDetail = function(id) {
+        const game = getGames().find(g => g.id === id);
+        if (!game) return;
         document.getElementById('gameDetailContent').innerHTML = `
             <button class="close-btn" onclick="closeModal('gameDetailModal')">✕</button>
-            <div style="height:120px;background:var(--soft);border-radius:4px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;overflow:hidden;">${g.image ? `<img src="${g.image}" style="width:100%;height:100%;object-fit:cover;">` : '🎮'}</div>
-            <h3>${g.title}</h3><p style="font-size:0.8rem;opacity:0.8;">📦 ${g.size} | 🏷️ ${g.category}</p>
-            <p style="margin:6px 0;">${g.desc}</p>
-            <p style="font-size:0.75rem;opacity:0.7;">🖥️ Min: ${g.minCpu||'?'} | ${g.minRam||'?'} GB RAM | ${g.minGpu||'?'}</p>
-            <a href="${g.download}" class="download-btn" target="_blank">⬇️ İndir</a>`;
+            <div style="height:120px;background:var(--soft);border-radius:4px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;overflow:hidden;">${game.image ? `<img src="${game.image}" style="width:100%;height:100%;object-fit:cover;">` : '🎮'}</div>
+            <h3>${game.title}</h3>
+            <p style="font-size:0.8rem;opacity:0.8;">📦 ${game.size} | 🏷️ ${game.category}</p>
+            <p style="margin:6px 0;">${game.desc}</p>
+            <p style="font-size:0.75rem;opacity:0.7;">🖥️ Min: ${game.minCpu||'?'} | ${game.minRam||'?'} GB RAM | ${game.minGpu||'?'}</p>
+            <a href="${game.download}" class="download-btn" target="_blank">⬇️ İndir</a>`;
         openModal('gameDetailModal');
     };
 
-    window.compareGames = function(){
-        let a = getGames().find(x=> x.id === document.getElementById('compareGame1').value);
-        let b = getGames().find(x=> x.id === document.getElementById('compareGame2').value);
-        if(!a || !b) return showToast('Lütfen iki oyun seçin!');
+    window.compareGames = function() {
+        const id1 = document.getElementById('compareGame1').value;
+        const id2 = document.getElementById('compareGame2').value;
+        if (!id1 || !id2) return showToast('Lütfen iki oyun seçin!');
+        const a = getGames().find(g => g.id === id1);
+        const b = getGames().find(g => g.id === id2);
+        if (!a || !b) return;
         document.getElementById('compareResult').innerHTML = `
             <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
                 <tr style="border-bottom:1px solid var(--border);"><th>Özellik</th><th>${a.title}</th><th>${b.title}</th></tr>
@@ -527,162 +603,260 @@
             </table>`;
     };
 
-    window.runPcTest = function(){
-        let g = getGames().find(x=> x.id === document.getElementById('testGameSelect').value);
-        if(!g) return showToast('Lütfen bir oyun seçin!');
-        let cpu = document.getElementById('cpuInput').value.trim().toLowerCase();
-        let ram = parseInt(document.getElementById('ramInput').value.trim());
-        let gpu = document.getElementById('gpuInput').value.trim().toLowerCase();
-        let cpuOk = cpu.includes(g.minCpu?.toLowerCase()||'') || !g.minCpu;
-        let ramOk = ram >= parseInt(g.minRam||0);
-        let gpuOk = gpu.includes(g.minGpu?.toLowerCase()||'') || !g.minGpu;
-        let ok = cpuOk && ramOk && gpuOk;
+    window.runPcTest = function() {
+        const gameId = document.getElementById('testGameSelect').value;
+        if (!gameId) return showToast('Lütfen bir oyun seçin!');
+        const game = getGames().find(g => g.id === gameId);
+        if (!game) return;
+        const cpu = document.getElementById('cpuInput').value.trim().toLowerCase();
+        const ram = parseInt(document.getElementById('ramInput').value.trim());
+        const gpu = document.getElementById('gpuInput').value.trim().toLowerCase();
+        const cpuOk = cpu.includes(game.minCpu?.toLowerCase() || '') || !game.minCpu;
+        const ramOk = ram >= parseInt(game.minRam || 0);
+        const gpuOk = gpu.includes(game.minGpu?.toLowerCase() || '') || !game.minGpu;
+        const ok = cpuOk && ramOk && gpuOk;
         document.getElementById('pcTestResult').innerHTML = `
-            <p><b>${g.title}</b> için sonuç:</p>
+            <p><b>${game.title}</b> için sonuç:</p>
             <p style="font-size:1.1rem;font-weight:700;color:${ok?'var(--green)':'#e94560'};">${ok ? '✅ AÇILIR' : '❌ AÇILMAZ'}</p>
             <p style="font-size:0.8rem;">CPU: ${cpuOk?'✅':'❌'} | RAM: ${ramOk?'✅':'❌'} | GPU: ${gpuOk?'✅':'❌'}</p>`;
     };
 
-    function renderComments(){
-        document.getElementById('globalComments').innerHTML = getComments().slice(-10).reverse().map(c=> `
-            <div class="comment"><b style="color:var(--accent);">${c.author}</b> <small style="opacity:0.6;">${c.date}</small><p>${c.text}</p></div>
-        `).join('') || '<p style="opacity:0.6;">Henüz yorum yok.</p>';
+    function renderComments() {
+        const comments = getComments();
+        const container = document.getElementById('globalComments');
+        if (comments.length === 0) {
+            container.innerHTML = '<p style="opacity:0.6;">Henüz yorum yok.</p>';
+        } else {
+            container.innerHTML = comments.slice(-10).reverse().map(c => `
+                <div class="comment">
+                    <b style="color:var(--accent);">${c.author}</b>
+                    <small style="opacity:0.6;">${c.date}</small>
+                    <p>${c.text}</p>
+                </div>
+            `).join('');
+        }
     }
 
-    window.addGlobalComment = function(){
-        let u = getCurrentUser();
-        if(!u) return showToast('Yorum yapmak için giriş yapın!');
-        let t = document.getElementById('globalCommentInput').value.trim();
-        if(!t) return showToast('Yorum boş olamaz!');
-        let c = getComments();
-        c.push({ author: u.username, text: t, date: new Date().toLocaleString('tr-TR') });
-        saveComments(c);
+    window.addGlobalComment = function() {
+        const user = getCurrentUser();
+        if (!user) return showToast('Yorum yapmak için giriş yapın!');
+        const text = document.getElementById('globalCommentInput').value.trim();
+        if (!text) return showToast('Yorum boş olamaz!');
+        const comments = getComments();
+        comments.push({
+            author: user.username,
+            text: text,
+            date: new Date().toLocaleString('tr-TR')
+        });
+        saveComments(comments);
         document.getElementById('globalCommentInput').value = '';
         renderComments();
         showToast('✅ Yorum eklendi!');
     };
 
-    window.showSection = function(section){
+    window.showSection = function(section) {
         document.getElementById('gamesSection').classList.add('hidden');
         document.getElementById('compareSection').classList.add('hidden');
         document.getElementById('pctestSection').classList.add('hidden');
         document.getElementById('commentsSection').classList.add('hidden');
-        if(section === 'games') document.getElementById('gamesSection').classList.remove('hidden');
-        else if(section === 'compare') document.getElementById('compareSection').classList.remove('hidden');
-        else if(section === 'pctest') document.getElementById('pctestSection').classList.remove('hidden');
-        else if(section === 'comments') document.getElementById('commentsSection').classList.remove('hidden');
+        if (section === 'games') document.getElementById('gamesSection').classList.remove('hidden');
+        else if (section === 'compare') document.getElementById('compareSection').classList.remove('hidden');
+        else if (section === 'pctest') document.getElementById('pctestSection').classList.remove('hidden');
+        else if (section === 'comments') document.getElementById('commentsSection').classList.remove('hidden');
     };
 
-    window.login = function(){
-        let u = document.getElementById('loginUsername').value.trim();
-        let p = document.getElementById('loginPassword').value.trim();
-        if(!u||!p) return showToast('Boş bırakmayın!');
-        let user = getUsers().find(x=> x.username===u && x.password===p);
-        if(!user) return showToast('Hatalı!');
+    window.login = function() {
+        const u = document.getElementById('loginUsername').value.trim();
+        const p = document.getElementById('loginPassword').value.trim();
+        if (!u || !p) return showToast('Boş bırakmayın!');
+        const users = getUsers();
+        const user = users.find(x => x.username === u && x.password === p);
+        if (!user) return showToast('Hatalı!');
         setCurrentUser({ username: user.username });
         closeModal('loginModal');
         updateUI();
     };
-    window.register = function(){
-        let u = document.getElementById('regUsername').value.trim();
-        let p = document.getElementById('regPassword').value.trim();
-        if(!u||!p) return showToast('Kullanıcı adı ve şifre zorunlu!');
-        if(getUsers().find(x=> x.username===u)) return showToast('Alınmış!');
-        getUsers().push({ username: u, email: document.getElementById('regEmail').value.trim(), password: p });
-        saveUsers(getUsers());
+
+    window.register = function() {
+        const u = document.getElementById('regUsername').value.trim();
+        const p = document.getElementById('regPassword').value.trim();
+        if (!u || !p) return showToast('Kullanıcı adı ve şifre zorunlu!');
+        const users = getUsers();
+        if (users.find(x => x.username === u)) return showToast('Alınmış!');
+        users.push({ username: u, email: document.getElementById('regEmail').value.trim(), password: p });
+        saveUsers(users);
         setCurrentUser({ username: u });
         closeModal('registerModal');
         updateUI();
     };
-    window.anonymousLogin = function(){ setCurrentUser({ username: 'Anon_'+Math.random().toString(36).substr(2,5) }); updateUI(); };
-    window.logout = function(){ setCurrentUser(null); setAdmin('false'); updateUI(); };
-    window.adminLogin = function(){
-        if(document.getElementById('adminKey').value.trim() === ADMIN_PASSWORD){
-            setAdmin('true');
-            if(!getCurrentUser()) setCurrentUser({ username: 'Admin' });
+
+    window.anonymousLogin = function() {
+        setCurrentUser({ username: 'Anon_' + Math.random().toString(36).substr(2,5) });
+        updateUI();
+    };
+
+    window.logout = function() {
+        setCurrentUser(null);
+        setAdmin(false);
+        updateUI();
+    };
+
+    window.adminLogin = function() {
+        const key = document.getElementById('adminKey').value.trim();
+        if (key === ADMIN_PASSWORD) {
+            setAdmin(true);
+            if (!getCurrentUser()) setCurrentUser({ username: 'Admin' });
             closeModal('adminLoginModal');
             updateUI();
             showToast('🛡️ Admin paneline hoş geldin!');
-        } else showToast('❌ Hatalı şifre!');
+        } else {
+            showToast('❌ Hatalı şifre!');
+        }
     };
-    window.closeAdmin = function(){ setAdmin('false'); updateUI(); };
 
-    window.showAdminSection = function(s){
+    window.closeAdmin = function() {
+        setAdmin(false);
+        updateUI();
+    };
+
+    window.showAdminSection = function(s) {
         document.getElementById('sectionAdd').classList.add('hidden');
         document.getElementById('sectionList').classList.add('hidden');
         document.getElementById('sectionEdit').classList.add('hidden');
         document.getElementById('menuAdd').classList.remove('active');
         document.getElementById('menuList').classList.remove('active');
         document.getElementById('menuEdit').classList.remove('active');
-        if(s==='add'){ document.getElementById('sectionAdd').classList.remove('hidden'); document.getElementById('menuAdd').classList.add('active'); }
-        else if(s==='list'){ document.getElementById('sectionList').classList.remove('hidden'); document.getElementById('menuList').classList.add('active'); renderAdminList(); }
-        else { document.getElementById('sectionEdit').classList.remove('hidden'); document.getElementById('menuEdit').classList.add('active'); updateSelects(); }
+        if (s === 'add') {
+            document.getElementById('sectionAdd').classList.remove('hidden');
+            document.getElementById('menuAdd').classList.add('active');
+        } else if (s === 'list') {
+            document.getElementById('sectionList').classList.remove('hidden');
+            document.getElementById('menuList').classList.add('active');
+            renderAdminList();
+        } else {
+            document.getElementById('sectionEdit').classList.remove('hidden');
+            document.getElementById('menuEdit').classList.add('active');
+            updateSelects();
+        }
     };
 
-    function renderAdminList(){
-        document.getElementById('adminGameList').innerHTML = getGames().map(g=> `
-            <div class="admin-game-list-item"><span><b>${g.title}</b> (${g.category}) - ${g.size}</span><div><button class="btn-edit" onclick="editDirect('${g.id}')">✏️</button> <button class="btn-delete" onclick="delGame('${g.id}')">🗑️</button></div></div>
+    function renderAdminList() {
+        const games = getGames();
+        document.getElementById('adminGameList').innerHTML = games.map(g => `
+            <div class="admin-game-list-item">
+                <span><b>${g.title}</b> (${g.category}) - ${g.size}</span>
+                <div>
+                    <button class="btn-edit" onclick="editDirect('${g.id}')">✏️</button>
+                    <button class="btn-delete" onclick="delGame('${g.id}')">🗑️</button>
+                </div>
+            </div>
         `).join('');
     }
-    window.editDirect = function(id){ showAdminSection('edit'); document.getElementById('editSelect').value = id; loadGameForEdit(); };
-    window.loadGameForEdit = function(){
-        let g = getGames().find(x=> x.id === document.getElementById('editSelect').value);
-        if(!g) return;
-        ['editGameId','editTitle','editDesc','editImage','editDownload','editCategory','editSize','editCpu','editRam','editGpu'].forEach((k,i)=> document.getElementById(k).value = [g.id, g.title, g.desc, g.image||'', g.download, g.category, g.size, g.minCpu||'', g.minRam||'', g.minGpu||''][i]);
+
+    window.editDirect = function(id) {
+        showAdminSection('edit');
+        document.getElementById('editSelect').value = id;
+        loadGameForEdit();
     };
-    window.addGame = function(){
-        let f = ['addTitle','addDesc','addDownload','addCategory'].map(id=> document.getElementById(id).value.trim());
-        if(f.some(x=>!x)) return showToast('Zorunlu alanları doldurun!');
-        getGames().push({ id: Date.now().toString(), title: f[0], desc: f[1], image: document.getElementById('addImage').value.trim(), download: f[2], category: f[3], size: document.getElementById('addSize').value.trim()||'?', minCpu: document.getElementById('addCpu').value.trim(), minRam: document.getElementById('addRam').value.trim(), minGpu: document.getElementById('addGpu').value.trim() });
-        saveGames(getGames());
-        ['addTitle','addDesc','addImage','addDownload','addCategory','addSize','addCpu','addRam','addGpu'].forEach(id=> document.getElementById(id).value = '');
+
+    window.loadGameForEdit = function() {
+        const id = document.getElementById('editSelect').value;
+        const game = getGames().find(g => g.id === id);
+        if (!game) return;
+        const fields = ['editGameId','editTitle','editDesc','editImage','editDownload','editCategory','editSize','editCpu','editRam','editGpu'];
+        const values = [game.id, game.title, game.desc, game.image || '', game.download, game.category, game.size, game.minCpu || '', game.minRam || '', game.minGpu || ''];
+        fields.forEach((f, i) => document.getElementById(f).value = values[i]);
+    };
+
+    window.addGame = function() {
+        const fields = ['addTitle','addDesc','addDownload','addCategory'];
+        const values = fields.map(id => document.getElementById(id).value.trim());
+        if (values.some(v => !v)) return showToast('Zorunlu alanları doldurun!');
+        const newGame = {
+            id: Date.now().toString(),
+            title: values[0],
+            desc: values[1],
+            image: document.getElementById('addImage').value.trim(),
+            download: values[2],
+            category: values[3],
+            size: document.getElementById('addSize').value.trim() || '?',
+            minCpu: document.getElementById('addCpu').value.trim(),
+            minRam: document.getElementById('addRam').value.trim(),
+            minGpu: document.getElementById('addGpu').value.trim()
+        };
+        const games = getGames();
+        games.push(newGame);
+        saveGames(games);
+        // Temizle
+        ['addTitle','addDesc','addImage','addDownload','addCategory','addSize','addCpu','addRam','addGpu'].forEach(id => document.getElementById(id).value = '');
         showToast('✅ Oyun eklendi!');
         renderGames();
     };
-    window.updateGame = function(){
-        let id = document.getElementById('editGameId').value;
-        if(!id) return showToast('Önce bir oyun seçin!');
-        let g = getGames();
-        let i = g.findIndex(x=> x.id === id);
-        if(i===-1) return;
-        g[i] = { ...g[i], title: document.getElementById('editTitle').value.trim(), desc: document.getElementById('editDesc').value.trim(), image: document.getElementById('editImage').value.trim(), download: document.getElementById('editDownload').value.trim(), category: document.getElementById('editCategory').value.trim(), size: document.getElementById('editSize').value.trim(), minCpu: document.getElementById('editCpu').value.trim(), minRam: document.getElementById('editRam').value.trim(), minGpu: document.getElementById('editGpu').value.trim() };
-        saveGames(g);
+
+    window.updateGame = function() {
+        const id = document.getElementById('editGameId').value;
+        if (!id) return showToast('Önce bir oyun seçin!');
+        const games = getGames();
+        const idx = games.findIndex(g => g.id === id);
+        if (idx === -1) return;
+        games[idx] = {
+            ...games[idx],
+            title: document.getElementById('editTitle').value.trim(),
+            desc: document.getElementById('editDesc').value.trim(),
+            image: document.getElementById('editImage').value.trim(),
+            download: document.getElementById('editDownload').value.trim(),
+            category: document.getElementById('editCategory').value.trim(),
+            size: document.getElementById('editSize').value.trim(),
+            minCpu: document.getElementById('editCpu').value.trim(),
+            minRam: document.getElementById('editRam').value.trim(),
+            minGpu: document.getElementById('editGpu').value.trim()
+        };
+        saveGames(games);
         showToast('✅ Oyun güncellendi!');
         renderGames();
         showAdminSection('list');
     };
-    window.delGame = function(id){
-        if(!confirm('Silmek istediğinize emin misiniz?')) return;
-        saveGames(getGames().filter(x=> x.id !== id));
+
+    window.delGame = function(id) {
+        if (!confirm('Silmek istediğinize emin misiniz?')) return;
+        const games = getGames().filter(g => g.id !== id);
+        saveGames(games);
         showToast('🗑️ Oyun silindi!');
         renderGames();
         renderAdminList();
     };
 
-    function updateUI(){
-        let u = getCurrentUser();
-        let a = isAdmin();
-        let b = document.getElementById('userBadge');
-        if(u){ b.classList.remove('hidden'); b.textContent = '👤 '+u.username; } else b.classList.add('hidden');
-        document.getElementById('btnLogout').classList.toggle('hidden', !u);
-        document.querySelectorAll('.nav-links button:not(#btnLogout)').forEach(x=> x.classList.toggle('hidden', !!u));
+    function updateUI() {
+        const user = getCurrentUser();
+        const admin = isAdmin();
+        const badge = document.getElementById('userBadge');
+        if (user) {
+            badge.classList.remove('hidden');
+            badge.textContent = '👤 ' + user.username;
+        } else {
+            badge.classList.add('hidden');
+        }
+        document.getElementById('btnLogout').classList.toggle('hidden', !user);
+        document.querySelectorAll('.nav-links button:not(#btnLogout)').forEach(btn => {
+            btn.classList.toggle('hidden', !!user);
+        });
         document.querySelector('.online-counter').classList.remove('hidden');
-        document.getElementById('mainContent').classList.toggle('hidden', a);
-        document.getElementById('adminContainer').classList.toggle('hidden', !a);
-        applyAdminMode(); // admin teması uygula/kaldır
-        if(a) showAdminSection('add');
+        document.getElementById('mainContent').classList.toggle('hidden', admin);
+        document.getElementById('adminContainer').classList.toggle('hidden', !admin);
+        applyAdminMode();
+        if (admin) showAdminSection('add');
         renderGames(document.getElementById('searchInput').value);
     }
 
-    document.addEventListener('keydown', function(e){
-        if(e.ctrlKey && e.shiftKey && e.key === 'A'){
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.shiftKey && e.key === 'A') {
             e.preventDefault();
             isAdmin() ? closeAdmin() : openModal('adminLoginModal');
         }
     });
 
+    // İlk yükleme
     updateUI();
-    renderGames();
 </script>
 </body>
 </html>
