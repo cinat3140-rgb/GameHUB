@@ -2600,5 +2600,214 @@
             etkinlikEkle('🟢 OyunDeposu başlatıldı');
         });
     </script>
+    <!-- ======================================== -->
+<!-- TAM OTOMATİK AI BOT - KOPYALA YAPIŞTIR  -->
+<!-- ======================================== -->
+<style>
+.ai-chat-container{position:fixed;bottom:100px;right:30px;z-index:9998;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.ai-chat-toggle{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#00d2ff,#3a7bd5);border:none;color:#fff;font-size:28px;cursor:pointer;box-shadow:0 8px 32px rgba(0,210,255,0.4);transition:.3s;display:flex;align-items:center;justify-content:center;animation:float 3s ease-in-out infinite;position:relative}
+.ai-chat-toggle:hover{transform:scale(1.1)}
+.ai-chat-toggle .status-dot{position:absolute;top:4px;right:4px;width:14px;height:14px;border-radius:50%;background:#2ecc71;border:2px solid #0f0f1a;animation:pulse 2s infinite}
+.ai-chat-toggle .tooltip{position:absolute;right:70px;background:#1a1a2e;color:#e8e8e8;padding:6px 14px;border-radius:20px;font-size:.8rem;white-space:nowrap;border:1px solid #2a2a3e;opacity:0;transition:opacity .3s;pointer-events:none}
+.ai-chat-toggle:hover .tooltip{opacity:1}
+.ai-chat-box{width:380px;max-width:92vw;height:520px;max-height:70vh;background:#1a1a2e;border:1px solid #2a2a3e;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.5);animation:fadeInUp .4s ease-out}
+.ai-chat-box.hidden{display:none}
+.ai-chat-header{background:linear-gradient(135deg,#00d2ff,#3a7bd5);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ai-chat-header-left{display:flex;align-items:center;gap:12px}
+.ai-chat-avatar{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff}
+.ai-chat-header-info h4{color:#fff;margin:0;font-size:1rem}
+.ai-chat-header-info small{color:rgba(255,255,255,0.8);font-size:.75rem}
+.ai-chat-close{background:rgba(255,255,255,0.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;transition:.3s;display:flex;align-items:center;justify-content:center}
+.ai-chat-close:hover{background:rgba(255,255,255,0.3);transform:rotate(90deg)}
+.ai-chat-messages{flex:1;padding:16px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:#0f0f1a}
+.ai-chat-messages::-webkit-scrollbar{width:4px}
+.ai-chat-messages::-webkit-scrollbar-thumb{background:#e94560;border-radius:4px}
+.ai-message{display:flex;gap:10px;max-width:85%;animation:fadeInUp .3s ease-out}
+.ai-message.bot{align-self:flex-start}
+.ai-message.user{align-self:flex-end;flex-direction:row-reverse}
+.ai-message .msg-avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.ai-message.bot .msg-avatar{background:linear-gradient(135deg,#00d2ff,#3a7bd5);color:#fff}
+.ai-message.user .msg-avatar{background:#e94560;color:#000}
+.ai-message .msg-bubble{padding:10px 16px;border-radius:16px;font-size:.9rem;line-height:1.5;word-wrap:break-word;max-width:100%}
+.ai-message.bot .msg-bubble{background:#1a1a2e;border:1px solid #2a2a3e;color:#e8e8e8;border-bottom-left-radius:4px}
+.ai-message.user .msg-bubble{background:#e94560;color:#000;border-bottom-right-radius:4px}
+.ai-message .msg-time{font-size:.65rem;color:#a0a0b0;margin-top:4px;display:block}
+.ai-message.user .msg-time{text-align:right}
+.ai-typing{align-self:flex-start;display:flex;align-items:center;gap:8px;padding:8px 16px;background:#1a1a2e;border:1px solid #2a2a3e;border-radius:20px;border-bottom-left-radius:4px;color:#a0a0b0;font-size:.85rem}
+.ai-typing .typing-dots{display:flex;gap:4px}
+.ai-typing .typing-dots span{width:6px;height:6px;border-radius:50%;background:#e94560;animation:typingBounce 1.4s infinite}
+.ai-typing .typing-dots span:nth-child(2){animation-delay:.2s}
+.ai-typing .typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}
+.ai-chat-input-area{padding:12px 16px;border-top:1px solid #2a2a3e;display:flex;gap:10px;background:#1a1a2e;flex-shrink:0}
+.ai-chat-input-area input{flex:1;padding:10px 16px;border-radius:30px;border:2px solid #2a2a3e;background:#0f0f1a;color:#e8e8e8;font-size:.9rem;outline:none;transition:.3s}
+.ai-chat-input-area input:focus{border-color:#00d2ff;box-shadow:0 0 20px rgba(0,210,255,0.15)}
+.ai-chat-input-area input::placeholder{color:#a0a0b0}
+.ai-chat-input-area .send-btn{padding:10px 20px;border-radius:30px;border:none;background:linear-gradient(135deg,#00d2ff,#3a7bd5);color:#fff;font-weight:700;cursor:pointer;transition:.3s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.ai-chat-input-area .send-btn:hover{transform:scale(1.05);box-shadow:0 4px 16px rgba(0,210,255,0.4)}
+.ai-chat-input-area .send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.ai-chat-suggestions{display:flex;gap:6px;flex-wrap:wrap;padding:6px 16px 12px;background:#1a1a2e;border-top:1px solid #2a2a3e}
+.ai-chat-suggestions button{padding:4px 12px;border-radius:20px;border:1px solid #2a2a3e;background:#0f0f1a;color:#a0a0b0;font-size:.7rem;cursor:pointer;transition:.3s;white-space:nowrap}
+.ai-chat-suggestions button:hover{border-color:#00d2ff;color:#e8e8e8;background:rgba(255,255,255,0.05)}
+@media(max-width:768px){.ai-chat-box{width:100%;max-width:100vw;height:85vh;max-height:85vh;border-radius:0;position:fixed;bottom:0;right:0;left:0;top:0}.ai-chat-container{bottom:90px;right:16px}.ai-chat-toggle{width:54px;height:54px;font-size:24px}}
+</style>
+
+<div class="ai-chat-container">
+    <div class="ai-chat-box hidden" id="aiChatBox">
+        <div class="ai-chat-header">
+            <div class="ai-chat-header-left">
+                <div class="ai-chat-avatar"><i class="fas fa-robot"></i></div>
+                <div class="ai-chat-header-info">
+                    <h4>🤖 OyunBot AI</h4>
+                    <small>🟢 Aktif • Yardıma hazır</small>
+                </div>
+            </div>
+            <button class="ai-chat-close" onclick="toggleAiChat()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="ai-chat-messages" id="aiMessages"></div>
+        <div class="ai-chat-suggestions">
+            <button onclick="sendAiMessage('Merhaba!')">👋 Merhaba</button>
+            <button onclick="sendAiMessage('Site hakkında bilgi verir misin?')">ℹ️ Site</button>
+            <button onclick="sendAiMessage('En popüler oyun hangisi?')">🔥 Popüler</button>
+            <button onclick="sendAiMessage('Nasıl oyun eklerim?')">➕ Ekle</button>
+            <button onclick="sendAiMessage('Admin şifresi nedir?')">🔒 Admin</button>
+        </div>
+        <div class="ai-chat-input-area">
+            <input type="text" id="aiInput" placeholder="Sorunu yaz..." onkeydown="if(event.key==='Enter') sendAiMessage(this.value)">
+            <button class="send-btn" onclick="sendAiMessage(document.getElementById('aiInput').value)">
+                <i class="fas fa-paper-plane"></i> Gönder
+            </button>
+        </div>
+    </div>
+    <button class="ai-chat-toggle" onclick="toggleAiChat()">
+        <i class="fas fa-robot"></i>
+        <span class="status-dot"></span>
+        <span class="tooltip">💬 Sohbet et</span>
+    </button>
+</div>
+
+<script>
+(function(){
+// =============================================
+// TAM OTOMATİK AI - HİÇBİR ŞEY YAPMAYIN!
+// HER ŞEY KENDİLİĞİNDEN ÇALIŞIR
+// =============================================
+
+// ★ BURAYI DEĞİŞTİRMEK İSTEMİYORSANIZ DOKUNMAYIN ★
+// Bot kendi kendine çalışır, hiçbir müdahale gerektirmez!
+
+const BOT = {
+    name: 'OyunBot',
+    emoji: '🤖',
+    welcome: '👋 Merhaba! Ben OyunBot, OyunDeposu\'nun yapay zeka asistanıyım. Sana nasıl yardımcı olabilirim? 🎮',
+    tip: '💡 İpucu: "Site hakkında", "Oyun indirme", "Sistem testi" gibi konularda soru sorabilirsin. 🔒 Admin bilgileri gizlidir!'
+};
+
+// ★ SİZ HİÇBİR ŞEY YAPMAYIN, BOT KENDİ CEVAPLARINI BİLİR ★
+const ANSWERS = {
+    'site hakkında': '🎮 OyunDeposu: Türkiye\'nin en büyük oyun arşivi! 100+ oyun, 10+ kategori, yorumlar, puanlama, sistem testi ve karşılaştırma aracı.',
+    'nasıl oyun eklerim': '🎯 Admin yetkin varsa Ctrl+Shift+A ile paneli aç, "Oyun Ekle" sekmesinden ekleyebilirsin.',
+    'nasıl kayıt olurum': '📝 Sağ üstteki "Kayıt" butonuna tıkla, bilgilerini gir ve kaydol!',
+    'nasıl giriş yaparım': '🔑 Sağ üstteki "Giriş" butonuna tıkla, kullanıcı adı ve şifrenle giriş yap.',
+    'oyun nasıl indiririm': '📥 Oyun kartına tıkla, açılan pencerede "İndir" butonuna bas.',
+    'oyun nasıl ararım': '🔍 Arama çubuğuna oyun adı, kategori veya etiket yaz, anında filtrele.',
+    'sistem testi': '🖥️ "PC Test" sekmesine git, sistem özelliklerini gir, oyun seç ve test et.',
+    'karşılaştırma': '⚖️ "Karşılaştır" sekmesinde 2 oyun seç, özellikleri karşılaştır.',
+    'yorum': '💬 "Yorumlar" sekmesinde yorum yapabilir, beğenebilir ve yanıtlayabilirsin.',
+    'seviye': '⭐ Çaylak → Acemi → Usta → Efsane → Tanrı. Yorum yap, oyun indir, aktif ol!',
+    'en popüler oyun': '🔥 En çok indirilen oyunları görmek için "En Çok İndirilen" sıralamasını seç.',
+    'yardım': '🆘 Ne konuda yardım istersin? Oyunlar, hesap, sistem testi, karşılaştırma...'
+};
+
+// ★ ADMIN SORULARINA OTOMATİK GİZLİLİK CEVABI ★
+const SECRET_WORDS = ['admin şifre', 'admin anahtar', 'admin kodu', 'admin key', 'şifre nedir', 'anahtar nedir', 'admin panel şifre'];
+
+function getReply(msg) {
+    msg = msg.toLowerCase().trim();
+    for (let word of SECRET_WORDS) {
+        if (msg.includes(word)) return '🔒 Bu bilgi gizlidir! Admin bilgileri sadece yetkili kişiler tarafından bilinir.';
+    }
+    for (let key in ANSWERS) {
+        if (msg.includes(key)) return ANSWERS[key];
+    }
+    if (msg.length < 3) return '🤔 Biraz daha açık yazabilir misin? Yardım etmek isterim!';
+    return '🤔 Anlamadım ama yardımcı olmak isterim! "Yardım" yazarak neler yapabileceğimi görebilirsin.';
+}
+
+// ★ SOHBET MOTORU - DOKUNMAYIN ★
+let isTyping = false;
+
+window.toggleAiChat = function() {
+    const box = document.getElementById('aiChatBox');
+    box.classList.toggle('hidden');
+    if (!box.classList.contains('hidden')) {
+        document.getElementById('aiInput').focus();
+        const msgs = document.getElementById('aiMessages');
+        if (msgs.children.length === 0) {
+            addMsg('bot', BOT.welcome);
+            addMsg('bot', BOT.tip);
+        }
+    }
+};
+
+function addMsg(type, text) {
+    const container = document.getElementById('aiMessages');
+    const div = document.createElement('div');
+    div.className = `ai-message ${type}`;
+    div.innerHTML = `
+        <div class="msg-avatar">${type === 'bot' ? '<i class="fas fa-robot"></i>' : '<i class="fas fa-user"></i>'}</div>
+        <div class="msg-bubble">${text.replace(/\n/g, '<br>')}<span class="msg-time">${new Date().toLocaleTimeString('tr-TR', {hour:'2-digit',minute:'2-digit'})}</span></div>
+    `;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
+
+function showTyping() {
+    if (isTyping) return;
+    isTyping = true;
+    const container = document.getElementById('aiMessages');
+    const div = document.createElement('div');
+    div.className = 'ai-typing';
+    div.id = 'typingIndicator';
+    div.innerHTML = `<span>OyunBot yazıyor</span><span class="typing-dots"><span></span><span></span><span></span></span>`;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
+
+function hideTyping() {
+    isTyping = false;
+    const el = document.getElementById('typingIndicator');
+    if (el) el.remove();
+}
+
+window.sendAiMessage = function(input) {
+    const field = document.getElementById('aiInput');
+    if (!input || !input.trim()) { field.focus(); return; }
+    input = input.trim();
+    addMsg('user', input);
+    field.value = '';
+    field.focus();
+    showTyping();
+    setTimeout(() => {
+        hideTyping();
+        addMsg('bot', getReply(input));
+    }, Math.floor(Math.random() * 600) + 400);
+};
+
+// ★ KLAVYE KISAYOLU: Ctrl+Shift+S ★
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.shiftKey && e.key === 'S') {
+        e.preventDefault();
+        toggleAiChat();
+    }
+});
+
+console.log('🤖 OyunBot AI aktif! Ctrl+Shift+S ile sohbeti aç.');
+console.log('🔒 Admin bilgileri otomatik korumada.');
+})();
+</script>
+<!-- ======================================== -->
+<!-- TAM OTOMATİK AI BOT - BİTTİ              -->
+<!-- ======================================== -->
 </body>
 </html>
