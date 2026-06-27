@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameHub - Ücretsiz Oyunlar</title>
+    <title>OyunDeposu - Ücretsiz Oyunlar</title>
     <style>
         :root {
             --bg: #1a1a2e;
@@ -88,7 +88,6 @@
             0% { box-shadow: 0 0 40px rgba(255,215,0,0.3), inset 0 0 20px rgba(255,215,0,0.05); }
             100% { box-shadow: 0 0 70px rgba(255,215,0,0.6), inset 0 0 30px rgba(255,215,0,0.1); }
         }
-        /* Admin rozeti için özel ışıltı */
         .admin-badge {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             color: #000;
@@ -277,7 +276,7 @@
 <body>
 
 <nav class="navbar">
-    <div class="logo" onclick="location.reload()">🎮 GameHub</div>
+    <div class="logo" onclick="location.reload()">🎮 OyunDeposu</div>
     <div class="nav-links">
         <span style="font-size:0.7rem;">Tema:</span>
         <div class="theme-dot pink" onclick="setTheme('pink')" title="Pembe"></div>
@@ -645,7 +644,6 @@
         if (user) {
             badge.classList.remove('hidden');
             if (admin) {
-                // Admin ise özel ışıltılı rozet
                 badge.className = 'admin-badge';
                 badge.textContent = '👑 Admin';
             } else {
