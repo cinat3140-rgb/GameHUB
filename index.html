@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OyunDeposu - Ücretsiz Oyun İndir</title>
-    <!-- ==================== CSS DEĞİŞKENLERİ VE TEMALAR ==================== -->
+    <!-- ==================== CSS BAŞLANGIÇ ==================== -->
     <style>
+        /* Kök değişkenler ve varsayılan tema */
         :root {
             --bg: #1a1a2e;
             --card: #1e2a3a;
@@ -119,7 +120,7 @@
             0% { box-shadow: 0 0 10px #ffaa00, 0 0 25px rgba(255,215,0,0.4); }
             100% { box-shadow: 0 0 25px #ffd700, 0 0 45px rgba(255,215,0,0.7); }
         }
-        /* ==================== GENEL SIFIRLAMA ==================== */
+        /* Genel sıfırlama */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -128,7 +129,7 @@
             line-height: 1.5;
             min-height: 100vh;
         }
-        /* ==================== NAVBAR ==================== */
+        /* Navbar */
         .navbar {
             background: var(--card);
             border-bottom: 1px solid var(--border);
@@ -170,7 +171,7 @@
             gap: 5px;
         }
         .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
-        /* ==================== TEMA NOKTALARI ==================== */
+        /* Tema noktaları */
         .theme-dot {
             width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
             border: 2px solid transparent; display: inline-block; margin: 0 2px;
@@ -182,7 +183,7 @@
         .theme-dot.admin-gold { background: #ffd700; }
         .theme-dot.admin-purple { background: #c77dff; }
         .theme-dot.admin-orange { background: #ff6d00; }
-        /* ==================== İÇERİK KONTEYNERİ ==================== */
+        /* İçerik konteyneri */
         .container { max-width: 1300px; margin: 0 auto; padding: 16px; }
         .section-title { font-size: 1.5rem; font-weight: 700; margin: 16px 0 10px; }
         .search-bar {
@@ -191,7 +192,7 @@
             font-size: 0.9rem; outline: none; margin-bottom: 10px;
         }
         .search-bar:focus { border-color: var(--accent); }
-        /* ==================== OYUN KARTLARI ==================== */
+        /* Oyun kartları */
         .game-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -216,7 +217,7 @@
             padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600;
         }
         .downloads-count { font-size: 0.7rem; opacity: 0.7; margin-top: 4px; }
-        /* ==================== MODAL ==================== */
+        /* Modal */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.7);
             z-index: 200; display: flex; align-items: center; justify-content: center;
@@ -232,7 +233,7 @@
             text-decoration: none; font-weight: 700; display: inline-block; margin-top: 8px;
             border: none; cursor: pointer; font-size: 0.9rem;
         }
-        /* ==================== BÖLÜM KUTULARI ==================== */
+        /* Bölüm kutuları */
         .feature-box {
             background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
             padding: 16px; margin: 14px 0;
@@ -243,7 +244,7 @@
             background: var(--soft); border: 1px solid var(--border);
             color: var(--text); border-radius: 4px; font-size: 0.85rem;
         }
-        /* ==================== YORUMLAR ==================== */
+        /* Yorumlar */
         .comment {
             background: var(--soft); padding: 10px; border-radius: 8px;
             margin: 8px 0; font-size: 0.85rem;
@@ -258,13 +259,13 @@
             border-radius: 20px; font-weight: 700; font-size: 0.8rem;
             display: inline-block; margin-bottom: 10px;
         }
-        /* ==================== FOOTER ==================== */
+        /* Footer */
         .footer {
             margin-top: 30px; padding: 20px; background: var(--card);
             border-top: 1px solid var(--border); text-align: center;
             font-size: 0.8rem; opacity: 0.8;
         }
-        /* ==================== ADMIN PANELİ ==================== */
+        /* Admin paneli */
         .admin-panel {
             background: var(--card); border: 2px solid var(--orange);
             border-radius: var(--radius); padding: 20px; margin-top: 14px;
@@ -297,7 +298,7 @@
             padding: 8px; border-bottom: 1px solid var(--border); gap: 6px;
             flex-wrap: wrap; font-size: 0.85rem;
         }
-        /* ==================== BİLDİRİM TOAST ==================== */
+        /* Bildirim toast */
         .toast {
             position: fixed; bottom: 20px; right: 20px; background: var(--green);
             color: #000; padding: 10px 20px; border-radius: 6px; font-weight: 700;
@@ -305,7 +306,7 @@
         }
         .hidden { display: none !important; }
         .section-btn.active, .cat-btn.active { background: var(--accent) !important; color: #000 !important; border-color: var(--accent) !important; }
-        /* ==================== YUKARI ÇIK BUTONU ==================== */
+        /* Yukarı çık butonu */
         .back-to-top {
             position: fixed; bottom: 20px; right: 20px; width: 36px; height: 36px;
             background: var(--accent); color: #000; border-radius: 50%;
@@ -314,12 +315,13 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.4); transition: 0.2s;
         }
         .back-to-top:hover { transform: scale(1.1); }
-        /* ==================== RESPONSIVE ==================== */
+        /* Responsive */
         @media (max-width: 600px) {
             .game-grid { grid-template-columns: 1fr 1fr; }
             .nav-links button { padding: 5px 10px; font-size: 0.75rem; }
         }
     </style>
+    <!-- ==================== CSS SONU ==================== -->
 </head>
 <body>
 <!-- ==================== NAVBAR ==================== -->
@@ -413,6 +415,7 @@
     <div class="footer">
         <p>© 2024 OyunDeposu - Tüm hakları depoda saklıdır 🎮</p>
         <p style="margin-top:6px;">İletişim: oyundeposu@example.com | Discord: OyunDeposu#1234</p>
+        <p style="margin-top:4px;">🚀 En yeni oyunlar, en hızlı indirmeler! Her gün güncellenir.</p>
     </div>
 </div>
 
@@ -424,6 +427,7 @@
             <button id="menuAdd" class="active" onclick="showAdminSection('add')">➕ Oyun Ekle</button>
             <button id="menuList" onclick="showAdminSection('list')">📋 Liste</button>
             <button id="menuEdit" onclick="showAdminSection('edit')">✏️ Düzenle</button>
+            <button id="menuSettings" onclick="showAdminSection('settings')">⚙️ Ayarlar</button>
             <button onclick="closeAdminPanel()" style="background:#555;color:#fff;">❌ Paneli Kapat</button>
         </div>
         <!-- Oyun ekleme formu -->
@@ -461,6 +465,13 @@
             <input type="text" id="editGpu" placeholder="Minimum Ekran Kartı">
             <button class="btn-save" onclick="updateGame()">💾 Güncelle</button>
         </div>
+        <!-- Ayarlar bölümü -->
+        <div id="sectionSettings" class="admin-form hidden">
+            <h4>⚙️ Site Ayarları</h4>
+            <label>Duyuru Mesajı:</label>
+            <input type="text" id="duyuruInput" placeholder="Duyuru metni (boş bırakılırsa gizlenir)">
+            <button class="btn-save" onclick="saveDuyuru()">💾 Kaydet</button>
+        </div>
     </div>
 </div>
 
@@ -488,10 +499,10 @@
 
 <!-- Toast bildirim -->
 <div class="toast hidden" id="toast"></div>
-<!-- Yukarı çık butonu (eski ayarlar butonunun yerine) -->
+<!-- Yukarı çık butonu -->
 <div class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Yukarı Çık">🔼</div>
 
-<!-- ==================== JAVASCRIPT ==================== -->
+<!-- ==================== JAVASCRIPT BAŞLANGIÇ ==================== -->
 <script>
     // Admin şifresi (Base64 ile gizlenmiş)
     const ADMIN_PASSWORD = atob('R2FtZUh1YjIwMjQhQWRtaW4=');
@@ -528,7 +539,7 @@
     // Aktif kategori filtresi
     let activeCategory = 'all';
 
-    // Tema değiştirme
+    // Tema değiştirme fonksiyonu
     window.setTheme = function(t) {
         if (!isAdmin() && (t === 'admin-gold' || t === 'admin-purple' || t === 'admin-orange')) {
             t = 'default';
@@ -567,13 +578,13 @@
         document.getElementById('onlineText').textContent = Object.keys(sessions).length + ' çevrimiçi';
     }, 5000);
 
-    // Toast mesajı
+    // Toast mesajı gösterme
     window.showToast = function(msg) { const toast = document.getElementById('toast'); toast.textContent = msg; toast.classList.remove('hidden'); setTimeout(() => toast.classList.add('hidden'), 2000); };
     window.openModal = function(id) { document.getElementById(id).classList.remove('hidden'); };
     window.closeModal = function(id) { document.getElementById(id).classList.add('hidden'); };
     document.addEventListener('click', function(e) { if (e.target.classList.contains('modal-overlay')) e.target.classList.add('hidden'); });
 
-    // Oyunları listeleme
+    // Oyunları listeleme (filtre ve kategori ile)
     function renderGames(filter = '', category = 'all') {
         const games = getGames();
         let filtered = games;
@@ -628,6 +639,8 @@
         document.getElementById('compareGame2').innerHTML = '<option value="">Oyun 2 seç</option>' + opts;
         document.getElementById('testGameSelect').innerHTML = '<option value="">Oyun seç</option>' + opts;
         document.getElementById('editSelect').innerHTML = '<option value="">Oyun seç</option>' + opts;
+        // Duyuru inputunu da güncelle
+        document.getElementById('duyuruInput').value = safeGet('gh_duyuru', '');
         renderComments();
         renderDuyuru();
     }
@@ -732,13 +745,21 @@
     function renderDuyuru() {
         const duyuru = safeGet('gh_duyuru', '');
         const el = document.getElementById('duyuruAlani');
-        if (duyuru && isAdmin()) {
+        if (duyuru) {
             el.textContent = '📢 ' + duyuru;
             el.classList.remove('hidden');
         } else {
             el.classList.add('hidden');
         }
     }
+
+    // Duyuru kaydetme (admin ayarlarından)
+    window.saveDuyuru = function() {
+        const duyuru = document.getElementById('duyuruInput').value.trim();
+        safeSet('gh_duyuru', duyuru);
+        renderDuyuru();
+        showToast('✅ Duyuru güncellendi!');
+    };
 
     // Bölüm göster/gizle
     window.showSection = function(section) {
@@ -808,12 +829,15 @@
         document.getElementById('sectionAdd').classList.add('hidden');
         document.getElementById('sectionList').classList.add('hidden');
         document.getElementById('sectionEdit').classList.add('hidden');
+        document.getElementById('sectionSettings').classList.add('hidden');
         document.getElementById('menuAdd').classList.remove('active');
         document.getElementById('menuList').classList.remove('active');
         document.getElementById('menuEdit').classList.remove('active');
+        document.getElementById('menuSettings').classList.remove('active');
         if (s === 'add') { document.getElementById('sectionAdd').classList.remove('hidden'); document.getElementById('menuAdd').classList.add('active'); }
         else if (s === 'list') { document.getElementById('sectionList').classList.remove('hidden'); document.getElementById('menuList').classList.add('active'); renderAdminList(); }
-        else { document.getElementById('sectionEdit').classList.remove('hidden'); document.getElementById('menuEdit').classList.add('active'); updateSelects(); }
+        else if (s === 'edit') { document.getElementById('sectionEdit').classList.remove('hidden'); document.getElementById('menuEdit').classList.add('active'); updateSelects(); }
+        else if (s === 'settings') { document.getElementById('sectionSettings').classList.remove('hidden'); document.getElementById('menuSettings').classList.add('active'); updateSelects(); }
     };
 
     // Admin oyun listesi render
@@ -906,7 +930,7 @@
         renderGames(document.getElementById('searchInput').value, activeCategory);
     }
 
-    // Ctrl+Shift+A kısayolu
+    // Ctrl+Shift+A kısayolu (admin ise şifre sormaz, paneli açar/kapatır)
     document.addEventListener('keydown', function(e) {
         if (e.ctrlKey && e.shiftKey && e.key === 'A') {
             e.preventDefault();
@@ -921,5 +945,6 @@
     // İlk yükleme
     updateUI();
 </script>
+<!-- ==================== JAVASCRIPT SONU ==================== -->
 </body>
 </html>
