@@ -1101,7 +1101,7 @@
             color: #e94560;
         }
 
-        /* Seviye Rozetleri */
+        /* Seviye rozetleri dinamik olarak style ile renklendirilecek */
         .level-badge {
             display: inline-block;
             padding: 4px 12px;
@@ -1109,13 +1109,8 @@
             font-size: 0.75rem;
             font-weight: 700;
             margin-left: 8px;
+            color: #000;
         }
-
-        .level-caylak { background: #95a5a6; color: #000; }
-        .level-acemi { background: #2ecc71; color: #000; }
-        .level-usta { background: #3498db; color: #fff; }
-        .level-efsane { background: #9b59b6; color: #fff; }
-        .level-tanri { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
 
         .toggle-switch {
             position: relative;
@@ -1655,7 +1650,7 @@
                             </div>
                             <div>
                                 <div class="admin-card-title">Kullanıcı Seviye Yönetimi</div>
-                                <div style="color:var(--text-secondary);font-size:0.8rem;">Kullanıcıların seviyelerini ve seviye isimlerini belirleyin</div>
+                                <div style="color:var(--text-secondary);font-size:0.8rem;">Kullanıcılara manuel olarak seviye atayın</div>
                             </div>
                         </div>
                         
@@ -1667,27 +1662,12 @@
                             <div>
                                 <h4 style="margin-bottom:15px;color:var(--text);">Yeni Seviye Ekle</h4>
                                 <div class="admin-form-group">
-                                    <label>Seviye Numarası</label>
-                                    <input type="number" id="newLevelNumber" class="admin-input" placeholder="1" min="1">
-                                </div>
-                                <div class="admin-form-group">
                                     <label>Seviye Adı</label>
                                     <input type="text" id="newLevelName" class="admin-input" placeholder="Örn: Çaylak">
                                 </div>
                                 <div class="admin-form-group">
-                                    <label>Minimum Puan</label>
-                                    <input type="number" id="newLevelMinPoints" class="admin-input" placeholder="0" min="0">
-                                </div>
-                                <div class="admin-form-group">
-                                    <label>CSS Sınıfı (opsiyonel)</label>
-                                    <select id="newLevelCssClass" class="admin-select">
-                                        <option value="">Varsayılan</option>
-                                        <option value="level-caylak">Çaylak (Gri)</option>
-                                        <option value="level-acemi">Acemi (Yeşil)</option>
-                                        <option value="level-usta">Usta (Mavi)</option>
-                                        <option value="level-efsane">Efsane (Mor)</option>
-                                        <option value="level-tanri">Tanrı (Altın)</option>
-                                    </select>
+                                    <label>Renk</label>
+                                    <input type="color" id="newLevelColor" class="admin-input" style="height:45px;padding:5px;" value="#95a5a6">
                                 </div>
                                 <button class="btn-admin btn-admin-primary" onclick="addLevel()">
                                     <i class="fas fa-plus"></i> Seviye Ekle
@@ -1703,7 +1683,7 @@
                             </div>
                             <div>
                                 <div class="admin-card-title">Kullanıcı Seviyeleri</div>
-                                <div style="color:var(--text-secondary);font-size:0.8rem;">Kullanıcıların puanlarını ve seviyelerini görüntüleyin</div>
+                                <div style="color:var(--text-secondary);font-size:0.8rem;">Kullanıcılara seviye atayın</div>
                             </div>
                         </div>
                         <div style="overflow-x:auto;">
@@ -1711,9 +1691,9 @@
                                 <thead>
                                     <tr>
                                         <th>Kullanıcı</th>
-                                        <th>Puan</th>
-                                        <th>Seviye</th>
-                                        <th>Rozet</th>
+                                        <th>Mevcut Seviye</th>
+                                        <th>Yeni Seviye Ata</th>
+                                        <th>İşlem</th>
                                     </tr>
                                 </thead>
                                 <tbody id="userLevelsTable">
@@ -1815,7 +1795,7 @@
             const commentsRef = ref(db, 'comments');
             const settingsRef = ref(db, 'settings');
             const levelsRef = ref(db, 'levels');
-            const userPointsRef = ref(db, 'userPoints');
+            const userLevelsRef = ref(db, 'userLevels'); // Kullanıcı-seviye eşleşmeleri
             const etkinlikRef = ref(db, 'etkinlikler');
             const onlineRef = ref(db, 'online_users');
             const connectedRef = ref(db, '.info/connected');
@@ -1828,16 +1808,7 @@
             let commentsList = [];
             let notifications = [];
             let levelsList = [];
-            let userPointsList = [];
-
-            // Varsayılan seviyeler
-            const defaultLevels = [
-                { number: 1, name: 'Çaylak', minPoints: 0, cssClass: 'level-caylak' },
-                { number: 2, name: 'Acemi', minPoints: 100, cssClass: 'level-acemi' },
-                { number: 3, name: 'Usta', minPoints: 500, cssClass: 'level-usta' },
-                { number: 4, name: 'Efsane', minPoints: 2000, cssClass: 'level-efsane' },
-                { number: 5, name: 'Tanrı', minPoints: 10000, cssClass: 'level-tanri' }
-            ];
+            let userLevelsList = [];
 
             // Seviyeleri yükle
             onValue(levelsRef, (snapshot) => {
@@ -1847,21 +1818,27 @@
                 });
                 if (levelsList.length === 0) {
                     // Varsayılan seviyeleri yükle
-                    defaultLevels.forEach(level => {
-                        push(levelsRef, level);
-                    });
+                    const defaultLevels = [
+                        { name: 'Çaylak', color: '#95a5a6' },
+                        { name: 'Acemi', color: '#2ecc71' },
+                        { name: 'Usta', color: '#3498db' },
+                        { name: 'Efsane', color: '#9b59b6' },
+                        { name: 'Tanrı', color: '#ffd700' }
+                    ];
+                    defaultLevels.forEach(level => push(levelsRef, level));
                 }
-                levelsList.sort((a, b) => a.minPoints - b.minPoints);
                 renderLevels();
+                renderUserLevelsTable();
             });
 
-            // Kullanıcı puanlarını yükle
-            onValue(userPointsRef, (snapshot) => {
-                userPointsList = [];
+            // Kullanıcı seviyelerini yükle
+            onValue(userLevelsRef, (snapshot) => {
+                userLevelsList = [];
                 snapshot.forEach((child) => {
-                    userPointsList.push({ id: child.key, ...child.val() });
+                    userLevelsList.push({ id: child.key, ...child.val() });
                 });
-                renderUserLevels();
+                renderUserLevelsTable();
+                updateUI(); // Rozetleri güncelle
             });
 
             onValue(settingsRef, (snapshot) => {
@@ -1944,11 +1921,24 @@
             window.toggleNotifications = function() {
                 const panel = document.getElementById('notificationPanel');
                 panel.classList.toggle('hidden');
+                
                 if (!panel.classList.contains('hidden')) {
                     document.getElementById('notificationList').innerHTML = 
                         notifications.slice(-10).reverse().map(n => 
-                            `<div style="padding:8px;border-bottom:1px solid var(--border);">${n.mesaj} <small>${new Date(n.zaman).toLocaleTimeString()}</small></div>`
+                            `<div style="padding:8px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+                                <span>${n.mesaj} <small>${new Date(n.zaman).toLocaleTimeString()}</small></span>
+                                ${!n.read ? '<span style="color:var(--accent);font-size:0.7rem;">● Yeni</span>' : ''}
+                            </div>`
                         ).join('') || 'Bildirim yok.';
+                    
+                    // Tüm bildirimleri okundu olarak işaretle
+                    notifications.forEach(n => {
+                        if (!n.read) {
+                            update(ref(db, 'notifications/' + n.id), { read: true });
+                        }
+                    });
+                    
+                    document.getElementById('notificationBadge').classList.add('hidden');
                 }
             };
 
@@ -1959,34 +1949,12 @@
             function isAdmin() { return localStorage.getItem('gh_admin') === 'true'; }
             function setAdmin(v) { localStorage.setItem('gh_admin', v ? 'true' : 'false'); }
 
-            // Kullanıcı seviyesini hesapla
+            // Kullanıcının atanmış seviyesini bul
             function getUserLevel(username) {
-                const userPoints = userPointsList.find(up => up.username === username);
-                const points = userPoints ? userPoints.points : 0;
-                let userLevel = levelsList[0] || { name: 'Seviyesiz', cssClass: '' };
-                
-                for (let i = levelsList.length - 1; i >= 0; i--) {
-                    if (points >= levelsList[i].minPoints) {
-                        userLevel = levelsList[i];
-                        break;
-                    }
-                }
-                return { points, level: userLevel };
-            }
-
-            // Kullanıcıya puan ekle
-            function addUserPoints(username, points) {
-                const existingUser = userPointsList.find(up => up.username === username);
-                if (existingUser) {
-                    update(ref(db, 'userPoints/' + existingUser.id), {
-                        points: (existingUser.points || 0) + points
-                    });
-                } else {
-                    push(userPointsRef, {
-                        username: username,
-                        points: points
-                    });
-                }
+                const userLevelEntry = userLevelsList.find(ul => ul.username === username);
+                if (!userLevelEntry) return { name: 'Seviyesiz', color: '#666' };
+                const level = levelsList.find(l => l.id === userLevelEntry.levelId);
+                return level ? { name: level.name, color: level.color } : { name: 'Seviyesiz', color: '#666' };
             }
 
             window.setTheme = function(t) {
@@ -2103,11 +2071,6 @@
                 get(gameRef).then(s => {
                     if (s.exists()) {
                         update(gameRef, { downloads: (s.val().downloads||0) + 1 });
-                        const user = getCurrentUser();
-                        if (user && !user.isAnon) {
-                            addUserPoints(user.username, 10); // İndirme başına 10 puan
-                            etkinlikEkle(`📥 ${user.username} oyun indirdi (+10 puan)`);
-                        }
                     }
                 });
             };
@@ -2193,7 +2156,6 @@
                                 likes: (data.likes||0) + 1,
                                 likedBy: [...likedBy, user.username]
                             });
-                            addUserPoints(data.author, 5); // Beğeni alana 5 puan
                         }
                     }
                 });
@@ -2215,7 +2177,6 @@
                             });
                             update(ref(db, 'comments/' + id), { replies });
                             addNotification(`💬 ${user.username} yorumunuza yanıt verdi!`);
-                            addUserPoints(user.username, 5); // Yanıtlayana 5 puan
                         }
                     });
                 }
@@ -2235,8 +2196,7 @@
                     replies: []
                 });
                 document.getElementById('globalCommentInput').value = '';
-                addUserPoints(user.username, 15); // Yorum yapana 15 puan
-                etkinlikEkle(`💬 ${user.username} yorum yaptı (+15 puan)`);
+                etkinlikEkle(`💬 ${user.username} yorum yaptı`);
             };
 
             function updateStats() {
@@ -2264,8 +2224,7 @@
                 if (!user) return showToast('Hatalı!');
                 setCurrentUser({ username: user.username });
                 closeModal('loginModal');
-                addUserPoints(user.username, 5); // Giriş yapana 5 puan
-                etkinlikEkle(`👤 ${user.username} giriş yaptı (+5 puan)`);
+                etkinlikEkle(`👤 ${user.username} giriş yaptı`);
                 updateUI();
             };
 
@@ -2278,8 +2237,7 @@
                 saveUsers(getUsers());
                 setCurrentUser({ username: u });
                 closeModal('registerModal');
-                addUserPoints(u, 50); // Kayıt olana 50 puan
-                etkinlikEkle(`✨ ${u} kayıt oldu (+50 puan)`);
+                etkinlikEkle(`✨ ${u} kayıt oldu`);
                 updateUI();
             };
 
@@ -2319,11 +2277,10 @@
                 container.innerHTML = levelsList.map(l => `
                     <div style="display:flex;align-items:center;justify-content:space-between;padding:10px;border-bottom:1px solid var(--border);margin-bottom:5px;">
                         <div style="display:flex;align-items:center;gap:10px;">
-                            <span class="level-badge ${l.cssClass || ''}">Lv${l.number}</span>
-                            <span><b>${l.name}</b></span>
+                            <span class="level-badge" style="background-color:${l.color};color:#000;">${l.name}</span>
                         </div>
                         <div style="display:flex;align-items:center;gap:10px;">
-                            <span style="color:var(--text-secondary);">Min: ${l.minPoints} puan</span>
+                            <span style="color:var(--text-secondary);">Renk: ${l.color}</span>
                             <button class="btn-admin btn-admin-danger" style="padding:4px 10px;font-size:0.7rem;" onclick="deleteLevel('${l.id}')">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -2332,47 +2289,54 @@
                 `).join('') || '<p>Henüz seviye tanımlanmadı.</p>';
             }
 
-            function renderUserLevels() {
+            function renderUserLevelsTable() {
                 const container = document.getElementById('userLevelsTable');
                 if (!container) return;
-                if (userPointsList.length === 0) {
+                const users = getUsers();
+                if (users.length === 0) {
                     container.innerHTML = '<tr><td colspan="4" style="text-align:center;">Henüz kullanıcı yok</td></tr>';
                     return;
                 }
-                container.innerHTML = userPointsList.map(up => {
-                    const { points, level } = getUserLevel(up.username);
+                container.innerHTML = users.map(u => {
+                    const currentLevel = getUserLevel(u.username);
+                    const levelOptions = levelsList.map(l => 
+                        `<option value="${l.id}" ${currentLevel.name === l.name ? 'selected' : ''}>${l.name}</option>`
+                    ).join('');
                     return `
                         <tr>
-                            <td><b>${up.username}</b></td>
-                            <td>${points}</td>
-                            <td>${level.name}</td>
-                            <td><span class="level-badge ${level.cssClass || ''}">${level.name}</span></td>
+                            <td><b>${u.username}</b></td>
+                            <td><span class="level-badge" style="background-color:${currentLevel.color};color:#000;">${currentLevel.name}</span></td>
+                            <td>
+                                <select class="admin-select" id="levelSelect_${u.username}" style="width:auto;padding:6px;">
+                                    <option value="">Seviyesiz</option>
+                                    ${levelOptions}
+                                </select>
+                            </td>
+                            <td>
+                                <button class="btn-admin btn-admin-primary" style="padding:6px 12px;font-size:0.8rem;" onclick="assignLevel('${u.username}')">
+                                    <i class="fas fa-save"></i> Ata
+                                </button>
+                            </td>
                         </tr>
                     `;
                 }).join('');
             }
 
             window.addLevel = function() {
-                const number = parseInt(document.getElementById('newLevelNumber').value);
                 const name = document.getElementById('newLevelName').value.trim();
-                const minPoints = parseInt(document.getElementById('newLevelMinPoints').value);
-                const cssClass = document.getElementById('newLevelCssClass').value;
+                const color = document.getElementById('newLevelColor').value;
 
-                if (!number || !name || isNaN(minPoints)) {
-                    return showToast('Lütfen tüm alanları doldurun!');
+                if (!name) {
+                    return showToast('Lütfen seviye adını girin!');
                 }
 
                 push(levelsRef, {
-                    number: number,
                     name: name,
-                    minPoints: minPoints,
-                    cssClass: cssClass || ''
+                    color: color
                 });
 
-                document.getElementById('newLevelNumber').value = '';
                 document.getElementById('newLevelName').value = '';
-                document.getElementById('newLevelMinPoints').value = '';
-                document.getElementById('newLevelCssClass').value = '';
+                document.getElementById('newLevelColor').value = '#95a5a6';
                 showToast('✅ Seviye eklendi!');
             };
 
@@ -2381,6 +2345,30 @@
                     remove(ref(db, 'levels/' + id));
                     showToast('🗑️ Seviye silindi!');
                 }
+            };
+
+            window.assignLevel = function(username) {
+                const select = document.getElementById('levelSelect_' + username);
+                if (!select) return;
+                const levelId = select.value;
+                
+                // Mevcut kaydı bul
+                const existingEntry = userLevelsList.find(ul => ul.username === username);
+                
+                if (levelId === '') {
+                    // Seviyesiz yap
+                    if (existingEntry) {
+                        remove(ref(db, 'userLevels/' + existingEntry.id));
+                    }
+                } else {
+                    if (existingEntry) {
+                        update(ref(db, 'userLevels/' + existingEntry.id), { levelId: levelId });
+                    } else {
+                        push(userLevelsRef, { username: username, levelId: levelId });
+                    }
+                }
+                showToast('✅ Seviye atandı!');
+                etkinlikEkle(`⭐ ${username} kullanıcısının seviyesi güncellendi`);
             };
 
             window.showAdminSection = function(s) {
@@ -2432,7 +2420,7 @@
                 
                 if (s === 'levels') {
                     renderLevels();
-                    renderUserLevels();
+                    renderUserLevelsTable();
                 }
                 
                 if (s === 'adminStats') {
@@ -2569,7 +2557,7 @@
                     } else {
                         badge.className = '';
                         const userLevel = getUserLevel(user.username);
-                        badge.innerHTML = `👤 ${user.username} <span class="level-badge ${userLevel.level.cssClass || ''}">${userLevel.level.name}</span>`;
+                        badge.innerHTML = `👤 ${user.username} <span class="level-badge" style="background-color:${userLevel.color};color:#000;">${userLevel.name}</span>`;
                         badge.style.cssText = 'background:var(--glass);color:var(--text);padding:8px 16px;border-radius:30px;display:flex;align-items:center;gap:8px;';
                     }
                 } else {
