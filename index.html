@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OyunDeposu - Ücretsiz Oyunlar</title>
+    <title>OyunDeposu - Ücretsiz Oyun İndir</title>
+    <!-- ==================== CSS DEĞİŞKENLERİ VE TEMALAR ==================== -->
     <style>
         :root {
             --bg: #1a1a2e;
@@ -14,8 +15,10 @@
             --border: #333;
             --green: #2ecc71;
             --orange: #f39c12;
-            --radius: 8px;
+            --radius: 10px;
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
+        /* Pembe tema */
         .theme-pink {
             --bg: #2d1b2e;
             --card: #3a253d;
@@ -24,7 +27,9 @@
             --soft: #4a2d4d;
             --green: #ff9ecb;
             --orange: #ffb347;
+            --shadow: 0 8px 20px rgba(255, 126, 179, 0.3);
         }
+        /* Hacker teması */
         .theme-hacker {
             --bg: #0a0a0a;
             --card: #111;
@@ -33,7 +38,9 @@
             --soft: #1a1a1a;
             --green: #00cc33;
             --orange: #ffcc00;
+            --shadow: 0 8px 20px rgba(0, 255, 65, 0.3);
         }
+        /* Admin altın teması */
         .theme-admin-gold {
             --bg: #0d0d0d;
             --card: #1a1a1a;
@@ -43,11 +50,13 @@
             --border: #ffd700;
             --green: #ffcc00;
             --orange: #ffaa00;
+            --shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
             background: #0a0a0a;
             background-image: linear-gradient(45deg, rgba(255,215,0,0.05) 0%, transparent 50%), linear-gradient(135deg, transparent 50%, rgba(255,140,0,0.07) 100%);
             background-attachment: fixed;
             animation: adminBgShift 8s ease-in-out infinite alternate;
         }
+        /* Admin mor teması */
         .theme-admin-purple {
             --bg: #0f0a14;
             --card: #1a1126;
@@ -57,11 +66,13 @@
             --border: #9b5de5;
             --green: #b388eb;
             --orange: #f15bb5;
+            --shadow: 0 8px 20px rgba(199, 125, 255, 0.4);
             background: #0b0710;
             background-image: linear-gradient(45deg, rgba(199,125,255,0.08) 0%, transparent 50%), linear-gradient(135deg, transparent 50%, rgba(154,93,229,0.08) 100%);
             background-attachment: fixed;
             animation: adminBgShift 10s ease-in-out infinite alternate;
         }
+        /* Admin turuncu teması */
         .theme-admin-orange {
             --bg: #1a0f07;
             --card: #24180c;
@@ -71,15 +82,18 @@
             --border: #ff8500;
             --green: #ffb347;
             --orange: #ff5500;
+            --shadow: 0 8px 20px rgba(255, 109, 0, 0.4);
             background: #140b04;
             background-image: linear-gradient(45deg, rgba(255,109,0,0.08) 0%, transparent 50%), linear-gradient(135deg, transparent 50%, rgba(255,133,0,0.08) 100%);
             background-attachment: fixed;
             animation: adminBgShift 12s ease-in-out infinite alternate;
         }
+        /* Arka plan animasyonu */
         @keyframes adminBgShift {
             0% { background-position: 0% 0%; }
             100% { background-position: 100% 100%; }
         }
+        /* Admin paneli parlama efekti */
         body.admin-active .admin-panel {
             box-shadow: 0 0 40px rgba(255,215,0,0.4), inset 0 0 20px rgba(255,215,0,0.05);
             animation: panelGlow 2s ease-in-out infinite alternate;
@@ -88,6 +102,7 @@
             0% { box-shadow: 0 0 40px rgba(255,215,0,0.3), inset 0 0 20px rgba(255,215,0,0.05); }
             100% { box-shadow: 0 0 70px rgba(255,215,0,0.6), inset 0 0 30px rgba(255,215,0,0.1); }
         }
+        /* Admin rozeti */
         .admin-badge {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             color: #000;
@@ -104,6 +119,7 @@
             0% { box-shadow: 0 0 10px #ffaa00, 0 0 25px rgba(255,215,0,0.4); }
             100% { box-shadow: 0 0 25px #ffd700, 0 0 45px rgba(255,215,0,0.7); }
         }
+        /* ==================== GENEL SIFIRLAMA ==================== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -112,6 +128,7 @@
             line-height: 1.5;
             min-height: 100vh;
         }
+        /* ==================== NAVBAR ==================== */
         .navbar {
             background: var(--card);
             border-bottom: 1px solid var(--border);
@@ -127,7 +144,7 @@
         }
         .logo { font-size: 1.5rem; font-weight: 800; color: var(--accent); cursor: pointer; }
         .nav-links { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-        .nav-links button {
+        .nav-links button, .section-btn, .cat-btn {
             background: var(--soft);
             border: 1px solid var(--border);
             color: var(--text);
@@ -138,7 +155,7 @@
             font-size: 0.85rem;
             transition: 0.15s;
         }
-        .nav-links button:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+        .nav-links button:hover, .section-btn:hover, .cat-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
         .btn-primary { background: var(--accent) !important; color: #000 !important; }
         .online-counter {
             background: var(--soft);
@@ -153,6 +170,7 @@
             gap: 5px;
         }
         .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+        /* ==================== TEMA NOKTALARI ==================== */
         .theme-dot {
             width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
             border: 2px solid transparent; display: inline-block; margin: 0 2px;
@@ -164,43 +182,48 @@
         .theme-dot.admin-gold { background: #ffd700; }
         .theme-dot.admin-purple { background: #c77dff; }
         .theme-dot.admin-orange { background: #ff6d00; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
-        .section-title { font-size: 1.4rem; font-weight: 700; margin: 16px 0 10px; }
+        /* ==================== İÇERİK KONTEYNERİ ==================== */
+        .container { max-width: 1300px; margin: 0 auto; padding: 16px; }
+        .section-title { font-size: 1.5rem; font-weight: 700; margin: 16px 0 10px; }
         .search-bar {
             width: 100%; max-width: 400px; padding: 10px 16px; border-radius: 6px;
             border: 1px solid var(--border); background: var(--soft); color: var(--text);
             font-size: 0.9rem; outline: none; margin-bottom: 10px;
         }
         .search-bar:focus { border-color: var(--accent); }
+        /* ==================== OYUN KARTLARI ==================== */
         .game-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 14px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 18px;
         }
         .game-card {
             background: var(--card); border: 1px solid var(--border);
-            border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: 0.15s;
+            border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: 0.2s;
+            position: relative;
         }
-        .game-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+        .game-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: var(--shadow); }
         .img-wrap {
-            height: 110px; background: var(--soft); display: flex;
-            align-items: center; justify-content: center; font-size: 2.5rem;
+            height: 130px; background: var(--soft); display: flex;
+            align-items: center; justify-content: center; font-size: 2.8rem;
             border-bottom: 1px solid var(--border);
         }
         .img-wrap img { width: 100%; height: 100%; object-fit: cover; }
-        .info { padding: 10px; }
-        .info h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
+        .info { padding: 12px; }
+        .info h3 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
         .category-tag {
             display: inline-block; background: var(--soft); color: var(--accent);
             padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600;
         }
+        .downloads-count { font-size: 0.7rem; opacity: 0.7; margin-top: 4px; }
+        /* ==================== MODAL ==================== */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.7);
             z-index: 200; display: flex; align-items: center; justify-content: center;
         }
         .modal {
             background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-            padding: 20px; max-width: 480px; width: 92%; max-height: 82vh; overflow-y: auto;
+            padding: 20px; max-width: 500px; width: 92%; max-height: 85vh; overflow-y: auto;
         }
         .close-btn { float: right; background: none; border: none; color: #fff; font-size: 1.3rem; cursor: pointer; opacity: 0.7; }
         .close-btn:hover { opacity: 1; }
@@ -209,6 +232,7 @@
             text-decoration: none; font-weight: 700; display: inline-block; margin-top: 8px;
             border: none; cursor: pointer; font-size: 0.9rem;
         }
+        /* ==================== BÖLÜM KUTULARI ==================== */
         .feature-box {
             background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
             padding: 16px; margin: 14px 0;
@@ -219,10 +243,28 @@
             background: var(--soft); border: 1px solid var(--border);
             color: var(--text); border-radius: 4px; font-size: 0.85rem;
         }
+        /* ==================== YORUMLAR ==================== */
         .comment {
-            background: var(--soft); padding: 8px 12px; border-radius: 6px;
-            margin: 6px 0; font-size: 0.85rem;
+            background: var(--soft); padding: 10px; border-radius: 8px;
+            margin: 8px 0; font-size: 0.85rem;
         }
+        .like-btn {
+            background: none; border: 1px solid var(--border); color: var(--accent);
+            cursor: pointer; font-size: 0.8rem; padding: 2px 8px; border-radius: 10px;
+            margin-left: 8px;
+        }
+        .duyuru {
+            background: var(--accent); color: #000; padding: 8px 16px;
+            border-radius: 20px; font-weight: 700; font-size: 0.8rem;
+            display: inline-block; margin-bottom: 10px;
+        }
+        /* ==================== FOOTER ==================== */
+        .footer {
+            margin-top: 30px; padding: 20px; background: var(--card);
+            border-top: 1px solid var(--border); text-align: center;
+            font-size: 0.8rem; opacity: 0.8;
+        }
+        /* ==================== ADMIN PANELİ ==================== */
         .admin-panel {
             background: var(--card); border: 2px solid var(--orange);
             border-radius: var(--radius); padding: 20px; margin-top: 14px;
@@ -255,33 +297,41 @@
             padding: 8px; border-bottom: 1px solid var(--border); gap: 6px;
             flex-wrap: wrap; font-size: 0.85rem;
         }
+        /* ==================== BİLDİRİM TOAST ==================== */
         .toast {
             position: fixed; bottom: 20px; right: 20px; background: var(--green);
             color: #000; padding: 10px 20px; border-radius: 6px; font-weight: 700;
             z-index: 999; font-size: 0.85rem;
         }
         .hidden { display: none !important; }
-        .section-btn {
-            background: var(--soft); color: var(--text); border: 1px solid var(--border);
-            padding: 7px 14px; border-radius: 6px; cursor: pointer; font-weight: 600;
-            font-size: 0.8rem; transition: 0.15s;
+        .section-btn.active, .cat-btn.active { background: var(--accent) !important; color: #000 !important; border-color: var(--accent) !important; }
+        /* ==================== YUKARI ÇIK BUTONU ==================== */
+        .back-to-top {
+            position: fixed; bottom: 20px; right: 20px; width: 36px; height: 36px;
+            background: var(--accent); color: #000; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 1.2rem; z-index: 300;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4); transition: 0.2s;
         }
-        .section-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+        .back-to-top:hover { transform: scale(1.1); }
+        /* ==================== RESPONSIVE ==================== */
         @media (max-width: 600px) {
-            .game-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .game-grid { grid-template-columns: 1fr 1fr; }
             .nav-links button { padding: 5px 10px; font-size: 0.75rem; }
         }
     </style>
 </head>
 <body>
-
+<!-- ==================== NAVBAR ==================== -->
 <nav class="navbar">
     <div class="logo" onclick="location.reload()">🎮 OyunDeposu</div>
     <div class="nav-links">
+        <!-- Normal tema seçenekleri -->
         <span style="font-size:0.7rem;">Tema:</span>
         <div class="theme-dot pink" onclick="setTheme('pink')" title="Pembe"></div>
         <div class="theme-dot hacker" onclick="setTheme('hacker')" title="Hacker"></div>
         <div class="theme-dot default" onclick="setTheme('default')" title="Normal"></div>
+        <!-- Admin tema seçenekleri (sadece admin giriş yaptıysa görünür) -->
         <span id="adminThemeLabel" class="hidden" style="font-size:0.7rem;margin-left:6px;">Admin Tema:</span>
         <div id="adminThemeDots" class="hidden" style="display:inline-flex;gap:2px;">
             <div class="theme-dot admin-gold" onclick="setTheme('admin-gold')" title="Altın"></div>
@@ -289,24 +339,43 @@
             <div class="theme-dot admin-orange" onclick="setTheme('admin-orange')" title="Turuncu"></div>
         </div>
         <div class="online-counter"><span class="dot"></span> <span id="onlineText">1 çevrimiçi</span></div>
+        <!-- Kullanıcı butonları -->
         <button onclick="openModal('loginModal')">🔑 Giriş</button>
         <button onclick="openModal('registerModal')">✨ Kayıt</button>
         <button class="btn-primary" onclick="anonymousLogin()">👻 Anonim</button>
+        <!-- Admin paneline hızlı erişim butonu -->
         <button id="adminPanelBtn" class="hidden" onclick="openAdminPanel()">🛡️ Admin Paneli</button>
         <span id="userBadge" class="hidden" style="padding:6px 12px;border-radius:6px;font-size:0.8rem;"></span>
         <button id="btnLogout" class="hidden" onclick="logout()">🚪 Çık</button>
     </div>
 </nav>
 
+<!-- ==================== ANA İÇERİK ==================== -->
 <div class="container" id="mainContent">
+    <!-- Duyuru alanı -->
+    <div id="duyuruAlani" class="duyuru hidden"></div>
+
+    <!-- Arama çubuğu -->
     <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Oyun ara...">
+
+    <!-- Bölüm seçme butonları -->
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;">
         <button class="section-btn active" onclick="showSection('games')">🎮 Oyunlar</button>
         <button class="section-btn" onclick="showSection('compare')">⚖️ Karşılaştır</button>
         <button class="section-btn" onclick="showSection('pctest')">🖥️ PC Test</button>
         <button class="section-btn" onclick="showSection('comments')">💬 Yorumlar</button>
     </div>
-    <div id="gamesSection"><div class="section-title">🔥 Popüler Oyunlar</div><div class="game-grid" id="gameGrid"></div></div>
+
+    <!-- Oyunlar bölümü -->
+    <div id="gamesSection">
+        <div class="section-title">🔥 Popüler Oyunlar</div>
+        <!-- Kategori filtreleri -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;" id="categoryFilters"></div>
+        <!-- Oyun kartları gridi -->
+        <div class="game-grid" id="gameGrid"></div>
+    </div>
+
+    <!-- Karşılaştırma bölümü -->
     <div id="compareSection" class="feature-box hidden">
         <h3>⚖️ Oyun Karşılaştır</h3>
         <select id="compareGame1"><option value="">Oyun 1 seç</option></select>
@@ -314,6 +383,8 @@
         <button onclick="compareGames()" style="background:var(--accent);color:#000;padding:8px 18px;border-radius:6px;border:none;cursor:pointer;font-weight:700;font-size:0.85rem;margin-top:6px;">Karşılaştır</button>
         <div id="compareResult" style="margin-top:10px;font-size:0.85rem;"></div>
     </div>
+
+    <!-- PC Test bölümü -->
     <div id="pctestSection" class="feature-box hidden">
         <h3>🖥️ Sistem Gereksinim Testi</h3>
         <p style="font-size:0.8rem;opacity:0.7;">Bilgisayar özelliklerini gir, oyunun çalışıp çalışmayacağını gör.</p>
@@ -327,6 +398,8 @@
         <button onclick="runPcTest()" style="background:var(--green);color:#000;padding:9px 20px;border-radius:6px;border:none;cursor:pointer;font-weight:700;font-size:0.85rem;margin-top:6px;">Test Et</button>
         <div id="pcTestResult" style="margin-top:10px;font-size:0.85rem;"></div>
     </div>
+
+    <!-- Yorumlar bölümü -->
     <div id="commentsSection" class="feature-box hidden">
         <h3>💬 Genel Yorumlar</h3>
         <div id="globalComments" style="font-size:0.85rem;"></div>
@@ -335,8 +408,15 @@
             <button onclick="addGlobalComment()" style="background:var(--accent);color:#000;padding:8px 16px;border-radius:6px;border:none;cursor:pointer;font-weight:700;font-size:0.85rem;">Gönder</button>
         </div>
     </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>© 2024 OyunDeposu - Tüm hakları depoda saklıdır 🎮</p>
+        <p style="margin-top:6px;">İletişim: oyundeposu@example.com | Discord: OyunDeposu#1234</p>
+    </div>
 </div>
 
+<!-- ==================== ADMIN PANELİ ==================== -->
 <div class="container hidden" id="adminContainer">
     <div class="admin-panel">
         <h3>🛡️ Admin Paneli</h3>
@@ -346,6 +426,7 @@
             <button id="menuEdit" onclick="showAdminSection('edit')">✏️ Düzenle</button>
             <button onclick="closeAdminPanel()" style="background:#555;color:#fff;">❌ Paneli Kapat</button>
         </div>
+        <!-- Oyun ekleme formu -->
         <div id="sectionAdd" class="admin-form">
             <h4>Yeni Oyun Ekle</h4>
             <input type="text" id="addTitle" placeholder="Oyun Adı *">
@@ -359,7 +440,12 @@
             <input type="text" id="addGpu" placeholder="Minimum Ekran Kartı">
             <button class="btn-save" onclick="addGame()">💾 Ekle</button>
         </div>
-        <div id="sectionList" class="hidden"><h4>Tüm Oyunlar</h4><div id="adminGameList"></div></div>
+        <!-- Oyun listesi -->
+        <div id="sectionList" class="hidden">
+            <h4>Tüm Oyunlar</h4>
+            <div id="adminGameList"></div>
+        </div>
+        <!-- Oyun düzenleme formu -->
         <div id="sectionEdit" class="admin-form hidden">
             <h4>Oyun Düzenle</h4>
             <select id="editSelect" onchange="loadGameForEdit()"><option value="">Düzenlenecek oyunu seç</option></select>
@@ -378,40 +464,54 @@
     </div>
 </div>
 
+<!-- ==================== MODALLAR ==================== -->
+<!-- Oyun detay modalı -->
 <div class="modal-overlay hidden" id="gameDetailModal"><div class="modal" id="gameDetailContent"></div></div>
+<!-- Giriş modalı -->
 <div class="modal-overlay hidden" id="loginModal">
     <div class="modal"><button class="close-btn" onclick="closeModal('loginModal')">✕</button><h3>🔑 Giriş</h3>
         <input id="loginUsername" placeholder="Kullanıcı adı" style="width:100%;padding:8px;margin:5px 0;background:var(--soft);border:1px solid var(--border);color:var(--text);border-radius:4px;">
         <input type="password" id="loginPassword" placeholder="Şifre" style="width:100%;padding:8px;margin:5px 0;background:var(--soft);border:1px solid var(--border);color:var(--text);border-radius:4px;">
         <button class="download-btn" onclick="login()" style="width:100%;">Giriş Yap</button></div></div>
+<!-- Kayıt modalı -->
 <div class="modal-overlay hidden" id="registerModal">
     <div class="modal"><button class="close-btn" onclick="closeModal('registerModal')">✕</button><h3>✨ Kayıt</h3>
         <input id="regUsername" placeholder="Kullanıcı adı" style="width:100%;padding:8px;margin:5px 0;background:var(--soft);border:1px solid var(--border);color:var(--text);border-radius:4px;">
         <input type="email" id="regEmail" placeholder="E-posta (opsiyonel)" style="width:100%;padding:8px;margin:5px 0;background:var(--soft);border:1px solid var(--border);color:var(--text);border-radius:4px;">
         <input type="password" id="regPassword" placeholder="Şifre" style="width:100%;padding:8px;margin:5px 0;background:var(--soft);border:1px solid var(--border);color:var(--text);border-radius:4px;">
         <button class="download-btn" onclick="register()" style="width:100%;">Kayıt Ol</button></div></div>
+<!-- Admin giriş modalı (sadece admin değilken şifre sorar) -->
 <div class="modal-overlay hidden" id="adminLoginModal">
     <div class="modal"><button class="close-btn" onclick="closeModal('adminLoginModal')">✕</button><h3>🛡️ Admin Girişi</h3>
         <input type="password" id="adminKey" placeholder="Admin şifresi" style="width:100%;padding:8px;margin:5px 0;background:var(--soft);border:1px solid var(--border);color:var(--text);border-radius:4px;">
         <button class="download-btn" onclick="adminLogin()" style="width:100%;">Giriş</button></div></div>
-<div class="toast hidden" id="toast"></div>
-<div style="position:fixed;bottom:14px;right:14px;width:30px;height:30px;background:var(--card);border:1px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:300;color:var(--accent);font-size:0.8rem;font-weight:bold;" onclick="openModal('adminLoginModal')" title="Admin">⚙</div>
 
+<!-- Toast bildirim -->
+<div class="toast hidden" id="toast"></div>
+<!-- Yukarı çık butonu (eski ayarlar butonunun yerine) -->
+<div class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Yukarı Çık">🔼</div>
+
+<!-- ==================== JAVASCRIPT ==================== -->
 <script>
+    // Admin şifresi (Base64 ile gizlenmiş)
     const ADMIN_PASSWORD = atob('R2FtZUh1YjIwMjQhQWRtaW4=');
+
+    // Güvenli localStorage okuma/yazma
     function safeGet(key, defaultValue) {
         try { const raw = localStorage.getItem(key); if (!raw) return defaultValue; const parsed = JSON.parse(raw); if (Array.isArray(defaultValue) && !Array.isArray(parsed)) return defaultValue; return parsed; } catch (e) { return defaultValue; }
     }
     function safeSet(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {} }
 
+    // Varsayılan oyun listesi
     const defaultGames = [
-        { id: '1', title: 'Cyber Quest 2077', desc: 'Distopik açık dünya aksiyon.', image: 'https://picsum.photos/seed/cyber/400/250', download: '#', category: 'Aksiyon', size: '70 GB', minCpu: 'i5-10400F', minRam: '16', minGpu: 'RTX 2060' },
-        { id: '2', title: 'Fantasy Lands Online', desc: 'Devasa MMORPG.', image: 'https://picsum.photos/seed/fantasy/400/250', download: '#', category: 'MMORPG', size: '45 GB', minCpu: 'i3-9100', minRam: '8', minGpu: 'GTX 1050' },
-        { id: '3', title: 'Speed Racers Ultimate', desc: 'Gerçekçi yarış simülasyonu.', image: 'https://picsum.photos/seed/racing/400/250', download: '#', category: 'Yarış', size: '32 GB', minCpu: 'i5-11400H', minRam: '8', minGpu: 'GTX 1650' },
-        { id: '4', title: 'Shadow Tactics', desc: 'Gizlilik stratejisi.', image: 'https://picsum.photos/seed/stealth/400/250', download: '#', category: 'Strateji', size: '18 GB', minCpu: 'i3-8100', minRam: '4', minGpu: 'Intel UHD 630' },
-        { id: '5', title: 'Zombie Frontier X', desc: 'Hayatta kalma.', image: 'https://picsum.photos/seed/zombie/400/250', download: '#', category: 'Hayatta Kalma', size: '55 GB', minCpu: 'i7-8700', minRam: '16', minGpu: 'RTX 2070' },
+        { id: '1', title: 'Cyber Quest 2077', desc: 'Distopik açık dünya aksiyon.', image: 'https://picsum.photos/seed/cyber/400/250', download: '#', category: 'Aksiyon', size: '70 GB', minCpu: 'i5-10400F', minRam: '16', minGpu: 'RTX 2060', downloads: 1523 },
+        { id: '2', title: 'Fantasy Lands Online', desc: 'Devasa MMORPG.', image: 'https://picsum.photos/seed/fantasy/400/250', download: '#', category: 'MMORPG', size: '45 GB', minCpu: 'i3-9100', minRam: '8', minGpu: 'GTX 1050', downloads: 987 },
+        { id: '3', title: 'Speed Racers Ultimate', desc: 'Gerçekçi yarış simülasyonu.', image: 'https://picsum.photos/seed/racing/400/250', download: '#', category: 'Yarış', size: '32 GB', minCpu: 'i5-11400H', minRam: '8', minGpu: 'GTX 1650', downloads: 2100 },
+        { id: '4', title: 'Shadow Tactics', desc: 'Gizlilik stratejisi.', image: 'https://picsum.photos/seed/stealth/400/250', download: '#', category: 'Strateji', size: '18 GB', minCpu: 'i3-8100', minRam: '4', minGpu: 'Intel UHD 630', downloads: 456 },
+        { id: '5', title: 'Zombie Frontier X', desc: 'Hayatta kalma.', image: 'https://picsum.photos/seed/zombie/400/250', download: '#', category: 'Hayatta Kalma', size: '55 GB', minCpu: 'i7-8700', minRam: '16', minGpu: 'RTX 2070', downloads: 3210 },
     ];
 
+    // Veri işlemleri
     function getGames() { const stored = safeGet('gh_games', null); if (stored && Array.isArray(stored) && stored.length > 0) return stored; safeSet('gh_games', defaultGames); return [...defaultGames]; }
     function saveGames(g) { if (Array.isArray(g)) safeSet('gh_games', g); }
     function getUsers() { return safeGet('gh_users', []); }
@@ -423,8 +523,12 @@
     function isAdmin() { return localStorage.getItem('gh_admin') === 'true'; }
     function setAdmin(v) { localStorage.setItem('gh_admin', v ? 'true' : 'false'); }
 
+    // Admin paneli görünürlüğü
     let adminPanelVisible = false;
+    // Aktif kategori filtresi
+    let activeCategory = 'all';
 
+    // Tema değiştirme
     window.setTheme = function(t) {
         if (!isAdmin() && (t === 'admin-gold' || t === 'admin-purple' || t === 'admin-orange')) {
             t = 'default';
@@ -439,11 +543,13 @@
         applyAdminPanelGlow();
     };
 
+    // Admin paneli parlama efekti
     function applyAdminPanelGlow() {
         if (isAdmin()) document.body.classList.add('admin-active');
         else document.body.classList.remove('admin-active');
     }
 
+    // Kayıtlı tema
     let savedTheme = safeGet('gh_theme', 'default');
     if (!isAdmin() && (savedTheme === 'admin-gold' || savedTheme === 'admin-purple' || savedTheme === 'admin-orange')) {
         savedTheme = 'default';
@@ -451,6 +557,7 @@
     }
     setTheme(savedTheme);
 
+    // Çevrimiçi sayacı
     setInterval(() => {
         let sessions = safeGet('gh_sessions', {});
         const now = Date.now();
@@ -460,22 +567,60 @@
         document.getElementById('onlineText').textContent = Object.keys(sessions).length + ' çevrimiçi';
     }, 5000);
 
+    // Toast mesajı
     window.showToast = function(msg) { const toast = document.getElementById('toast'); toast.textContent = msg; toast.classList.remove('hidden'); setTimeout(() => toast.classList.add('hidden'), 2000); };
     window.openModal = function(id) { document.getElementById(id).classList.remove('hidden'); };
     window.closeModal = function(id) { document.getElementById(id).classList.add('hidden'); };
     document.addEventListener('click', function(e) { if (e.target.classList.contains('modal-overlay')) e.target.classList.add('hidden'); });
 
-    function renderGames(filter = '') {
+    // Oyunları listeleme
+    function renderGames(filter = '', category = 'all') {
         const games = getGames();
-        const f = filter.toLowerCase();
-        const filtered = games.filter(g => g.title.toLowerCase().includes(f) || g.category.toLowerCase().includes(f));
+        let filtered = games;
+        if (filter) {
+            const f = filter.toLowerCase();
+            filtered = filtered.filter(g => g.title.toLowerCase().includes(f) || g.category.toLowerCase().includes(f));
+        }
+        if (category !== 'all') {
+            filtered = filtered.filter(g => g.category === category);
+        }
         const grid = document.getElementById('gameGrid');
-        if (filtered.length === 0) { grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;">😔 Oyun bulunamadı</p>'; }
-        else { grid.innerHTML = filtered.map(g => `<div class="game-card" onclick="openGameDetail('${g.id}')"><div class="img-wrap">${g.image ? `<img src="${g.image}" onerror="this.innerHTML='🎮'">` : '🎮'}</div><div class="info"><h3>${g.title}</h3><span class="category-tag">${g.category}</span></div></div>`).join(''); }
+        if (filtered.length === 0) {
+            grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;">😔 Oyun bulunamadı</p>';
+        } else {
+            grid.innerHTML = filtered.map(g => `
+                <div class="game-card" onclick="openGameDetail('${g.id}')">
+                    <div class="img-wrap">${g.image ? `<img src="${g.image}" onerror="this.innerHTML='🎮'">` : '🎮'}</div>
+                    <div class="info"><h3>${g.title}</h3><span class="category-tag">${g.category}</span>
+                    <div class="downloads-count">📥 ${g.downloads || 0} indirme</div></div>
+                </div>
+            `).join('');
+        }
+        updateCategoryFilters();
         updateSelects();
     }
-    document.getElementById('searchInput').addEventListener('input', function() { renderGames(this.value); });
 
+    // Kategori butonlarını güncelle
+    function updateCategoryFilters() {
+        const games = getGames();
+        const categories = [...new Set(games.map(g => g.category))];
+        const container = document.getElementById('categoryFilters');
+        container.innerHTML = `<button class="cat-btn ${activeCategory === 'all' ? 'active' : ''}" onclick="filterCategory('all')">Tümü</button>` +
+            categories.map(c => `<button class="cat-btn ${activeCategory === c ? 'active' : ''}" onclick="filterCategory('${c}')">${c}</button>`).join('');
+    }
+
+    // Kategoriye göre filtrele
+    window.filterCategory = function(cat) {
+        activeCategory = cat;
+        renderGames(document.getElementById('searchInput').value, cat);
+    };
+
+    // Arama çubuğu dinleyicisi
+    document.getElementById('searchInput').addEventListener('input', function() {
+        renderGames(this.value, activeCategory);
+    });
+
+    // Select elemanlarını güncelle
     function updateSelects() {
         const games = getGames();
         const opts = games.map(g => `<option value="${g.id}">${g.title}</option>`).join('');
@@ -484,15 +629,24 @@
         document.getElementById('testGameSelect').innerHTML = '<option value="">Oyun seç</option>' + opts;
         document.getElementById('editSelect').innerHTML = '<option value="">Oyun seç</option>' + opts;
         renderComments();
+        renderDuyuru();
     }
 
+    // Oyun detay modalı
     window.openGameDetail = function(id) {
         const game = getGames().find(g => g.id === id);
         if (!game) return;
-        document.getElementById('gameDetailContent').innerHTML = `<button class="close-btn" onclick="closeModal('gameDetailModal')">✕</button><div style="height:120px;background:var(--soft);border-radius:4px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;overflow:hidden;">${game.image ? `<img src="${game.image}" style="width:100%;height:100%;object-fit:cover;">` : '🎮'}</div><h3>${game.title}</h3><p style="font-size:0.8rem;opacity:0.8;">📦 ${game.size} | 🏷️ ${game.category}</p><p style="margin:6px 0;">${game.desc}</p><p style="font-size:0.75rem;opacity:0.7;">🖥️ Min: ${game.minCpu||'?'} | ${game.minRam||'?'} GB RAM | ${game.minGpu||'?'}</p><a href="${game.download}" class="download-btn" target="_blank">⬇️ İndir</a>`;
+        document.getElementById('gameDetailContent').innerHTML = `
+            <button class="close-btn" onclick="closeModal('gameDetailModal')">✕</button>
+            <div style="height:140px;background:var(--soft);border-radius:4px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;overflow:hidden;">${game.image ? `<img src="${game.image}" style="width:100%;height:100%;object-fit:cover;">` : '🎮'}</div>
+            <h3>${game.title}</h3><p style="font-size:0.8rem;opacity:0.8;">📦 ${game.size} | 🏷️ ${game.category}</p>
+            <p style="margin:6px 0;">${game.desc}</p>
+            <p style="font-size:0.75rem;opacity:0.7;">🖥️ Min: ${game.minCpu||'?'} | ${game.minRam||'?'} GB RAM | ${game.minGpu||'?'}</p>
+            <a href="${game.download}" class="download-btn" target="_blank">⬇️ İndir</a>`;
         openModal('gameDetailModal');
     };
 
+    // Oyun karşılaştırma
     window.compareGames = function() {
         const id1 = document.getElementById('compareGame1').value;
         const id2 = document.getElementById('compareGame2').value;
@@ -500,9 +654,19 @@
         const a = getGames().find(g => g.id === id1);
         const b = getGames().find(g => g.id === id2);
         if (!a || !b) return;
-        document.getElementById('compareResult').innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:0.85rem;"><tr style="border-bottom:1px solid var(--border);"><th>Özellik</th><th>${a.title}</th><th>${b.title}</th></tr><tr><td>Kategori</td><td>${a.category}</td><td>${b.category}</td></tr><tr><td>Boyut</td><td>${a.size}</td><td>${b.size}</td></tr><tr><td>Min İşlemci</td><td>${a.minCpu||'?'}</td><td>${b.minCpu||'?'}</td></tr><tr><td>Min RAM</td><td>${a.minRam||'?'} GB</td><td>${b.minRam||'?'} GB</td></tr><tr><td>Min GPU</td><td>${a.minGpu||'?'}</td><td>${b.minGpu||'?'}</td></tr></table>`;
+        document.getElementById('compareResult').innerHTML = `
+            <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+                <tr style="border-bottom:1px solid var(--border);"><th>Özellik</th><th>${a.title}</th><th>${b.title}</th></tr>
+                <tr><td>Kategori</td><td>${a.category}</td><td>${b.category}</td></tr>
+                <tr><td>Boyut</td><td>${a.size}</td><td>${b.size}</td></tr>
+                <tr><td>Min İşlemci</td><td>${a.minCpu||'?'}</td><td>${b.minCpu||'?'}</td></tr>
+                <tr><td>Min RAM</td><td>${a.minRam||'?'} GB</td><td>${b.minRam||'?'} GB</td></tr>
+                <tr><td>Min GPU</td><td>${a.minGpu||'?'}</td><td>${b.minGpu||'?'}</td></tr>
+                <tr><td>İndirme</td><td>${a.downloads||0}</td><td>${b.downloads||0}</td></tr>
+            </table>`;
     };
 
+    // PC testi
     window.runPcTest = function() {
         const gameId = document.getElementById('testGameSelect').value;
         if (!gameId) return showToast('Lütfen bir oyun seçin!');
@@ -515,29 +679,68 @@
         const ramOk = ram >= parseInt(game.minRam || 0);
         const gpuOk = gpu.includes(game.minGpu?.toLowerCase() || '') || !game.minGpu;
         const ok = cpuOk && ramOk && gpuOk;
-        document.getElementById('pcTestResult').innerHTML = `<p><b>${game.title}</b> için sonuç:</p><p style="font-size:1.1rem;font-weight:700;color:${ok?'var(--green)':'#e94560'};">${ok ? '✅ AÇILIR' : '❌ AÇILMAZ'}</p><p style="font-size:0.8rem;">CPU: ${cpuOk?'✅':'❌'} | RAM: ${ramOk?'✅':'❌'} | GPU: ${gpuOk?'✅':'❌'}</p>`;
+        document.getElementById('pcTestResult').innerHTML = `
+            <p><b>${game.title}</b> için sonuç:</p>
+            <p style="font-size:1.1rem;font-weight:700;color:${ok?'var(--green)':'#e94560'};">${ok ? '✅ AÇILIR' : '❌ AÇILMAZ'}</p>
+            <p style="font-size:0.8rem;">CPU: ${cpuOk?'✅':'❌'} | RAM: ${ramOk?'✅':'❌'} | GPU: ${gpuOk?'✅':'❌'}</p>`;
     };
 
+    // Yorumları listeleme
     function renderComments() {
         const comments = getComments();
         const container = document.getElementById('globalComments');
-        if (comments.length === 0) { container.innerHTML = '<p style="opacity:0.6;">Henüz yorum yok.</p>'; }
-        else { container.innerHTML = comments.slice(-10).reverse().map(c => `<div class="comment"><b style="color:var(--accent);">${c.author}</b> <small style="opacity:0.6;">${c.date}</small><p>${c.text}</p></div>`).join(''); }
+        if (comments.length === 0) {
+            container.innerHTML = '<p style="opacity:0.6;">Henüz yorum yok.</p>';
+        } else {
+            container.innerHTML = comments.slice(-10).reverse().map((c, idx) => `
+                <div class="comment">
+                    <b style="color:var(--accent);">${c.author}</b> <small style="opacity:0.6;">${c.date}</small>
+                    <p>${c.text}</p>
+                    <button class="like-btn" onclick="likeComment(${idx})">❤️ ${c.likes || 0}</button>
+                </div>
+            `).join('');
+        }
     }
 
+    // Yorum beğenme
+    window.likeComment = function(idx) {
+        const comments = getComments();
+        const reversedIdx = comments.length - 1 - idx;
+        if (reversedIdx >= 0 && reversedIdx < comments.length) {
+            if (!comments[reversedIdx].likes) comments[reversedIdx].likes = 0;
+            comments[reversedIdx].likes++;
+            saveComments(comments);
+            renderComments();
+        }
+    };
+
+    // Genel yorum ekleme
     window.addGlobalComment = function() {
         const user = getCurrentUser();
         if (!user) return showToast('Yorum yapmak için giriş yapın!');
         const text = document.getElementById('globalCommentInput').value.trim();
         if (!text) return showToast('Yorum boş olamaz!');
         const comments = getComments();
-        comments.push({ author: user.username, text: text, date: new Date().toLocaleString('tr-TR') });
+        comments.push({ author: user.username, text: text, date: new Date().toLocaleString('tr-TR'), likes: 0 });
         saveComments(comments);
         document.getElementById('globalCommentInput').value = '';
         renderComments();
         showToast('✅ Yorum eklendi!');
     };
 
+    // Duyuru render
+    function renderDuyuru() {
+        const duyuru = safeGet('gh_duyuru', '');
+        const el = document.getElementById('duyuruAlani');
+        if (duyuru && isAdmin()) {
+            el.textContent = '📢 ' + duyuru;
+            el.classList.remove('hidden');
+        } else {
+            el.classList.add('hidden');
+        }
+    }
+
+    // Bölüm göster/gizle
     window.showSection = function(section) {
         document.getElementById('gamesSection').classList.add('hidden');
         document.getElementById('compareSection').classList.add('hidden');
@@ -552,6 +755,7 @@
         buttons.forEach(btn => { if (btn.getAttribute('onclick').includes(`'${section}'`)) btn.classList.add('active'); });
     };
 
+    // Kullanıcı girişi
     window.login = function() {
         const u = document.getElementById('loginUsername').value.trim();
         const p = document.getElementById('loginPassword').value.trim();
@@ -562,6 +766,7 @@
         closeModal('loginModal');
         updateUI();
     };
+    // Kullanıcı kaydı
     window.register = function() {
         const u = document.getElementById('regUsername').value.trim();
         const p = document.getElementById('regPassword').value.trim();
@@ -573,14 +778,18 @@
         closeModal('registerModal');
         updateUI();
     };
+    // Anonim giriş
     window.anonymousLogin = function() { setCurrentUser({ username: 'Anon_'+Math.random().toString(36).substr(2,5) }); updateUI(); };
+    // Çıkış
     window.logout = function() { setCurrentUser(null); setAdmin(false); adminPanelVisible = false; updateUI(); };
 
+    // Admin panelini aç
     window.openAdminPanel = function() {
         adminPanelVisible = true;
         updateUI();
     };
 
+    // Admin girişi (şifre kontrolü)
     window.adminLogin = function() {
         if (document.getElementById('adminKey').value.trim() === ADMIN_PASSWORD) {
             setAdmin(true);
@@ -591,8 +800,10 @@
             showToast('🛡️ Admin paneline hoş geldin!');
         } else showToast('❌ Hatalı şifre!');
     };
+    // Admin panelini kapat
     window.closeAdminPanel = function() { adminPanelVisible = false; updateUI(); };
 
+    // Admin bölümü göster
     window.showAdminSection = function(s) {
         document.getElementById('sectionAdd').classList.add('hidden');
         document.getElementById('sectionList').classList.add('hidden');
@@ -605,24 +816,31 @@
         else { document.getElementById('sectionEdit').classList.remove('hidden'); document.getElementById('menuEdit').classList.add('active'); updateSelects(); }
     };
 
+    // Admin oyun listesi render
     function renderAdminList() {
-        document.getElementById('adminGameList').innerHTML = getGames().map(g => `<div class="admin-game-list-item"><span><b>${g.title}</b> (${g.category}) - ${g.size}</span><div><button class="btn-edit" onclick="editDirect('${g.id}')">✏️</button> <button class="btn-delete" onclick="delGame('${g.id}')">🗑️</button></div></div>`).join('');
+        document.getElementById('adminGameList').innerHTML = getGames().map(g => `
+            <div class="admin-game-list-item"><span><b>${g.title}</b> (${g.category}) - ${g.size}</span><div><button class="btn-edit" onclick="editDirect('${g.id}')">✏️</button> <button class="btn-delete" onclick="delGame('${g.id}')">🗑️</button></div></div>
+        `).join('');
     }
+    // Direkt düzenle
     window.editDirect = function(id) { showAdminSection('edit'); document.getElementById('editSelect').value = id; loadGameForEdit(); };
+    // Düzenleme formunu doldur
     window.loadGameForEdit = function() {
         const id = document.getElementById('editSelect').value;
         const game = getGames().find(g => g.id === id);
         if (!game) return;
         ['editGameId','editTitle','editDesc','editImage','editDownload','editCategory','editSize','editCpu','editRam','editGpu'].forEach((f,i) => document.getElementById(f).value = [game.id, game.title, game.desc, game.image||'', game.download, game.category, game.size, game.minCpu||'', game.minRam||'', game.minGpu||''][i]);
     };
+    // Yeni oyun ekle
     window.addGame = function() {
         const vals = ['addTitle','addDesc','addDownload','addCategory'].map(id => document.getElementById(id).value.trim());
         if (vals.some(v => !v)) return showToast('Zorunlu alanları doldurun!');
-        const newGame = { id: Date.now().toString(), title: vals[0], desc: vals[1], image: document.getElementById('addImage').value.trim(), download: vals[2], category: vals[3], size: document.getElementById('addSize').value.trim()||'?', minCpu: document.getElementById('addCpu').value.trim(), minRam: document.getElementById('addRam').value.trim(), minGpu: document.getElementById('addGpu').value.trim() };
+        const newGame = { id: Date.now().toString(), title: vals[0], desc: vals[1], image: document.getElementById('addImage').value.trim(), download: vals[2], category: vals[3], size: document.getElementById('addSize').value.trim()||'?', minCpu: document.getElementById('addCpu').value.trim(), minRam: document.getElementById('addRam').value.trim(), minGpu: document.getElementById('addGpu').value.trim(), downloads: 0 };
         const games = getGames(); games.push(newGame); saveGames(games);
         ['addTitle','addDesc','addImage','addDownload','addCategory','addSize','addCpu','addRam','addGpu'].forEach(id => document.getElementById(id).value = '');
         showToast('✅ Oyun eklendi!'); renderGames();
     };
+    // Oyun güncelle
     window.updateGame = function() {
         const id = document.getElementById('editGameId').value;
         if (!id) return showToast('Önce bir oyun seçin!');
@@ -632,11 +850,13 @@
         games[idx] = { ...games[idx], title: document.getElementById('editTitle').value.trim(), desc: document.getElementById('editDesc').value.trim(), image: document.getElementById('editImage').value.trim(), download: document.getElementById('editDownload').value.trim(), category: document.getElementById('editCategory').value.trim(), size: document.getElementById('editSize').value.trim(), minCpu: document.getElementById('editCpu').value.trim(), minRam: document.getElementById('editRam').value.trim(), minGpu: document.getElementById('editGpu').value.trim() };
         saveGames(games); showToast('✅ Oyun güncellendi!'); renderGames(); showAdminSection('list');
     };
+    // Oyun sil
     window.delGame = function(id) {
         if (!confirm('Silmek istediğinize emin misiniz?')) return;
         saveGames(getGames().filter(g => g.id !== id)); showToast('🗑️ Oyun silindi!'); renderGames(); renderAdminList();
     };
 
+    // Arayüz güncelleme
     function updateUI() {
         const user = getCurrentUser();
         const admin = isAdmin();
@@ -683,18 +903,22 @@
         }
 
         if (admin && adminPanelVisible) showAdminSection('add');
-        renderGames(document.getElementById('searchInput').value);
+        renderGames(document.getElementById('searchInput').value, activeCategory);
     }
 
+    // Ctrl+Shift+A kısayolu
     document.addEventListener('keydown', function(e) {
         if (e.ctrlKey && e.shiftKey && e.key === 'A') {
             e.preventDefault();
             if (isAdmin()) {
                 adminPanelVisible = !adminPanelVisible; updateUI();
-            } else openModal('adminLoginModal');
+            } else {
+                openModal('adminLoginModal');
+            }
         }
     });
 
+    // İlk yükleme
     updateUI();
 </script>
 </body>
