@@ -276,6 +276,8 @@
         <button onclick="openModal('loginModal')">🔑 Giriş</button>
         <button onclick="openModal('registerModal')">✨ Kayıt</button>
         <button class="btn-primary" onclick="anonymousLogin()">👻 Anonim</button>
+        <!-- Admin Paneli Butonu (sadece admin girişi yapıldıysa görünür) -->
+        <button id="adminPanelBtn" class="hidden" onclick="openAdminPanel()">🛡️ Admin Paneli</button>
         <span id="userBadge" class="hidden" style="background:var(--soft);padding:6px 12px;border-radius:6px;font-size:0.8rem;"></span>
         <button id="btnLogout" class="hidden" onclick="logout()">🚪 Çık</button>
     </div>
@@ -406,7 +408,6 @@
     function isAdmin() { return localStorage.getItem('gh_admin') === 'true'; }
     function setAdmin(v) { localStorage.setItem('gh_admin', v ? 'true' : 'false'); }
 
-    // Admin paneli görünürlüğü ayrı bir değişken
     let adminPanelVisible = false;
 
     window.setTheme = function(t) {
@@ -559,12 +560,19 @@
     };
     window.anonymousLogin = function() { setCurrentUser({ username: 'Anon_'+Math.random().toString(36).substr(2,5) }); updateUI(); };
     window.logout = function() { setCurrentUser(null); setAdmin(false); adminPanelVisible = false; updateUI(); };
+
+    // Yeni: Admin panelini açma butonu fonksiyonu
+    window.openAdminPanel = function() {
+        adminPanelVisible = true;
+        updateUI();
+    };
+
     window.adminLogin = function() {
         if (document.getElementById('adminKey').value.trim() === ADMIN_PASSWORD) {
             setAdmin(true);
             if (!getCurrentUser()) setCurrentUser({ username: 'Admin' });
             closeModal('adminLoginModal');
-            adminPanelVisible = true; // Admin panelini otomatik aç
+            adminPanelVisible = true;
             updateUI();
             showToast('🛡️ Admin paneline hoş geldin!');
         } else showToast('❌ Hatalı şifre!');
@@ -622,14 +630,19 @@
         if (user) { badge.classList.remove('hidden'); badge.textContent = '👤 ' + user.username; }
         else badge.classList.add('hidden');
         document.getElementById('btnLogout').classList.toggle('hidden', !user);
-        document.querySelectorAll('.nav-links button:not(#btnLogout)').forEach(b => b.classList.toggle('hidden', !!user));
+        document.querySelectorAll('.nav-links button:not(#btnLogout):not(#adminPanelBtn)').forEach(b => b.classList.toggle('hidden', !!user));
         document.querySelector('.online-counter').classList.remove('hidden');
 
-        // Admin tema seçenekleri: admin girişi varsa göster (panel kapalı olsa bile)
+        // Admin Paneli Butonu (her zaman admin yetkisi varsa görünür, panel açıkken "Paneli Kapat" yerine paneli açmak için)
+        document.getElementById('adminPanelBtn').classList.toggle('hidden', !admin);
+        if (admin) {
+            // Panel açıkken buton metni "Paneli Kapat" olabilir ama kullanıcı "Admin Paneli" istedi, o yüzden sabit tutuyoruz.
+            document.getElementById('adminPanelBtn').textContent = '🛡️ Admin Paneli';
+        }
+
         document.getElementById('adminThemeLabel').classList.toggle('hidden', !admin);
         document.getElementById('adminThemeDots').classList.toggle('hidden', !admin);
 
-        // Admin paneli görünürlüğü
         document.getElementById('mainContent').classList.toggle('hidden', admin && adminPanelVisible);
         document.getElementById('adminContainer').classList.toggle('hidden', !(admin && adminPanelVisible));
 
