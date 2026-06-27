@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - Ücretsiz Oyunlar</title>
+    <style>
+        :root {
+            --bg: #1a1a2e;
+            --card: rgba(22, 33, 62, 0.8);
+            --accent: #e94560;
+            --text: #eee;
+            --soft: #0f3460;
+            --border: rgba(255, 255, 255, 0.15);
+            --green: #2ecc71;
+            --orange: #f39c12;
+            --radius: 12px;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        .theme-pink {
+            --bg: #2d1b2e;
+            --card: rgba(61, 33, 64, 0.8);
+            --accent: #ff7eb3;
+            --text: #ffe6f0;
+            --soft: #5c2d5d;
+            --green: #ff9ecb;
+            --orange: #ffb347;
+        }
+        .theme-hacker {
+            --bg: #0a0a0a;
+            --card: rgba(15, 15, 15, 0.85);
+            --accent: #00ff41;
+            --text: #b3ffb3;
+            --soft: #1a1a1a;
+            --green: #00cc33;
+            --orange: #ffcc00;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--bg);
+            background-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+            background-attachment: fixed;
+            color: var(--text);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* NAVBAR - AERO */
+        .navbar {
+            background: rgba(22, 33, 62, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent);
+            cursor: pointer;
+            text-shadow: 0 0 20px rgba(233, 68, 96, 0.3);
+            letter-spacing: -0.5px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links button {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        .nav-links button:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .btn-primary {
+            background: var(--accent) !important;
+            color: #000 !important;
+            border-color: var(--accent) !important;
+        }
+        .online-counter {
+            background: rgba(46, 204, 113, 0.12);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+            color: var(--green);
+            padding: 8px 14px;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+        .theme-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: 0.2s;
+            display: inline-block;
+            margin: 0 3px;
+        }
+        .theme-dot:hover {
+            border-color: #fff;
+            transform: scale(1.15);
+        }
+        .theme-dot.pink {
+            background: #ff7eb3;
+        }
+        .theme-dot.hacker {
+            background: #00ff41;
+        }
+        .theme-dot.default {
+            background: #e94560;
+        }
+
+        /* ANA İÇERİK */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 20px 0 14px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .search-bar {
+            width: 100%;
+            max-width: 420px;
+            padding: 11px 18px;
+            border-radius: 25px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(6px);
+            color: var(--text);
+            font-size: 0.9rem;
+            outline: none;
+            margin-bottom: 14px;
+            transition: 0.2s;
+        }
+        .search-bar:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(233, 68, 96, 0.2);
+        }
+
+        /* OYUN KARTLARI */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 18px;
+        }
+        .game-card {
+            background: var(--card);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: var(--shadow);
+        }
+        .game-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+        .img-wrap {
+            height: 130px;
+            background: var(--soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .info {
+            padding: 14px;
+        }
+        .info h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .category-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--accent);
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal {
+            background: var(--card);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            max-width: 520px;
+            width: 92%;
+            max-height: 82vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+        .close-btn {
+            float: right;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: 0.2s;
+        }
+        .close-btn:hover {
+            opacity: 1;
+        }
+        .download-btn {
+            background: var(--accent);
+            color: #000;
+            padding: 11px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .download-btn:hover {
+            transform: scale(1.04);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+        }
+
+        /* BÖLÜMLER */
+        .compare-box,
+        .pc-test-box,
+        .footer-comments {
+            background: var(--card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 18px 0;
+            box-shadow: var(--shadow);
+        }
+        .compare-box h3,
+        .pc-test-box h3,
+        .footer-comments h3 {
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+        .compare-box select,
+        .pc-test-box select,
+        .pc-test-box input {
+            width: 100%;
+            padding: 9px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        .comment {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+
+        /* ADMIN PANEL */
+        .admin-panel {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--orange);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-top: 16px;
+            box-shadow: var(--shadow);
+        }
+        .admin-panel h3 {
+            color: var(--orange);
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+        .admin-menu {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+        .admin-menu button {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: 0.2s;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .admin-menu button:hover {
+            background: var(--accent);
+            color: #000;
+        }
+        .admin-menu .active {
+            background: var(--orange) !important;
+            color: #000 !important;
+            border-color: var(--orange) !important;
+        }
+        .btn-save {
+            background: var(--green);
+            color: #000;
+            padding: 9px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: 0.2s;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        .btn-save:hover {
+            transform: scale(1.03);
+        }
+        .btn-delete {
+            background: #e94560;
+            color: #fff;
+            padding: 7px 14px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        .btn-edit {
+            background: var(--orange);
+            color: #000;
+            padding: 7px 14px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        .admin-form input,
+        .admin-form textarea,
+        .admin-form select {
+            width: 100%;
+            padding: 9px;
+            margin: 5px 0 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        .admin-game-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            gap: 8px;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+        }
+        .toast {
+            position: fixed;
+            bottom: 22px;
+            right: 22px;
+            background: var(--green);
+            color: #000;
+            padding: 12px 22px;
+            border-radius: 25px;
+            font-weight: 700;
+            z-index: 999;
+            font-size: 0.85rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        .hidden {
+            display: none !important;
+        }
+        @media (max-width: 600px) {
+            .game-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .nav-links button {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+            }
+            .logo {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo" onclick="location.reload()">🎮 GameHub</div>
+        <div class="nav-links">
+            <span style="font-size:0.7rem;opacity:0.7;">Tema:</span>
+            <div class="theme-dot pink" onclick="setTheme('pink')" title="Pembe"></div>
+            <div class="theme-dot hacker" onclick="setTheme('hacker')" title="Hacker"></div>
+            <div class="theme-dot default" onclick="setTheme('default')" title="Normal"></div>
+            <div class="online-counter"><span class="dot"></span> <span id="onlineText">1 çevrimiçi</span></div>
+            <button onclick="openModal('loginModal')">🔑 Giriş</button>
+            <button onclick="openModal('registerModal')">✨ Kayıt</button>
+            <button class="btn-primary" onclick="anonymousLogin()">👻 Anonim</button>
+            <span id="userBadge" class="hidden" style="background:rgba(255,255,255,0.06);border:1px solid var(--border);padding:7px 14px;border-radius:25px;font-size:0.8rem;font-weight:600;"></span>
+            <button id="btnLogout" class="hidden" onclick="logout()">🚪 Çık</button>
+        </div>
+    </nav>
+
+    <div class="container" id="mainContent">
+        <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Oyun ara...">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+            <button onclick="scrollToSection('compareSection')" style="background:var(--accent);color:#000;padding:8px 16px;border-radius:25px;border:none;cursor:pointer;font-weight:700;font-size:0.8rem;">⚖️ Karşılaştır</button>
+            <button onclick="scrollToSection('pcTestSection')" style="background:rgba(255,255,255,0.06);color:var(--text);padding:8px 16px;border-radius:25px;border:1px solid var(--border);cursor:pointer;font-weight:600;font-size:0.8rem;">🖥️ PC Test</button>
+            <button onclick="scrollToSection('commentsSection')" style="background:rgba(255,255,255,0.06);color:var(--text);padding:8px 16px;border-radius:25px;border:1px solid var(--border);cursor:pointer;font-weight:600;font-size:0.8rem;">💬 Yorumlar</button>
+        </div>
+        <div class="section-title">🔥 Popüler Oyunlar</div>
+        <div class="game-grid" id="gameGrid"></div>
+
+        <div class="compare-box" id="compareSection">
+            <h3>⚖️ Oyun Karşılaştır</h3>
+            <select id="compareGame1"><option value="">Oyun 1 seç</option></select>
+            <select id="compareGame2"><option value="">Oyun 2 seç</option></select>
+            <button onclick="compareGames()" style="background:var(--accent);color:#000;padding:9px 20px;border-radius:25px;border:none;cursor:pointer;font-weight:700;font-size:0.85rem;margin-top:8px;">Karşılaştır</button>
+            <div id="compareResult" style="margin-top:12px;font-size:0.85rem;"></div>
+        </div>
+
+        <div class="pc-test-box" id="pcTestSection">
+            <h3>🖥️ Sistem Gereksinim Testi</h3>
+            <p style="font-size:0.8rem;opacity:0.7;">Bilgisayar özelliklerini gir, oyunun çalışıp çalışmayacağını gör.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                <input type="text" id="cpuInput" placeholder="İşlemci (i5-12400F)">
+                <input type="text" id="ramInput" placeholder="RAM (GB)">
+                <input type="text" id="gpuInput" placeholder="Ekran kartı (RTX 3060)">
+                <input type="text" id="osInput" placeholder="İşletim sistemi">
+            </div>
+            <select id="testGameSelect" style="margin-top:8px;"><option value="">Test edilecek oyunu seç</option></select>
+            <button onclick="runPcTest()" style="background:var(--green);color:#000;padding:10px 22px;border-radius:25px;border:none;cursor:pointer;font-weight:700;font-size:0.85rem;margin-top:8px;">Test Et</button>
+            <div id="pcTestResult" style="margin-top:12px;font-size:0.85rem;"></div>
+        </div>
+
+        <div class="footer-comments" id="commentsSection">
+            <h3>💬 Genel Yorumlar</h3>
+            <div id="globalComments" style="font-size:0.85rem;"></div>
+            <div style="display:flex;gap:8px;margin-top:10px;">
+                <input type="text" id="globalCommentInput" placeholder="Yorumunuzu yazın..." style="flex:1;padding:9px;border-radius:25px;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);font-size:0.85rem;">
+                <button onclick="addGlobalComment()" style="background:var(--accent);color:#000;padding:9px 18px;border-radius:25px;border:none;cursor:pointer;font-weight:700;font-size:0.85rem;">Gönder</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN PANELİ -->
+    <div class="container hidden" id="adminContainer">
+        <div class="admin-panel">
+            <h3>🛡️ Admin Paneli</h3>
+            <div class="admin-menu">
+                <button id="menuAdd" class="active" onclick="showAdminSection('add')">➕ Oyun Ekle</button>
+                <button id="menuList" onclick="showAdminSection('list')">📋 Liste</button>
+                <button id="menuEdit" onclick="showAdminSection('edit')">✏️ Düzenle</button>
+                <button onclick="closeAdmin()" style="background:#555;color:#fff;">❌ Kapat</button>
+            </div>
+            <div id="sectionAdd" class="admin-form">
+                <h4 style="margin-bottom:8px;">Yeni Oyun Ekle</h4>
+                <input type="text" id="addTitle" placeholder="Oyun Adı *">
+                <textarea id="addDesc" placeholder="Açıklama *" rows="2"></textarea>
+                <input type="text" id="addImage" placeholder="Resim URL (opsiyonel)">
+                <input type="text" id="addDownload" placeholder="İndirme Linki *">
+                <input type="text" id="addCategory" placeholder="Kategori *">
+                <input type="text" id="addSize" placeholder="Boyut (örn: 25 GB)">
+                <input type="text" id="addCpu" placeholder="Minimum İşlemci">
+                <input type="text" id="addRam" placeholder="Minimum RAM (GB)">
+                <input type="text" id="addGpu" placeholder="Minimum Ekran Kartı">
+                <button class="btn-save" onclick="addGame()">💾 Ekle</button>
+            </div>
+            <div id="sectionList" class="hidden">
+                <h4 style="margin-bottom:8px;">Tüm Oyunlar</h4>
+                <div id="adminGameList"></div>
+            </div>
+            <div id="sectionEdit" class="admin-form hidden">
+                <h4 style="margin-bottom:8px;">Oyun Düzenle</h4>
+                <select id="editSelect" onchange="loadGameForEdit()"><option value="">Düzenlenecek oyunu seç</option></select>
+                <input type="hidden" id="editGameId">
+                <input type="text" id="editTitle" placeholder="Oyun Adı">
+                <textarea id="editDesc" placeholder="Açıklama" rows="2"></textarea>
+                <input type="text" id="editImage" placeholder="Resim URL">
+                <input type="text" id="editDownload" placeholder="İndirme Linki">
+                <input type="text" id="editCategory" placeholder="Kategori">
+                <input type="text" id="editSize" placeholder="Boyut">
+                <input type="text" id="editCpu" placeholder="Minimum İşlemci">
+                <input type="text" id="editRam" placeholder="Minimum RAM">
+                <input type="text" id="editGpu" placeholder="Minimum Ekran Kartı">
+                <button class="btn-save" onclick="updateGame()">💾 Güncelle</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div class="modal-overlay hidden" id="gameDetailModal"><div class="modal" id="gameDetailContent"></div></div>
+    <div class="modal-overlay hidden" id="loginModal">
+        <div class="modal"><button class="close-btn" onclick="closeModal('loginModal')">✕</button><h3>🔑 Giriş</h3>
+            <input id="loginUsername" placeholder="Kullanıcı adı" style="width:100%;padding:9px;margin:6px 0;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text);border-radius:8px;">
+            <input type="password" id="loginPassword" placeholder="Şifre" style="width:100%;padding:9px;margin:6px 0;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text);border-radius:8px;">
+            <button class="download-btn" onclick="login()" style="width:100%;">Giriş Yap</button></div></div>
+    <div class="modal-overlay hidden" id="registerModal">
+        <div class="modal"><button class="close-btn" onclick="closeModal('registerModal')">✕</button><h3>✨ Kayıt</h3>
+            <input id="regUsername" placeholder="Kullanıcı adı" style="width:100%;padding:9px;margin:6px 0;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text);border-radius:8px;">
+            <input type="email" id="regEmail" placeholder="E-posta (opsiyonel)" style="width:100%;padding:9px;margin:6px 0;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text);border-radius:8px;">
+            <input type="password" id="regPassword" placeholder="Şifre" style="width:100%;padding:9px;margin:6px 0;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text);border-radius:8px;">
+            <button class="download-btn" onclick="register()" style="width:100%;">Kayıt Ol</button></div></div>
+    <div class="modal-overlay hidden" id="adminLoginModal">
+        <div class="modal"><button class="close-btn" onclick="closeModal('adminLoginModal')">✕</button><h3>🛡️ Admin Girişi</h3>
+            <input type="password" id="adminKey" placeholder="Admin şifresi" style="width:100%;padding:9px;margin:6px 0;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text);border-radius:8px;">
+            <button class="download-btn" onclick="adminLogin()" style="width:100%;">Giriş</button></div></div>
+    <div class="toast hidden" id="toast"></div>
+    <div style="position:fixed;bottom:16px;right:16px;width:34px;height:34px;background:var(--card);border:1px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:300;color:var(--accent);font-size:0.9rem;font-weight:bold;box-shadow:0 3px 12px rgba(0,0,0,0.3);backdrop-filter:blur(6px);" onclick="openModal('adminLoginModal')" title="Admin Paneli">⚙</div>
+
+    <script>
+        const ADMIN_PASSWORD = 'GameHub2024!Admin';
+        const defaultGames = [
+            { id: '1', title: 'Cyber Quest 2077', desc: 'Distopik açık dünya aksiyon-macera oyunu.', image: 'https://picsum.photos/seed/cyber/400/250',
+                download: '#', category: 'Aksiyon', size: '70 GB', minCpu: 'i5-10400F', minRam: '16', minGpu: 'RTX 2060' },
+            { id: '2', title: 'Fantasy Lands Online', desc: 'Devasa çok oyunculu fantastik RPG.', image: 'https://picsum.photos/seed/fantasy/400/250',
+                download: '#', category: 'MMORPG', size: '45 GB', minCpu: 'i3-9100', minRam: '8', minGpu: 'GTX 1050' },
+            { id: '3', title: 'Speed Racers Ultimate', desc: 'Gerçekçi yarış simülasyonu.', image: 'https://picsum.photos/seed/racing/400/250',
+                download: '#', category: 'Yarış', size: '32 GB', minCpu: 'i5-11400H', minRam: '8', minGpu: 'GTX 1650' },
+            { id: '4', title: 'Shadow Tactics', desc: 'Gizlilik odaklı strateji oyunu.', image: 'https://picsum.photos/seed/stealth/400/250',
+                download: '#', category: 'Strateji', size: '18 GB', minCpu: 'i3-8100', minRam: '4', minGpu: 'Intel UHD 630' },
+            { id: '5', title: 'Zombie Frontier X', desc: 'Kıyamet sonrası hayatta kalma.', image: 'https://picsum.photos/seed/zombie/400/250',
+                download: '#', category: 'Hayatta Kalma', size: '55 GB', minCpu: 'i7-8700', minRam: '16', minGpu: 'RTX 2070' },
+        ];
+
+        function S(k, d) { let v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }
+
+        function G(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+
+        function getGames() { return S('gh_games', defaultGames); }
+
+        function saveGames(g) { G('gh_games', g); }
+
+        function getUsers() { return S('gh_users', []); }
+
+        function saveUsers(u) { G('gh_users', u); }
+
+        function getComments() { return S('gh_comments', []); }
+
+        function saveComments(c) { G('gh_comments', c); }
+
+        function getCurrentUser() { return S('gh_user', null); }
+
+        function setCurrentUser(u) { G('gh_user', u); }
+
+        function isAdmin() { return localStorage.getItem('gh_admin') === 'true'; }
+
+        function setAdmin(v) { localStorage.setItem('gh_admin', v); }
+
+        // TEMA
+        window.setTheme = function(t) {
+            document.body.className = '';
+            if (t === 'pink') document.body.classList.add('theme-pink');
+            else if (t === 'hacker') document.body.classList.add('theme-hacker');
+            G('gh_theme', t);
+        };
+        setTheme(S('gh_theme', 'default'));
+
+        // ÇEVRİMİÇİ
+        setInterval(() => {
+            let s = S('gh_sessions', {});
+            let n = Date.now();
+            for (let k in s) { if (n - s[k] > 15000) delete s[k]; }
+            s['self'] = n;
+            G('gh_sessions', s);
+            document.getElementById('onlineText').textContent = Object.keys(s).length + ' çevrimiçi';
+        }, 5000);
+
+        window.showToast = function(m) {
+            let t = document.getElementById('toast');
+            t.textContent = m;
+            t.classList.remove('hidden');
+            setTimeout(() => t.classList.add('hidden'), 2200);
+        };
+        window.openModal = function(id) { document.getElementById(id).classList.remove('hidden'); };
+        window.closeModal = function(id) { document.getElementById(id).classList.add('hidden'); };
+        window.scrollToSection = function(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); };
+        document.addEventListener('click', function(e) { if (e.target.classList.contains('modal-overlay')) e.target
+                .classList.add('hidden'); });
+
+        function renderGames(f = '') {
+            let g = getGames().filter(x => x.title.toLowerCase().includes(f.toLowerCase()) || x.category.toLowerCase()
+                .includes(f.toLowerCase()));
+            document.getElementById('gameGrid').innerHTML = g.map(x => `
+                <div class="game-card" onclick="openGameDetail('${x.id}')">
+                    <div class="img-wrap">${x.image ? `<img src="${x.image}" onerror="this.innerHTML='🎮'">` : '🎮'}</div>
+                    <div class="info"><h3>${x.title}</h3><span class="category-tag">${x.category}</span></div>
+                </div>
+            `).join('') || '<p style="grid-column:1/-1;text-align:center;">😔 Oyun bulunamadı</p>';
+            updateSelects();
+        }
+        document.getElementById('searchInput').addEventListener('input', function() { renderGames(this.value); });
+
+        function updateSelects() {
+            let g = getGames();
+            let o = g.map(x => `<option value="${x.id}">${x.title}</option>`).join('');
+            document.getElementById('compareGame1').innerHTML = '<option value="">Oyun 1 seç</option>' + o;
+            document.getElementById('compareGame2').innerHTML = '<option value="">Oyun 2 seç</option>' + o;
+            document.getElementById('testGameSelect').innerHTML = '<option value="">Oyun seç</option>' + o;
+            document.getElementById('editSelect').innerHTML = '<option value="">Oyun seç</option>' + o;
+            renderComments();
+        }
+
+        window.openGameDetail = function(id) {
+            let g = getGames().find(x => x.id === id);
+            if (!g) return;
+            document.getElementById('gameDetailContent').innerHTML = `
+                <button class="close-btn" onclick="closeModal('gameDetailModal')">✕</button>
+                <div style="height:140px;background:var(--soft);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;overflow:hidden;border:1px solid var(--border);">${g.image ? `<img src="${g.image}" style="width:100%;height:100%;object-fit:cover;">` : '🎮'}</div>
+                <h3>${g.title}</h3><p style="font-size:0.8rem;opacity:0.8;">📦 ${g.size} | 🏷️ ${g.category}</p>
+                <p style="margin:8px 0;">${g.desc}</p>
+                <p style="font-size:0.78rem;opacity:0.7;">🖥️ Min: ${g.minCpu||'?'} | ${g.minRam||'?'} GB RAM | ${g.minGpu||'?'}</p>
+                <a href="${g.download}" class="download-btn" target="_blank">⬇️ İndir</a>`;
+            openModal('gameDetailModal');
+        };
+
+        window.compareGames = function() {
+            let a = getGames().find(x => x.id === document.getElementById('compareGame1').value);
+            let b = getGames().find(x => x.id === document.getElementById('compareGame2').value);
+            if (!a || !b) return showToast('Lütfen iki oyun seçin!');
+            document.getElementById('compareResult').innerHTML = `
+                <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+                    <tr style="border-bottom:1px solid var(--border);"><th>Özellik</th><th>${a.title}</th><th>${b.title}</th></tr>
+                    <tr><td>Kategori</td><td>${a.category}</td><td>${b.category}</td></tr>
+                    <tr><td>Boyut</td><td>${a.size}</td><td>${b.size}</td></tr>
+                    <tr><td>Min İşlemci</td><td>${a.minCpu||'?'}</td><td>${b.minCpu||'?'}</td></tr>
+                    <tr><td>Min RAM</td><td>${a.minRam||'?'} GB</td><td>${b.minRam||'?'} GB</td></tr>
+                    <tr><td>Min GPU</td><td>${a.minGpu||'?'}</td><td>${b.minGpu||'?'}</td></tr>
+                </table>`;
+        };
+
+        window.runPcTest = function() {
+            let g = getGames().find(x => x.id === document.getElementById('testGameSelect').value);
+            if (!g) return showToast('Lütfen bir oyun seçin!');
+            let cpu = document.getElementById('cpuInput').value.trim().toLowerCase();
+            let ram = parseInt(document.getElementById('ramInput').value.trim());
+            let gpu = document.getElementById('gpuInput').value.trim().toLowerCase();
+            let cpuOk = cpu.includes(g.minCpu?.toLowerCase() || '') || !g.minCpu;
+            let ramOk = ram >= parseInt(g.minRam || 0);
+            let gpuOk = gpu.includes(g.minGpu?.toLowerCase() || '') || !g.minGpu;
+            let ok = cpuOk && ramOk && gpuOk;
+            document.getElementById('pcTestResult').innerHTML = `
+                <p><b>${g.title}</b> için sonuç:</p>
+                <p style="font-size:1.1rem;font-weight:700;color:${ok?'var(--green)':'#e94560'};">${ok ? '✅ AÇILIR' : '❌ AÇILMAZ'}</p>
+                <p style="font-size:0.8rem;">CPU: ${cpuOk?'✅':'❌'} | RAM: ${ramOk?'✅':'❌'} | GPU: ${gpuOk?'✅':'❌'}</p>`;
+        };
+
+        function renderComments() {
+            document.getElementById('globalComments').innerHTML = getComments().slice(-10).reverse().map(c => `
+                <div class="comment"><b style="color:var(--accent);">${c.author}</b> <small style="opacity:0.6;">${c.date}</small><p>${c.text}</p></div>
+            `).join('') || '<p style="opacity:0.6;">Henüz yorum yok.</p>';
+        }
+
+        window.addGlobalComment = function() {
+            let u = getCurrentUser();
+            if (!u) return showToast('Yorum yapmak için giriş yapın!');
+            let t = document.getElementById('globalCommentInput').value.trim();
+            if (!t) return showToast('Yorum boş olamaz!');
+            let c = getComments();
+            c.push({ author: u.username, text: t, date: new Date().toLocaleString('tr-TR') });
+            saveComments(c);
+            document.getElementById('globalCommentInput').value = '';
+            renderComments();
+            showToast('✅ Yorum eklendi!');
+        };
+
+        // KULLANICI
+        window.login = function() {
+            let u = document.getElementById('loginUsername').value.trim();
+            let p = document.getElementById('loginPassword').value.trim();
+            if (!u || !p) return showToast('Boş bırakmayın!');
+            let user = getUsers().find(x => x.username === u && x.password === p);
+            if (!user) return showToast('Hatalı kullanıcı adı veya şifre!');
+            setCurrentUser({ username: user.username });
+            closeModal('loginModal');
+            updateUI();
+        };
+        window.register = function() {
+            let u = document.getElementById('regUsername').value.trim();
+            let p = document.getElementById('regPassword').value.trim();
+            if (!u || !p) return showToast('Kullanıcı adı ve şifre zorunlu!');
+            if (getUsers().find(x => x.username === u)) return showToast('Bu kullanıcı adı alınmış!');
+            getUsers().push({ username: u, email: document.getElementById('regEmail').value.trim(), password: p });
+            saveUsers(getUsers());
+            setCurrentUser({ username: u });
+            closeModal('registerModal');
+            updateUI();
+        };
+        window.anonymousLogin = function() { setCurrentUser({ username: 'Anon_' + Math.random().toString(36).substr(2,
+                5) });
+            updateUI(); };
+        window.logout = function() { setCurrentUser(null);
+            setAdmin('false');
+            updateUI(); };
+        window.adminLogin = function() {
+            if (document.getElementById('adminKey').value.trim() === ADMIN_PASSWORD) {
+                setAdmin('true');
+                if (!getCurrentUser()) setCurrentUser({ username: 'Admin' });
+                closeModal('adminLoginModal');
+                updateUI();
+                showToast('🛡️ Admin paneline hoş geldin!');
+            } else showToast('❌ Hatalı şifre!');
+        };
+        window.closeAdmin = function() { setAdmin('false');
+            updateUI(); };
+
+        // ADMIN
+        window.showAdminSection = function(s) {
+            document.getElementById('sectionAdd').classList.add('hidden');
+            document.getElementById('sectionList').classList.add('hidden');
+            document.getElementById('sectionEdit').classList.add('hidden');
+            document.getElementById('menuAdd').classList.remove('active');
+            document.getElementById('menuList').classList.remove('active');
+            document.getElementById('menuEdit').classList.remove('active');
+            if (s === 'add') { document.getElementById('sectionAdd').classList.remove('hidden');
+                document.getElementById('menuAdd').classList.add('active'); } else if (s === 'list') { document
+                    .getElementById('sectionList').classList.remove('hidden');
+                document.getElementById('menuList').classList.add('active');
+                renderAdminList(); } else { document.getElementById('sectionEdit').classList.remove('hidden');
+                document.getElementById('menuEdit').classList.add('active');
+                updateSelects(); }
+        };
+
+        function renderAdminList() {
+            document.getElementById('adminGameList').innerHTML = getGames().map(g => `
+                <div class="admin-game-list-item">
+                    <span><b>${g.title}</b> (${g.category}) - ${g.size}</span>
+                    <div>
+                        <button class="btn-edit" onclick="editDirect('${g.id}')">✏️</button>
+                        <button class="btn-delete" onclick="delGame('${g.id}')">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        window.editDirect = function(id) { showAdminSection('edit');
+            document.getElementById('editSelect').value = id;
+            loadGameForEdit(); };
+        window.loadGameForEdit = function() {
+            let g = getGames().find(x => x.id === document.getElementById('editSelect').value);
+            if (!g) return;
+            ['editGameId', 'editTitle', 'editDesc', 'editImage', 'editDownload', 'editCategory', 'editSize', 'editCpu',
+                'editRam', 'editGpu'
+            ].forEach((k, i) => document.getElementById(k).value = [g.id, g.title, g.desc, g.image || '', g.download,
+                g.category, g.size, g.minCpu || '', g.minRam || '', g.minGpu || ''
+            ][i]);
+        };
+        window.addGame = function() {
+            let f = ['addTitle', 'addDesc', 'addDownload', 'addCategory'].map(id => document.getElementById(id).value
+                .trim());
+            if (f.some(x => !x)) return showToast('Zorunlu alanları doldurun!');
+            getGames().push({
+                id: Date.now().toString(),
+                title: f[0],
+                desc: f[1],
+                image: document.getElementById('addImage').value.trim(),
+                download: f[2],
+                category: f[3],
+                size: document.getElementById('addSize').value.trim() || '?',
+                minCpu: document.getElementById('addCpu').value.trim(),
+                minRam: document.getElementById('addRam').value.trim(),
+                minGpu: document.getElementById('addGpu').value.trim()
+            });
+            saveGames(getGames());
+            ['addTitle', 'addDesc', 'addImage', 'addDownload', 'addCategory', 'addSize', 'addCpu', 'addRam', 'addGpu']
+                .forEach(id => document.getElementById(id).value = '');
+            showToast('✅ Oyun eklendi!');
+            renderGames();
+        };
+        window.updateGame = function() {
+            let id = document.getElementById('editGameId').value;
+            if (!id) return showToast('Önce bir oyun seçin!');
+            let g = getGames();
+            let i = g.findIndex(x => x.id === id);
+            if (i === -1) return;
+            g[i] = { ...g[i], title: document.getElementById('editTitle').value.trim(), desc: document.getElementById(
+                    'editDesc').value.trim(), image: document.getElementById('editImage').value.trim(), download: document
+                    .getElementById('editDownload').value.trim(), category: document.getElementById('editCategory')
+                    .value.trim(), size: document.getElementById('editSize').value.trim(), minCpu: document
+                    .getElementById('editCpu').value.trim(), minRam: document.getElementById('editRam').value.trim(),
+                minGpu: document.getElementById('editGpu').value.trim() };
+            saveGames(g);
+            showToast('✅ Oyun güncellendi!');
+            renderGames();
+            showAdminSection('list');
+        };
+        window.delGame = function(id) {
+            if (!confirm('Bu oyunu silmek istediğinize emin misiniz?')) return;
+            saveGames(getGames().filter(x => x.id !== id));
+            showToast('🗑️ Oyun silindi!');
+            renderGames();
+            renderAdminList();
+        };
+
+        function updateUI() {
+            let u = getCurrentUser();
+            let a = isAdmin();
+            let b = document.getElementById('userBadge');
+            if (u) { b.classList.remove('hidden');
+                b.textContent = '👤 ' + u.username; } else b.classList.add('hidden');
+            document.getElementById('btnLogout').classList.toggle('hidden', !u);
+            document.querySelectorAll('.nav-links button:not(#btnLogout)').forEach(x => x.classList.toggle('hidden', !!u));
+            document.querySelector('.online-counter').classList.remove('hidden');
+            document.getElementById('mainContent').classList.toggle('hidden', a);
+            document.getElementById('adminContainer').classList.toggle('hidden', !a);
+            if (a) showAdminSection('add');
+            renderGames(document.getElementById('searchInput').value);
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                e.preventDefault();
+                isAdmin() ? closeAdmin() : openModal('adminLoginModal');
+            }
+        });
+
+        updateUI();
+        renderGames();
+    </script>
+</body>
+</html>
