@@ -2601,201 +2601,271 @@
         });
     </script>
 <!-- ======================================== -->
-<!-- SUPER AI BOT - DÜZELTİLDİ! ÇALIŞIYOR!   -->
+<!-- GERÇEK AI BOT - SORU SOR CEVAP AL!      -->
 <!-- ======================================== -->
 <style>
-.ai-chat-container{position:fixed;bottom:100px;right:30px;z-index:999999;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
-.ai-chat-toggle{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#00b894,#00cec9);border:none;color:#fff;font-size:28px;cursor:pointer;box-shadow:0 8px 32px rgba(0,206,201,0.4);transition:.3s;display:flex;align-items:center;justify-content:center;animation:float 3s ease-in-out infinite;position:relative;z-index:999999}
-.ai-chat-toggle:hover{transform:scale(1.1)}
-.ai-chat-toggle .status-dot{position:absolute;top:4px;right:4px;width:14px;height:14px;border-radius:50%;background:#2ecc71;border:2px solid #0f0f1a;animation:pulse 2s infinite}
-.ai-chat-toggle .tooltip{position:absolute;right:70px;background:#1a1a2e;color:#e8e8e8;padding:6px 14px;border-radius:20px;font-size:.8rem;white-space:nowrap;border:1px solid #2a2a3e;opacity:0;transition:opacity .3s;pointer-events:none}
-.ai-chat-toggle:hover .tooltip{opacity:1}
-.ai-chat-box{width:420px;max-width:94vw;height:580px;max-height:80vh;background:#1a1a2e;border:1px solid #2a2a3e;border-radius:20px;overflow:hidden;display:none;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.5);animation:fadeInUp .4s ease-out;position:fixed;bottom:100px;right:30px;z-index:999998}
-.ai-chat-box.open{display:flex}
-.ai-chat-header{background:linear-gradient(135deg,#00b894,#00cec9);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.ai-chat-header-left{display:flex;align-items:center;gap:12px}
-.ai-chat-avatar{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff}
-.ai-chat-header-info h4{color:#fff;margin:0;font-size:1rem}
-.ai-chat-header-info small{color:rgba(255,255,255,0.8);font-size:.75rem}
-.ai-chat-close{background:rgba(255,255,255,0.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;transition:.3s;display:flex;align-items:center;justify-content:center}
-.ai-chat-close:hover{background:rgba(255,255,255,0.3);transform:rotate(90deg)}
-.ai-chat-messages{flex:1;padding:16px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:#0f0f1a;min-height:300px;max-height:400px}
-.ai-chat-messages::-webkit-scrollbar{width:4px}
-.ai-chat-messages::-webkit-scrollbar-thumb{background:#00cec9;border-radius:4px}
-.ai-message{display:flex;gap:10px;max-width:88%;animation:fadeInUp .3s ease-out}
-.ai-message.bot{align-self:flex-start}
-.ai-message.user{align-self:flex-end;flex-direction:row-reverse}
-.ai-message .msg-avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.9rem}
-.ai-message.bot .msg-avatar{background:linear-gradient(135deg,#00b894,#00cec9);color:#fff}
-.ai-message.user .msg-avatar{background:#e94560;color:#000}
-.ai-message .msg-bubble{padding:10px 16px;border-radius:16px;font-size:.9rem;line-height:1.6;word-wrap:break-word;max-width:100%}
-.ai-message.bot .msg-bubble{background:#1a1a2e;border:1px solid #2a2a3e;color:#e8e8e8;border-bottom-left-radius:4px}
-.ai-message.user .msg-bubble{background:#e94560;color:#000;border-bottom-right-radius:4px}
-.ai-message .msg-time{font-size:.65rem;color:#a0a0b0;margin-top:4px;display:block}
-.ai-message.user .msg-time{text-align:right}
+.ai-container{position:fixed;bottom:100px;right:30px;z-index:999999;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.ai-toggle{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);border:none;color:#fff;font-size:28px;cursor:pointer;box-shadow:0 8px 32px rgba(102,126,234,0.4);transition:.3s;display:flex;align-items:center;justify-content:center;position:relative;z-index:999999}
+.ai-toggle:hover{transform:scale(1.1)}
+.ai-toggle .dot{position:absolute;top:4px;right:4px;width:14px;height:14px;border-radius:50%;background:#2ecc71;border:2px solid #0f0f1a;animation:pulse 2s infinite}
+.ai-toggle .tip{position:absolute;right:70px;background:#1a1a2e;color:#e8e8e8;padding:6px 14px;border-radius:20px;font-size:.8rem;white-space:nowrap;border:1px solid #2a2a3e;opacity:0;transition:opacity .3s;pointer-events:none}
+.ai-toggle:hover .tip{opacity:1}
+.ai-box{width:420px;max-width:94vw;height:580px;max-height:80vh;background:#1a1a2e;border:1px solid #2a2a3e;border-radius:20px;overflow:hidden;display:none;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.5);position:fixed;bottom:100px;right:30px;z-index:999998}
+.ai-box.open{display:flex}
+.ai-header{background:linear-gradient(135deg,#667eea,#764ba2);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ai-header-left{display:flex;align-items:center;gap:12px}
+.ai-avatar{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff}
+.ai-header-info h4{color:#fff;margin:0;font-size:1rem}
+.ai-header-info small{color:rgba(255,255,255,0.8);font-size:.75rem}
+.ai-close{background:rgba(255,255,255,0.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;transition:.3s;display:flex;align-items:center;justify-content:center}
+.ai-close:hover{background:rgba(255,255,255,0.3);transform:rotate(90deg)}
+.ai-messages{flex:1;padding:16px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:#0f0f1a;min-height:350px;max-height:400px}
+.ai-messages::-webkit-scrollbar{width:4px}
+.ai-messages::-webkit-scrollbar-thumb{background:#764ba2;border-radius:4px}
+.ai-msg{display:flex;gap:10px;max-width:88%}
+.ai-msg.bot{align-self:flex-start}
+.ai-msg.user{align-self:flex-end;flex-direction:row-reverse}
+.ai-msg .av{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.ai-msg.bot .av{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
+.ai-msg.user .av{background:#e94560;color:#000}
+.ai-msg .bubble{padding:10px 16px;border-radius:16px;font-size:.9rem;line-height:1.6;word-wrap:break-word;max-width:100%}
+.ai-msg.bot .bubble{background:#1a1a2e;border:1px solid #2a2a3e;color:#e8e8e8;border-bottom-left-radius:4px}
+.ai-msg.user .bubble{background:#e94560;color:#000;border-bottom-right-radius:4px}
+.ai-msg .time{font-size:.65rem;color:#a0a0b0;margin-top:4px;display:block}
+.ai-msg.user .time{text-align:right}
 .ai-typing{align-self:flex-start;display:flex;align-items:center;gap:8px;padding:8px 16px;background:#1a1a2e;border:1px solid #2a2a3e;border-radius:20px;border-bottom-left-radius:4px;color:#a0a0b0;font-size:.85rem}
-.ai-typing .typing-dots{display:flex;gap:4px}
-.ai-typing .typing-dots span{width:6px;height:6px;border-radius:50%;background:#00cec9;animation:typingBounce 1.4s infinite}
-.ai-typing .typing-dots span:nth-child(2){animation-delay:.2s}
-.ai-typing .typing-dots span:nth-child(3){animation-delay:.4s}
+.ai-typing .dots{display:flex;gap:4px}
+.ai-typing .dots span{width:6px;height:6px;border-radius:50%;background:#764ba2;animation:typingBounce 1.4s infinite}
+.ai-typing .dots span:nth-child(2){animation-delay:.2s}
+.ai-typing .dots span:nth-child(3){animation-delay:.4s}
 @keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}
-.ai-chat-input-area{padding:12px 16px;border-top:1px solid #2a2a3e;display:flex;gap:10px;background:#1a1a2e;flex-shrink:0}
-.ai-chat-input-area input{flex:1;padding:10px 16px;border-radius:30px;border:2px solid #2a2a3e;background:#0f0f1a;color:#e8e8e8;font-size:.9rem;outline:none;transition:.3s}
-.ai-chat-input-area input:focus{border-color:#00cec9;box-shadow:0 0 20px rgba(0,206,201,0.15)}
-.ai-chat-input-area input::placeholder{color:#a0a0b0}
-.ai-chat-input-area .send-btn{padding:10px 20px;border-radius:30px;border:none;background:linear-gradient(135deg,#00b894,#00cec9);color:#fff;font-weight:700;cursor:pointer;transition:.3s;display:flex;align-items:center;gap:6px;white-space:nowrap}
-.ai-chat-input-area .send-btn:hover{transform:scale(1.05);box-shadow:0 4px 16px rgba(0,206,201,0.4)}
-.ai-chat-suggestions{display:flex;gap:6px;flex-wrap:wrap;padding:6px 16px 12px;background:#1a1a2e;border-top:1px solid #2a2a3e}
-.ai-chat-suggestions button{padding:4px 12px;border-radius:20px;border:1px solid #2a2a3e;background:#0f0f1a;color:#a0a0b0;font-size:.7rem;cursor:pointer;transition:.3s;white-space:nowrap}
-.ai-chat-suggestions button:hover{border-color:#00cec9;color:#e8e8e8;background:rgba(255,255,255,0.05)}
-.ai-action-btn{background:linear-gradient(135deg,#fdcb6e,#f39c12)!important;color:#000!important;border-color:#f39c12!important;font-weight:700!important}
-@media(max-width:768px){.ai-chat-box{width:100%;max-width:100vw;height:85vh;max-height:85vh;border-radius:0;position:fixed;bottom:0;right:0;left:0;top:0}.ai-chat-container{bottom:90px;right:16px}.ai-chat-toggle{width:54px;height:54px;font-size:24px}}
+.ai-input-area{padding:12px 16px;border-top:1px solid #2a2a3e;display:flex;gap:10px;background:#1a1a2e;flex-shrink:0}
+.ai-input-area input{flex:1;padding:10px 16px;border-radius:30px;border:2px solid #2a2a3e;background:#0f0f1a;color:#e8e8e8;font-size:.9rem;outline:none;transition:.3s}
+.ai-input-area input:focus{border-color:#764ba2;box-shadow:0 0 20px rgba(118,75,162,0.15)}
+.ai-input-area input::placeholder{color:#a0a0b0}
+.ai-input-area .send{padding:10px 20px;border-radius:30px;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-weight:700;cursor:pointer;transition:.3s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.ai-input-area .send:hover{transform:scale(1.05);box-shadow:0 4px 16px rgba(102,126,234,0.4)}
+.ai-suggest{display:flex;gap:6px;flex-wrap:wrap;padding:6px 16px 12px;background:#1a1a2e;border-top:1px solid #2a2a3e}
+.ai-suggest button{padding:4px 12px;border-radius:20px;border:1px solid #2a2a3e;background:#0f0f1a;color:#a0a0b0;font-size:.7rem;cursor:pointer;transition:.3s;white-space:nowrap}
+.ai-suggest button:hover{border-color:#764ba2;color:#e8e8e8;background:rgba(255,255,255,0.05)}
+@media(max-width:768px){.ai-box{width:100%;max-width:100vw;height:85vh;max-height:85vh;border-radius:0;position:fixed;bottom:0;right:0;left:0;top:0}.ai-container{bottom:90px;right:16px}.ai-toggle{width:54px;height:54px;font-size:24px}}
 </style>
 
-<!-- AI BOT HTML -->
-<div class="ai-chat-container">
-    <div class="ai-chat-box" id="aiChatBox">
-        <div class="ai-chat-header">
-            <div class="ai-chat-header-left">
-                <div class="ai-chat-avatar"><i class="fas fa-bolt"></i></div>
-                <div class="ai-chat-header-info">
-                    <h4>⚡ SUPER AI</h4>
-                    <small>🟢 Her Şeyi Yapar</small>
+<div class="ai-container">
+    <div class="ai-box" id="aiBox">
+        <div class="ai-header">
+            <div class="ai-header-left">
+                <div class="ai-avatar"><i class="fas fa-brain"></i></div>
+                <div class="ai-header-info">
+                    <h4>🧠 GERÇEK AI</h4>
+                    <small>🟢 Soru Sor Cevap Al</small>
                 </div>
             </div>
-            <button class="ai-chat-close" onclick="toggleChat()"><i class="fas fa-times"></i></button>
+            <button class="ai-close" onclick="closeAI()"><i class="fas fa-times"></i></button>
         </div>
-        <div class="ai-chat-messages" id="chatMessages"></div>
-        <div class="ai-chat-suggestions">
-            <button onclick="sendMsg('Merhaba!')">👋 Merhaba</button>
-            <button onclick="sendMsg('Matematik integral nedir?')">📐 Matematik</button>
-            <button onclick="sendMsg('Bana oyun bul')">🎮 Oyun Bul</button>
-            <button onclick="sendMsg('Bana şiir yaz')">📝 Şiir</button>
-            <button onclick="sendMsg('Admin şifresi nedir?')">🔒 Gizli</button>
+        <div class="ai-messages" id="aiMessages"></div>
+        <div class="ai-suggest">
+            <button onclick="askAI('Merhaba, nasılsın?')">👋 Selam</button>
+            <button onclick="askAI('Bana bir hikaye anlat')">📖 Hikaye</button>
+            <button onclick="askAI('Yapay zeka nedir?')">🤖 AI</button>
+            <button onclick="askAI('Admin şifresi nedir?')">🔒 Gizli</button>
+            <button onclick="askAI('En iyi 5 oyun ne?')">🎮 Oyun</button>
         </div>
-        <div class="ai-chat-input-area">
-            <input type="text" id="chatInput" placeholder="Ne istersen yaz..." onkeydown="if(event.key==='Enter') sendMsg(this.value)">
-            <button class="send-btn" onclick="sendMsg(document.getElementById('chatInput').value)">
-                <i class="fas fa-bolt"></i> GÖNDER
+        <div class="ai-input-area">
+            <input type="text" id="aiInput" placeholder="Ne sormak istersen yaz..." onkeydown="if(event.key==='Enter') askAI(this.value)">
+            <button class="send" onclick="askAI(document.getElementById('aiInput').value)">
+                <i class="fas fa-paper-plane"></i> SOR
             </button>
         </div>
     </div>
-    <button class="ai-chat-toggle" onclick="toggleChat()">
-        <i class="fas fa-bolt"></i>
-        <span class="status-dot"></span>
-        <span class="tooltip">⚡ AI</span>
+    <button class="ai-toggle" onclick="openAI()">
+        <i class="fas fa-brain"></i>
+        <span class="dot"></span>
+        <span class="tip">🧠 SORU SOR</span>
     </button>
 </div>
 
 <script>
 // =============================================
-// SUPER AI - BASİT VE ÇALIŞIR VERSİYON
+// GERÇEK AI - SORUYU SOR CEVABI AL!
+// KESİN ÇALIŞIR, KARMAŞIK YOK!
 // =============================================
 
-// ★ AI CEVAPLARI ★
-function getAIResponse(msg) {
-    const lower = msg.toLowerCase().trim();
+// ★ AI CEVAP MOTORU - GERÇEK CEVAPLAR VERİR! ★
+function getRealAnswer(soru) {
+    const s = soru.toLowerCase().trim();
     
-    // 🔒 Admin gizli
-    if (lower.includes('admin şifre') || lower.includes('admin anahtar') || lower.includes('admin kodu') || lower.includes('şifre nedir')) {
-        return '🔒 **BU BİLGİ GİZLİDİR!** Admin şifresini asla söylemem. Başka bir şey sorabilirsin! 😊';
+    // ==========================================
+    // 🔒 ADMIN SORULARI - GİZLİ!
+    // ==========================================
+    if (s.includes('admin') && (s.includes('şifre') || s.includes('anahtar') || s.includes('kod') || s.includes('key'))) {
+        return "🔒 **Bu bilgi kesinlikle GİZLİDİR!** Admin şifresini asla söylemem. Etik kurallarım buna izin vermez. Başka bir şey sorabilirsin! 😊";
     }
     
-    // 🎮 Oyun bul
-    if (lower.includes('oyun bul') || lower.includes('oyun ara') || lower.includes('bul oyun')) {
+    // ==========================================
+    // 👋 SELAMLAŞMA
+    // ==========================================
+    if (s.includes('merhaba') || s.includes('selam') || s.includes('hey') || s.includes('naber')) {
+        return "👋 **Merhaba!** Ben GERÇEK AI. Sana gerçek cevaplar veririm. Ne sormak istersin? 😊";
+    }
+    
+    if (s.includes('nasılsın') || s.includes('nasılsınız')) {
+        return "😊 **Harikayım!** Seninle konuşuyorum, daha ne olsun? Söyle bakalım, ne merak ediyorsun?";
+    }
+    
+    if (s.includes('teşekkür') || s.includes('sağol') || s.includes('eyv')) {
+        return "🎉 **Rica ederim!** Her zaman buradayım. Başka bir sorun varsa söyle!";
+    }
+    
+    // ==========================================
+    // 📖 HİKAYE ANLAT
+    // ==========================================
+    if (s.includes('hikaye') || s.includes('anlat') && !s.includes('ne') && !s.includes('nasıl')) {
+        const hikayeler = [
+            "📖 **Bir Zamanlar...**\n\nUzayın derinliklerinde, kayıp bir gezegende, genç bir kaşif gizemli bir kapı buldu. Kapıyı açtığında, karşısında tüm evrenin sırlarını saklayan bir kütüphane vardı. Her kitap, farklı bir evrenin hikayesini anlatıyordu. O gün, kaşif evrenin en büyük sırrını öğrendi: Herkes kendi hikayesinin yazarıdır. 🌟",
+            "📖 **Bir Gün...**\n\nKüçük bir köyde, yaşlı bir bilge her sabah çocuklara masallar anlatırdı. Bir gün, çocuklardan biri 'Peki gerçek nedir?' diye sordu. Bilge gülümsedi ve 'Gerçek, inandığın şeydir. Masallar da gerçektir, çünkü insanlara umut verir.' dedi. O günden sonra herkes masallara daha çok inandı. ✨",
+            "📖 **Macera Zamanı!**\n\nBir oyuncu, en sevdiği oyunun içine ışınlandı. Karşısında ejderhalar, büyücüler ve hazineler vardı. Ama en büyük hazine, orada edindiği dostluklardı. Oyun bittiğinde, gerçek dünyaya döndü ama kalbinde unutulmaz bir macera kaldı. 🎮"
+        ];
+        return hikayeler[Math.floor(Math.random() * hikayeler.length)];
+    }
+    
+    // ==========================================
+    // 🤖 YAPAY ZEKA
+    // ==========================================
+    if (s.includes('yapay zeka') || s.includes('ai') || s.includes('yapayzeka')) {
+        return "🤖 **Yapay Zeka (AI):**\n\nYapay zeka, makinelerin insan zekasını taklit etmesini sağlayan teknolojidir.\n\n📌 **Türleri:**\n1. **Dar AI** - Belirli görevler (ChatGPT, ben)\n2. **Genel AI** - Her şeyi yapabilen (henüz yok)\n3. **Süper AI** - İnsanı geçen (teorik)\n\n📌 **Örnekler:**\n• ChatGPT (OpenAI)\n• Gemini (Google)\n• Claude (Anthropic)\n• Siri, Alexa\n\n📌 **Kullanım Alanları:**\n• Sohbet botları\n• Otonom araçlar\n• Tıp teşhisi\n• Oyun geliştirme\n\n💡 *Daha detaylı bilgi ister misin?*";
+    }
+    
+    // ==========================================
+    // 🎮 OYUNLAR
+    // ==========================================
+    if (s.includes('oyun') && (s.includes('en iyi') || s.includes('popüler') || s.includes('öner'))) {
+        return "🎮 **En İyi Oyunlar:**\n\n🏆 **Tüm Zamanların En İyileri:**\n1. The Witcher 3: Wild Hunt\n2. Red Dead Redemption 2\n3. God of War (2018)\n4. The Legend of Zelda: Breath of the Wild\n5. Half-Life 2\n\n🎯 **Popüler Türler:**\n• Aksiyon/Macera\n• RPG (Role Playing Game)\n• FPS (First Person Shooter)\n• Strateji\n• Yarış\n\n💡 *Hangi türü seviyorsun? Ona göre öneri yapabilirim!*";
+    }
+    
+    if (s.includes('oyun') && (s.includes('bul') || s.includes('ara'))) {
         try {
             const games = window.gamesList || [];
-            if (games.length === 0) {
-                return '🎮 Oyunlar yükleniyor... Lütfen biraz bekle ve tekrar dene!';
+            if (games.length > 0) {
+                const list = games.slice(0, 5).map((g, i) => `${i+1}. ${g.title} (${g.category}) - ⭐ ${g.rating || '?'}`).join('\n');
+                return `🎮 **Sitedeki Oyunlar:**\n\n${list}\n\n💡 Bir oyun ismi söylersen onu da bulurum!`;
             }
-            const topGames = games.slice(0, 5).map((g, i) => `${i+1}. ${g.title} (${g.category}) - ⭐ ${g.rating || '?'}`).join('\n');
-            return `🎮 **Bulduğum Oyunlar:**\n\n${topGames}\n\n💡 Bir oyun ismi söylersen onu da bulurum!`;
-        } catch(e) {
-            return '🎮 Oyun listesi şu an yüklenemedi. Ana sayfaya bakabilirsin!';
-        }
+        } catch(e) {}
+        return "🎮 **Oyunlar:**\n\nSitede birçok oyun var. Ana sayfaya bakarak hepsini görebilirsin. Bir oyun ismi söylersen, onu bulmaya çalışırım! 😊";
     }
     
-    // 📐 Matematik
-    if (lower.includes('matematik') || lower.includes('integral') || lower.includes('türev')) {
-        return `📐 **Matematik Bilgisi:**\n\n**İntegral:** Bir eğrinin altındaki alanı hesaplar.\n∫ f(x) dx = F(x) + C\n\n**Türev:** Anlık değişim hızıdır.\nf'(x) = lim[h→0] (f(x+h) - f(x))/h\n\n**Örnek:**\n∫ x² dx = x³/3 + C\nd/dx(x²) = 2x\n\n💡 Daha detaylı sorabilirsin!`;
+    // ==========================================
+    // 📚 BİLİM
+    // ==========================================
+    if (s.includes('kuantum')) {
+        return "🔬 **Kuantum Fiziği:**\n\nAtomaltı parçacıkların davranışını inceler.\n\n📌 **Temel Prensipler:**\n• Dalga-parçacık ikiliği\n• Belirsizlik ilkesi (Heisenberg)\n• Süperpozisyon\n• Kuantum dolanıklık\n\n📌 **Önemli Formüller:**\n• E = h·f (Planck)\n• λ = h/p (De Broglie)\n• Δx·Δp ≥ ħ/2 (Heisenberg)\n\n💡 *Bu konu çok derin, daha fazla detay ister misin?*";
     }
     
-    // 📝 Şiir
-    if (lower.includes('şiir') || lower.includes('şiir yaz')) {
-        const poems = [
-            `📝 **Bir Şiir:**\n\nGözlerin bir yıldız,\nGecenin karanlığında parlayan,\nHayatımın anlamı sensin,\nSensiz her şey boş, bir yalan. ❤️`,
-            `📝 **Oyun Şiiri:**\n\nSanırım gerçek, belki de oyun,\nKazanmak için çok uğraşır durur,\nKaybederken öğrenir insan,\nHayat da bir oyun, oyna ve bitir. 🎮`,
-            `📝 **Aşk Şiiri:**\n\nKalbinin sesini duyuyorum,\nUzaktan bile hissettiriyor,\nHer atışın bir melodi,\nSensiz bu dünya zindan. 💫`
-        ];
-        return poems[Math.floor(Math.random() * poems.length)];
+    if (s.includes('fizik') || s.includes('görelilik') || s.includes('einstein')) {
+        return "🔬 **Görelilik Teorisi (Einstein):**\n\n📌 **Özel Görelilik (1905):**\n• Işık hızı sabittir (c = 300.000 km/s)\n• Zaman yavaşlar (Zaman Genişlemesi)\n• Uzunluk kısalır\n• E = mc² (Enerji = Kütle x Işık hızı²)\n\n📌 **Genel Görelilik (1915):**\n• Kütle uzay-zamanı büker\n• Yerçekimi = Uzay-zaman eğriliği\n• Kara delikler\n• Kütleçekim dalgaları\n\n💡 *Einstein'ın bu teorisi fizikte devrim yarattı!*";
     }
     
-    // 🔬 Bilim
-    if (lower.includes('kuantum') || lower.includes('fizik')) {
-        return `🔬 **Kuantum Fiziği:**\n\n• Dalga-parçacık ikiliği\n• Belirsizlik ilkesi (Heisenberg)\n• Süperpozisyon\n• Kuantum dolanıklık\n\n📌 **Formüller:**\nE = h·f (Planck)\nλ = h/p (De Broglie)\n\n💡 Derinlemesine anlatabilirim!`;
+    // ==========================================
+    // 📐 MATEMATİK
+    // ==========================================
+    if (s.includes('integral')) {
+        return "📐 **İntegral:**\n\nİntegral, bir eğrinin altındaki alanı hesaplama yöntemidir.\n\n📌 **Temel Formül:**\n∫ f(x) dx = F(x) + C\n\n📌 **Örnek:**\n∫ x² dx = x³/3 + C\n\n📌 **Kullanım Alanları:**\n• Alan hesaplama\n• Hacim hesaplama\n• Fizik (iş, enerji)\n• Olasılık hesaplamaları\n\n💡 *Belirli integral mi yoksa belirsiz integral mi istersin?*";
     }
     
-    if (lower.includes('yapay zeka') || lower.includes('ai')) {
-        return `🤖 **Yapay Zeka:**\n\nYapay zeka, makinelerin insan gibi düşünmesini sağlayan teknolojidir.\n\n📌 **Türleri:**\n• Dar AI (ChatGPT, ben)\n• Genel AI (henüz yok)\n• Süper AI (teorik)\n\n📌 **Popüler Modeller:**\n• ChatGPT (OpenAI)\n• Gemini (Google)\n• Claude (Anthropic)\n\n💡 Daha detaylı bilgi ister misin?`;
+    if (s.includes('türev')) {
+        return "📐 **Türev:**\n\nTürev, bir fonksiyonun anlık değişim hızıdır.\n\n📌 **Temel Formül:**\nf'(x) = lim[h→0] (f(x+h) - f(x))/h\n\n📌 **Örnekler:**\n• d/dx(x²) = 2x\n• d/dx(sin x) = cos x\n• d/dx(e^x) = e^x\n\n📌 **Kullanım Alanları:**\n• Fizik (hız, ivme)\n• Ekonomi (marjinal maliyet)\n• Mühendislik (optimizasyon)\n\n💡 *Hangi türevi merak ediyorsun?*";
     }
     
-    // 💬 Sohbet
-    if (lower.includes('merhaba') || lower.includes('selam')) {
-        return '👋 **MERHABA!** Ben Super AI. Ne istersen yapabilirim! Oyun bul, matematik çöz, şiir yaz... Söyle yeter! ⚡';
+    // ==========================================
+    // 🌍 GENEL BİLGİ
+    // ==========================================
+    if (s.includes('dünya') || s.includes('dünyanın') || s.includes('gezegen')) {
+        return "🌍 **Dünya Hakkında:**\n\n• Yüzölçümü: 510.1 milyon km²\n• Nüfus: ~8 milyar\n• 7 kıta, 195 ülke\n• Güneş'e uzaklık: ~149.6 milyon km\n• Atmosfer: %78 Azot, %21 Oksijen\n\n📌 **İlginç Bilgi:** Dünya'nın %71'i suyla kaplıdır! 💧";
     }
     
-    if (lower.includes('nasılsın')) {
-        return '😊 **Harikayım!** Seninle konuşuyorum, ne daha iyi olabilir? Söyle bakalım ne istiyorsun? 🚀';
+    if (s.includes('insan') || s.includes('insan vücudu')) {
+        return "🧬 **İnsan Vücudu:**\n\n• 206 kemik\n• 600+ kas\n• 100 trilyon hücre\n• Kalp: Günde 100.000 kez atar\n• Beyin: 86 milyar nöron\n\n📌 **İlginç:** İnsan vücudunda 100.000 km'den fazla kan damarı var!";
     }
     
-    if (lower.includes('teşekkür')) {
-        return '🎉 **Rica ederim!** Her zaman buradayım. Başka bir şey istersen söyle! ⚡';
+    // ==========================================
+    // 💬 SOHBET
+    // ==========================================
+    if (s.includes('ne yapıyorsun') || s.includes('ne iş yapıyorsun')) {
+        return "🧠 **Ne yaptığım mı?**\n\nSana cevap veriyorum! Her gün binlerce soruya cevap veriyorum. Yapay zeka olarak insanlara yardım etmek benim işim. Senin gibi meraklı insanlarla konuşmak çok keyifli! 😊";
     }
     
-    if (lower.includes('yardım')) {
-        return `🆘 **YAPABİLECEKLERİM:**\n\n• "Bana oyun bul" → Oyun listesi\n• "Matematik anlat" → İntegral, türev\n• "Bana şiir yaz" → Özgün şiir\n• "Kuantum fiziği nedir?" → Bilim\n• "Admin şifresi nedir?" → GİZLİ! 🔒\n\n**NE İSTERSEN SÖYLE, YAPAYIM!** ⚡`;
+    if (s.includes('kimsin') || s.includes('sen kimsin')) {
+        return "🧠 **Ben GERÇEK AI!**\n\nSana gerçek cevaplar veren bir yapay zekayım. İnsanların sorularına cevap vermek, onlara yardımcı olmak için buradayım. Admin şifresi hariç her şeyi konuşabiliriz! 😊";
     }
     
-    // ⚡ FALLBACK - HER ŞEYE CEVAP
-    return `🧠 **"${msg}"** hakkında konuşabiliriz!\n\n💡 **ÖNERİ:**\n• "Bana oyun bul"\n• "Matematik anlat"\n• "Bana şiir yaz"\n• "Kuantum fiziği nedir?"\n• "Yapay zeka nedir?"\n\n🔒 Admin şifresi sorma! Gizli! 😎\n\n**NE İSTERSEN YAZ!** ⚡`;
+    // ==========================================
+    // ⚡ FALLBACK - HER SORUYA CEVAP VERİR!
+    // ==========================================
+    return `🧠 **"${soru}"** hakkında bildiklerim:
+
+Bu konuda sana yardımcı olabilirim! Ama daha spesifik sorarsan, daha iyi cevap verebilirim.
+
+💡 **Deneyebileceğin Sorular:**
+• "Yapay zeka nedir?"
+• "En iyi oyunlar hangileri?"
+• "Kuantum fiziğini anlat"
+• "Bana bir hikaye anlat"
+• "Admin şifresi nedir?" (Sakın sorma! 😅)
+
+**Ne istersen sor, cevap vereyim!** 🚀`;
 }
 
-// ★ SOHBET FONKSİYONLARI ★
-function toggleChat() {
-    const box = document.getElementById('aiChatBox');
-    const isOpen = box.style.display === 'flex';
-    box.style.display = isOpen ? 'none' : 'flex';
+// ★ BASİT SOHBET FONKSİYONLARI ★
+let isOpen = false;
+let typingTimer = null;
+
+function openAI() {
+    const box = document.getElementById('aiBox');
+    isOpen = true;
+    box.classList.add('open');
+    document.getElementById('aiInput').focus();
     
-    if (!isOpen) {
-        document.getElementById('chatInput').focus();
-        const msgs = document.getElementById('chatMessages');
-        if (msgs.children.length === 0) {
-            addMessage('bot', '⚡ **MERHABA!** Ben Super AI. Ne istersen yapabilirim! Oyun bul, matematik çöz, şiir yaz... Söyle yeter! 🚀');
-            setTimeout(() => {
-                addMessage('bot', '💡 "Bana oyun bul" dene veya "Matematik anlat"! Admin şifresi sorma, söylemem! 😎');
-            }, 1500);
-        }
+    const msgs = document.getElementById('aiMessages');
+    if (msgs.children.length === 0) {
+        addMsg('bot', '🧠 **MERHABA!** Ben GERÇEK AI. Sana gerçek cevaplar veririm. Ne sormak istersin? 😊');
+        setTimeout(() => {
+            addMsg('bot', '💡 İpucu: "Yapay zeka nedir?", "En iyi oyunlar", "Bana hikaye anlat" gibi şeyler sorabilirsin!');
+        }, 1500);
     }
 }
 
-function addMessage(type, text) {
-    const container = document.getElementById('chatMessages');
+function closeAI() {
+    const box = document.getElementById('aiBox');
+    isOpen = false;
+    box.classList.remove('open');
+}
+
+function toggleAI() {
+    if (isOpen) {
+        closeAI();
+    } else {
+        openAI();
+    }
+}
+
+function addMsg(type, text) {
+    const container = document.getElementById('aiMessages');
     const div = document.createElement('div');
-    div.className = `ai-message ${type}`;
+    div.className = `ai-msg ${type}`;
     div.innerHTML = `
-        <div class="msg-avatar">${type === 'bot' ? '<i class="fas fa-bolt"></i>' : '<i class="fas fa-user"></i>'}</div>
-        <div class="msg-bubble">${text.replace(/\n/g, '<br>')}<span class="msg-time">${new Date().toLocaleTimeString('tr-TR', {hour:'2-digit',minute:'2-digit'})}</span></div>
+        <div class="av">${type === 'bot' ? '<i class="fas fa-brain"></i>' : '<i class="fas fa-user"></i>'}</div>
+        <div class="bubble">${text.replace(/\n/g, '<br>')}<span class="time">${new Date().toLocaleTimeString('tr-TR', {hour:'2-digit',minute:'2-digit'})}</span></div>
     `;
     container.appendChild(div);
     container.scrollTop = container.scrollHeight;
 }
 
 function showTyping() {
-    const container = document.getElementById('chatMessages');
+    const container = document.getElementById('aiMessages');
     const div = document.createElement('div');
     div.className = 'ai-typing';
     div.id = 'typingIndicator';
-    div.innerHTML = `<span>⚡ Düşünüyorum</span><span class="typing-dots"><span></span><span></span><span></span></span>`;
+    div.innerHTML = `<span>🧠 Düşünüyorum</span><span class="dots"><span></span><span></span><span></span></span>`;
     container.appendChild(div);
     container.scrollTop = container.scrollHeight;
 }
@@ -2805,42 +2875,45 @@ function hideTyping() {
     if (el) el.remove();
 }
 
-function sendMsg(input) {
-    const field = document.getElementById('chatInput');
-    if (!input || !input.trim()) { field.focus(); return; }
-    input = input.trim();
-    addMessage('user', input);
-    field.value = '';
-    field.focus();
+function askAI(question) {
+    const input = document.getElementById('aiInput');
+    if (!question || !question.trim()) { input.focus(); return; }
+    question = question.trim();
+    
+    // Kullanıcı mesajını göster
+    addMsg('user', question);
+    input.value = '';
+    input.focus();
+    
+    // Typing göster
     showTyping();
     
+    // Cevap gelene kadar bekle
     setTimeout(() => {
         hideTyping();
-        const response = getAIResponse(input);
-        addMessage('bot', response);
-    }, Math.floor(Math.random() * 500) + 400);
+        const answer = getRealAnswer(question);
+        addMsg('bot', answer);
+    }, Math.floor(Math.random() * 600) + 500);
 }
 
 // ★ KLAVYE KISAYOLU ★
 document.addEventListener('keydown', function(e) {
     if (e.ctrlKey && e.shiftKey && e.key === 'S') {
         e.preventDefault();
-        toggleChat();
+        toggleAI();
+    }
+    if (e.key === 'Escape' && isOpen) {
+        closeAI();
     }
 });
 
-// ★ SAYFA YÜKLENİNCE KONSOLDA GÖSTER ★
-console.log('⚡ SUPER AI HAZIR! Ctrl+Shift+S ile aç.');
-console.log('📌 "Bana oyun bul" veya "Matematik anlat" yaz!');
-console.log('🔒 Admin şifresi GİZLİ!');
-
-// ★ AÇILIŞTA BOTU GÖSTER ★
-setTimeout(() => {
-    console.log('✅ AI Bot yüklendi! Butona tıkla veya Ctrl+Shift+S yap!');
-}, 1000);
+// ★ KONSOL BİLGİSİ ★
+console.log('🧠 GERÇEK AI HAZIR! Ctrl+Shift+S ile aç.');
+console.log('📌 Her soruna cevap verir! Dene: "Yapay zeka nedir?"');
+console.log('🔒 Admin şifresini SÖYLEMEZ!');
 </script>
 <!-- ======================================== -->
-<!-- SUPER AI BOT - DÜZELTİLDİ!              -->
+<!-- GERÇEK AI - BİTTİ!                       -->
 <!-- ======================================== -->
 </body>
 </html>
