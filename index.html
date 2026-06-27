@@ -9,17 +9,17 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
         import { getDatabase, ref, set, onValue, push, update, remove, get } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
 
-        // 🔽 KENDİ FIREBASE CONFIG'İNİ BURAYA YAPIŞTIR
+        // SENİN FIREBASE CONFIG
         const firebaseConfig = {
-  apiKey: "AIzaSyAcovKVK_M5AAIV-2eRMwOAypTLCAKjfqE",
-  authDomain: "oyundeposu-2bb70.firebaseapp.com",
-  databaseURL: "https://oyundeposu-2bb70-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "oyundeposu-2bb70",
-  storageBucket: "oyundeposu-2bb70.firebasestorage.app",
-  messagingSenderId: "731408906818",
-  appId: "1:731408906818:web:8613d24c510dbb084c8bdb",
-  measurementId: "G-GZVYB6XMBG"
-};
+            apiKey: "AIzaSyAcovKVK_M5AAIV-2eRMwOAypTLCAKjfqE",
+            authDomain: "oyundeposu-2bb70.firebaseapp.com",
+            databaseURL: "https://oyundeposu-2bb70-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "oyundeposu-2bb70",
+            storageBucket: "oyundeposu-2bb70.firebasestorage.app",
+            messagingSenderId: "731408906818",
+            appId: "1:731408906818:web:8613d24c510dbb084c8bdb",
+            measurementId: "G-GZVYB6XMBG"
+        };
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
@@ -36,9 +36,6 @@
     </script>
     <!-- Ana stil -->
     <style>
-        /* Stiller aynen korunacak, önceki 1000+ satırdaki CSS'in tamamı buraya */
-        <style>
-        /* Varsayılan Tema Değişkenleri */
         :root {
             --bg: #1a1a2e;
             --card: #1e2a3a;
@@ -51,7 +48,6 @@
             --radius: 10px;
             --shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
-        /* Pembe Tema */
         .theme-pink {
             --bg: #2d1b2e;
             --card: #3a253d;
@@ -62,7 +58,6 @@
             --orange: #ffb347;
             --shadow: 0 8px 20px rgba(255, 126, 179, 0.3);
         }
-        /* Hacker Yeşil Teması */
         .theme-hacker {
             --bg: #0a0a0a;
             --card: #111;
@@ -73,7 +68,6 @@
             --orange: #ffcc00;
             --shadow: 0 8px 20px rgba(0, 255, 65, 0.3);
         }
-        /* Admin Altın Teması */
         .theme-admin-gold {
             --bg: #0d0d0d;
             --card: #1a1a1a;
@@ -89,7 +83,6 @@
             background-attachment: fixed;
             animation: adminBgShift 8s ease-in-out infinite alternate;
         }
-        /* Admin Mor Teması */
         .theme-admin-purple {
             --bg: #0f0a14;
             --card: #1a1126;
@@ -105,7 +98,6 @@
             background-attachment: fixed;
             animation: adminBgShift 10s ease-in-out infinite alternate;
         }
-        /* Admin Turuncu Teması */
         .theme-admin-orange {
             --bg: #1a0f07;
             --card: #24180c;
@@ -121,12 +113,10 @@
             background-attachment: fixed;
             animation: adminBgShift 12s ease-in-out infinite alternate;
         }
-        /* Arka plan animasyonu */
         @keyframes adminBgShift {
             0% { background-position: 0% 0%; }
             100% { background-position: 100% 100%; }
         }
-        /* Admin paneli parlama efekti */
         body.admin-active .admin-panel {
             box-shadow: 0 0 40px rgba(255,215,0,0.4), inset 0 0 20px rgba(255,215,0,0.05);
             animation: panelGlow 2s ease-in-out infinite alternate;
@@ -135,7 +125,6 @@
             0% { box-shadow: 0 0 40px rgba(255,215,0,0.3), inset 0 0 20px rgba(255,215,0,0.05); }
             100% { box-shadow: 0 0 70px rgba(255,215,0,0.6), inset 0 0 30px rgba(255,215,0,0.1); }
         }
-        /* Admin rozeti ışıltısı */
         .admin-badge {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             color: #000;
@@ -152,7 +141,6 @@
             0% { box-shadow: 0 0 10px #ffaa00, 0 0 25px rgba(255,215,0,0.4); }
             100% { box-shadow: 0 0 25px #ffd700, 0 0 45px rgba(255,215,0,0.7); }
         }
-        /* Genel Sıfırlama */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -161,7 +149,6 @@
             line-height: 1.5;
             min-height: 100vh;
         }
-        /* Navbar */
         .navbar {
             background: var(--card);
             border-bottom: 1px solid var(--border);
@@ -203,7 +190,6 @@
             gap: 5px;
         }
         .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
-        /* Tema Seçim Noktaları */
         .theme-dot {
             width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
             border: 2px solid transparent; display: inline-block; margin: 0 2px;
@@ -215,7 +201,6 @@
         .theme-dot.admin-gold { background: #ffd700; }
         .theme-dot.admin-purple { background: #c77dff; }
         .theme-dot.admin-orange { background: #ff6d00; }
-        /* İçerik Konteyneri */
         .container { max-width: 1300px; margin: 0 auto; padding: 16px; }
         .section-title { font-size: 1.5rem; font-weight: 700; margin: 16px 0 10px; }
         .search-bar {
@@ -224,7 +209,6 @@
             font-size: 0.9rem; outline: none; margin-bottom: 10px;
         }
         .search-bar:focus { border-color: var(--accent); }
-        /* Oyun Kartları */
         .game-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -250,7 +234,6 @@
         }
         .downloads-count { font-size: 0.7rem; opacity: 0.7; margin-top: 4px; }
         .rating { color: #ffaa00; font-size: 0.8rem; margin-top: 2px; }
-        /* Modal */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.7);
             z-index: 200; display: flex; align-items: center; justify-content: center;
@@ -266,7 +249,6 @@
             text-decoration: none; font-weight: 700; display: inline-block; margin-top: 8px;
             border: none; cursor: pointer; font-size: 0.9rem;
         }
-        /* Bölüm Kutuları */
         .feature-box {
             background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
             padding: 16px; margin: 14px 0;
@@ -277,7 +259,6 @@
             background: var(--soft); border: 1px solid var(--border);
             color: var(--text); border-radius: 4px; font-size: 0.85rem;
         }
-        /* Yorumlar */
         .comment {
             background: var(--soft); padding: 10px; border-radius: 8px;
             margin: 8px 0; font-size: 0.85rem;
@@ -292,19 +273,16 @@
             border-radius: 20px; font-weight: 700; font-size: 0.8rem;
             display: inline-block; margin-bottom: 10px;
         }
-        /* Canlı Etkinlik Akışı */
         .canli-etkinlik {
             background: var(--soft); border: 1px solid var(--border);
             border-radius: var(--radius); padding: 12px; margin-bottom: 16px;
             font-size: 0.85rem; max-height: 120px; overflow-y: auto;
         }
-        /* Footer */
         .footer {
             margin-top: 30px; padding: 20px; background: var(--card);
             border-top: 1px solid var(--border); text-align: center;
             font-size: 0.8rem; opacity: 0.8;
         }
-        /* Admin Paneli */
         .admin-panel {
             background: var(--card); border: 2px solid var(--orange);
             border-radius: var(--radius); padding: 20px; margin-top: 14px;
@@ -337,11 +315,9 @@
             padding: 8px; border-bottom: 1px solid var(--border); gap: 6px;
             flex-wrap: wrap; font-size: 0.85rem;
         }
-        /* Yardım Sayfası Stili */
         .help-section { padding: 20px; }
         .help-section h2 { margin-bottom: 12px; }
         .help-section p { margin-bottom: 8px; font-size: 0.9rem; opacity: 0.9; }
-        /* Toast Bildirim */
         .toast {
             position: fixed; bottom: 20px; right: 20px; background: var(--green);
             color: #000; padding: 10px 20px; border-radius: 6px; font-weight: 700;
@@ -361,7 +337,6 @@
             margin-left: 8px;
         }
         .sort-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
-        /* Yukarı Çık Butonu */
         .back-to-top {
             position: fixed; bottom: 20px; right: 20px; width: 36px; height: 36px;
             background: var(--accent); color: #000; border-radius: 50%;
@@ -370,16 +345,13 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.4); transition: 0.2s;
         }
         .back-to-top:hover { transform: scale(1.1); }
-        /* Responsive */
         @media (max-width: 600px) {
             .game-grid { grid-template-columns: 1fr 1fr; }
             .nav-links button { padding: 5px 10px; font-size: 0.75rem; }
         }
     </style>
-    <!-- ==================== CSS SONU ==================== -->
 </head>
 <body>
-<!-- ==================== NAVBAR ==================== -->
 <nav class="navbar">
     <div class="logo" onclick="location.reload()">🎮 OyunDeposu</div>
     <div class="nav-links">
@@ -404,7 +376,6 @@
     </div>
 </nav>
 
-<!-- ==================== ANA İÇERİK ==================== -->
 <div class="container" id="mainContent">
     <div class="canli-etkinlik" id="canliEtkinlik">🟢 Canlı etkinlik akışı yükleniyor...</div>
     <div id="duyuruAlani" class="duyuru hidden"></div>
@@ -416,7 +387,6 @@
         <button class="section-btn" onclick="showSection('comments')">💬 Yorumlar</button>
         <button class="section-btn" onclick="showSection('help')">❓ Yardım</button>
     </div>
-    <!-- Oyunlar Bölümü -->
     <div id="gamesSection">
         <div class="section-title">🔥 Popüler Oyunlar</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;" id="categoryFilters"></div>
@@ -428,7 +398,6 @@
         </div>
         <div class="game-grid" id="gameGrid"></div>
     </div>
-    <!-- Karşılaştırma Bölümü -->
     <div id="compareSection" class="feature-box hidden">
         <h3>⚖️ Oyun Karşılaştır</h3>
         <select id="compareGame1"><option value="">Oyun 1 seç</option></select>
@@ -436,7 +405,6 @@
         <button onclick="compareGames()" style="background:var(--accent);color:#000;padding:8px 18px;border-radius:6px;border:none;cursor:pointer;font-weight:700;font-size:0.85rem;margin-top:6px;">Karşılaştır</button>
         <div id="compareResult" style="margin-top:10px;font-size:0.85rem;"></div>
     </div>
-    <!-- PC Test Bölümü -->
     <div id="pctestSection" class="feature-box hidden">
         <h3>🖥️ Sistem Gereksinim Testi</h3>
         <p style="font-size:0.8rem;opacity:0.7;">Bilgisayar özelliklerini gir, oyunun çalışıp çalışmayacağını gör.</p>
@@ -450,7 +418,6 @@
         <button onclick="runPcTest()" style="background:var(--green);color:#000;padding:9px 20px;border-radius:6px;border:none;cursor:pointer;font-weight:700;font-size:0.85rem;margin-top:6px;">Test Et</button>
         <div id="pcTestResult" style="margin-top:10px;font-size:0.85rem;"></div>
     </div>
-    <!-- Yorumlar Bölümü -->
     <div id="commentsSection" class="feature-box hidden">
         <h3>💬 Genel Yorumlar</h3>
         <div id="globalComments" style="font-size:0.85rem;"></div>
@@ -459,7 +426,6 @@
             <button onclick="addGlobalComment()" style="background:var(--accent);color:#000;padding:8px 16px;border-radius:6px;border:none;cursor:pointer;font-weight:700;font-size:0.85rem;">Gönder</button>
         </div>
     </div>
-    <!-- Yardım Bölümü -->
     <div id="helpSection" class="feature-box hidden">
         <div class="help-section">
             <h2>❓ Oyun Deposu Yardım</h2>
@@ -476,11 +442,10 @@
     <div class="footer">
         <p>© 2024 OyunDeposu - Tüm hakları depoda saklıdır 🎮</p>
         <p style="margin-top:6px;">İletişim: oyundeposu@example.com | Discord: OyunDeposu#1234</p>
-        <p style="margin-top:4px;">🚀 Canlı güncellemeler aktif! Tüm sekmeler anında senkronize olur.</p>
+        <p style="margin-top:4px;">🚀 Firebase Canlı Modu Aktif! Tüm cihazlar anında senkronize.</p>
     </div>
 </div>
 
-<!-- ==================== ADMIN PANELİ ==================== -->
 <div class="container hidden" id="adminContainer">
     <div class="admin-panel">
         <h3>🛡️ Admin Paneli</h3>
@@ -492,7 +457,6 @@
             <button id="menuStats" onclick="showAdminSection('stats')">📊 İstatistikler</button>
             <button onclick="closeAdminPanel()" style="background:#555;color:#fff;">❌ Paneli Kapat</button>
         </div>
-        <!-- Oyun Ekleme Formu -->
         <div id="sectionAdd" class="admin-form">
             <h4>Yeni Oyun Ekle</h4>
             <input type="text" id="addTitle" placeholder="Oyun Adı *">
@@ -508,9 +472,7 @@
             <input type="text" id="addTags" placeholder="örn: açık dünya, fps, çok oyunculu">
             <button class="btn-save" onclick="addGame()">💾 Ekle</button>
         </div>
-        <!-- Oyun Listesi -->
         <div id="sectionList" class="hidden"><h4>Tüm Oyunlar</h4><div id="adminGameList"></div></div>
-        <!-- Oyun Düzenleme Formu -->
         <div id="sectionEdit" class="admin-form hidden">
             <h4>Oyun Düzenle</h4>
             <select id="editSelect" onchange="loadGameForEdit()"><option value="">Düzenlenecek oyunu seç</option></select>
@@ -530,7 +492,6 @@
             <input type="number" id="editRating" min="1" max="5" step="0.1" placeholder="Ortalama puan">
             <button class="btn-save" onclick="updateGame()">💾 Güncelle</button>
         </div>
-        <!-- Ayarlar Bölümü -->
         <div id="sectionSettings" class="admin-form hidden">
             <h4>⚙️ Site Ayarları</h4>
             <label>Duyuru Mesajı:</label>
@@ -539,7 +500,6 @@
             <input type="text" id="siteTitleInput" placeholder="Site başlığı (varsayılan: OyunDeposu)">
             <button class="btn-save" onclick="saveSettings()">💾 Ayarları Kaydet</button>
         </div>
-        <!-- İstatistikler Bölümü -->
         <div id="sectionStats" class="admin-form hidden">
             <h4>📊 Site İstatistikleri</h4>
             <p>Toplam Oyun: <span id="statTotalGames">0</span></p>
@@ -550,7 +510,6 @@
     </div>
 </div>
 
-<!-- ==================== MODALLAR ==================== -->
 <div class="modal-overlay hidden" id="gameDetailModal"><div class="modal" id="gameDetailContent"></div></div>
 <div class="modal-overlay hidden" id="loginModal">
     <div class="modal"><button class="close-btn" onclick="closeModal('loginModal')">✕</button><h3>🔑 Giriş</h3>
@@ -570,498 +529,447 @@
 <div class="toast hidden" id="toast"></div>
 <div class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Yukarı Çık">🔼</div>
 
-<!-- ==================== JAVASCRIPT BAŞLANGIÇ ==================== -->
 <script>
-    // Admin şifresi (Base64 ile gizlenmiş)
-    const ADMIN_PASSWORD = atob('R2FtZUh1YjIwMjQhQWRtaW4=');
-
-    // Güvenli localStorage okuma/yazma fonksiyonları
-    function safeGet(key, defaultValue) {
-        try { const raw = localStorage.getItem(key); if (!raw) return defaultValue; const parsed = JSON.parse(raw); if (Array.isArray(defaultValue) && !Array.isArray(parsed)) return defaultValue; return parsed; } catch (e) { return defaultValue; }
-    }
-    function safeSet(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {} }
-
-    // Canlı etkinlik akışı için değişkenler
-    let etkinlikler = safeGet('gh_etkinlikler', []);
-    const maxEtkinlik = 10;
-
-    // BroadcastChannel ile sekmeler arası canlı haberleşme
-    let canliKanal;
-    try {
-        canliKanal = new BroadcastChannel('oyundeposu_canli');
-        canliKanal.onmessage = (e) => {
-            if (e.data && e.data.type) {
-                if (['oyunGuncelle','yorumGuncelle','begeniGuncelle','duyuruGuncelle','temaGuncelle','ayarlarGuncelle'].includes(e.data.type)) {
-                    renderGames(document.getElementById('searchInput').value, activeCategory);
-                    renderComments();
-                    renderDuyuru();
-                    updateStats();
-                }
-                if (e.data.type === 'etkinlik') {
-                    etkinlikEkle(e.data.mesaj, false);
-                }
-            }
-        };
-    } catch (e) { canliKanal = null; }
-
-    // Etkinlik ekleme fonksiyonu
-    function etkinlikEkle(mesaj, gonder = true) {
-        etkinlikler.unshift({ mesaj, zaman: new Date().toLocaleTimeString() });
-        if (etkinlikler.length > maxEtkinlik) etkinlikler.pop();
-        safeSet('gh_etkinlikler', etkinlikler);
-        const el = document.getElementById('canliEtkinlik');
-        if (el) el.innerHTML = etkinlikler.map(e => `• ${e.mesaj} <small>${e.zaman}</small>`).join('<br>');
-        if (gonder && canliKanal) canliKanal.postMessage({ type: 'etkinlik', mesaj });
-    }
-
-    // Sayfa yüklendiğinde etkinlikleri göster
-    function renderCanliEtkinlik() {
-        const el = document.getElementById('canliEtkinlik');
-        if (el) el.innerHTML = etkinlikler.length ? etkinlikler.map(e => `• ${e.mesaj} <small>${e.zaman}</small>`).join('<br>') : 'Henüz etkinlik yok.';
-    }
-
-    // Varsayılan oyun listesi (genişletildi)
-    const defaultGames = [
-        { id: '1', title: 'Cyber Quest 2077', desc: 'Distopik açık dünya aksiyon.', image: 'https://picsum.photos/seed/cyber/400/250', download: '#', category: 'Aksiyon', size: '70 GB', minCpu: 'i5-10400F', minRam: '16', minGpu: 'RTX 2060', downloads: 1523, rating: 4.5, tags: ['açık dünya','fps'] },
-        { id: '2', title: 'Fantasy Lands Online', desc: 'Devasa MMORPG.', image: 'https://picsum.photos/seed/fantasy/400/250', download: '#', category: 'MMORPG', size: '45 GB', minCpu: 'i3-9100', minRam: '8', minGpu: 'GTX 1050', downloads: 987, rating: 4.2, tags: ['mmo','fantastik'] },
-        { id: '3', title: 'Speed Racers Ultimate', desc: 'Gerçekçi yarış simülasyonu.', image: 'https://picsum.photos/seed/racing/400/250', download: '#', category: 'Yarış', size: '32 GB', minCpu: 'i5-11400H', minRam: '8', minGpu: 'GTX 1650', downloads: 2100, rating: 4.8, tags: ['yarış','simülasyon'] },
-        { id: '4', title: 'Shadow Tactics', desc: 'Gizlilik stratejisi.', image: 'https://picsum.photos/seed/stealth/400/250', download: '#', category: 'Strateji', size: '18 GB', minCpu: 'i3-8100', minRam: '4', minGpu: 'Intel UHD 630', downloads: 456, rating: 4.0, tags: ['gizlilik','taktik'] },
-        { id: '5', title: 'Zombie Frontier X', desc: 'Hayatta kalma.', image: 'https://picsum.photos/seed/zombie/400/250', download: '#', category: 'Hayatta Kalma', size: '55 GB', minCpu: 'i7-8700', minRam: '16', minGpu: 'RTX 2070', downloads: 3210, rating: 4.7, tags: ['zombi','korku'] },
-        { id: '6', title: 'Space Explorer', desc: 'Galaksiyi keşfet.', image: '', download: '#', category: 'Macera', size: '25 GB', minCpu: 'i3-10100', minRam: '8', minGpu: 'GT 1030', downloads: 678, rating: 3.9, tags: ['uzay','keşif'] },
-        { id: '7', title: 'Kingdoms Rise', desc: 'Strateji ve fetih.', image: '', download: '#', category: 'Strateji', size: '12 GB', minCpu: 'Pentium', minRam: '4', minGpu: 'Intel HD', downloads: 2345, rating: 4.3, tags: ['savaş','tarih'] },
-        { id: '8', title: 'Drift Legends', desc: 'Drift yarışları.', image: '', download: '#', category: 'Yarış', size: '5 GB', minCpu: 'Celeron', minRam: '2', minGpu: 'Herhangi', downloads: 890, rating: 4.6, tags: ['araba','spor'] }
-    ];
-
-    // Veri işlemleri
-    function getGames() { const stored = safeGet('gh_games', null); if (stored && Array.isArray(stored) && stored.length > 0) return stored; safeSet('gh_games', defaultGames); return [...defaultGames]; }
-    function saveGames(g) { if (Array.isArray(g)) { safeSet('gh_games', g); if (canliKanal) canliKanal.postMessage({ type: 'oyunGuncelle' }); } }
-    function getUsers() { return safeGet('gh_users', []); }
-    function saveUsers(u) { safeSet('gh_users', u); }
-    function getComments() { return safeGet('gh_comments', []); }
-    function saveComments(c) { safeSet('gh_comments', c); if (canliKanal) canliKanal.postMessage({ type: 'yorumGuncelle' }); }
-    function getCurrentUser() { return safeGet('gh_user', null); }
-    function setCurrentUser(u) { safeSet('gh_user', u); }
-    function isAdmin() { return localStorage.getItem('gh_admin') === 'true'; }
-    function setAdmin(v) { localStorage.setItem('gh_admin', v ? 'true' : 'false'); }
-
-    let adminPanelVisible = false;
-    let activeCategory = 'all';
-    let currentSort = 'default';
-
-    // Tema değiştirme
-    window.setTheme = function(t) {
-        if (!isAdmin() && (t === 'admin-gold' || t === 'admin-purple' || t === 'admin-orange')) t = 'default';
-        document.body.className = '';
-        if (t === 'pink') document.body.classList.add('theme-pink');
-        else if (t === 'hacker') document.body.classList.add('theme-hacker');
-        else if (t === 'admin-gold') document.body.classList.add('theme-admin-gold');
-        else if (t === 'admin-purple') document.body.classList.add('theme-admin-purple');
-        else if (t === 'admin-orange') document.body.classList.add('theme-admin-orange');
-        safeSet('gh_theme', t);
-        applyAdminPanelGlow();
-        if (canliKanal) canliKanal.postMessage({ type: 'temaGuncelle' });
-    };
-
-    function applyAdminPanelGlow() { if (isAdmin()) document.body.classList.add('admin-active'); else document.body.classList.remove('admin-active'); }
-
-    let savedTheme = safeGet('gh_theme', 'default');
-    if (!isAdmin() && (savedTheme === 'admin-gold' || savedTheme === 'admin-purple' || savedTheme === 'admin-orange')) {
-        savedTheme = 'default';
-        safeSet('gh_theme', savedTheme);
-    }
-    setTheme(savedTheme);
-
-    // Çevrimiçi sayaç
-    setInterval(() => {
-        let sessions = safeGet('gh_sessions', {});
-        const now = Date.now();
-        for (let key in sessions) { if (now - sessions[key] > 15000) delete sessions[key]; }
-        sessions['self'] = now;
-        safeSet('gh_sessions', sessions);
-        document.getElementById('onlineText').textContent = Object.keys(sessions).length + ' çevrimiçi';
-    }, 5000);
-
-    window.showToast = function(msg) { const toast = document.getElementById('toast'); toast.textContent = msg; toast.classList.remove('hidden'); setTimeout(() => toast.classList.add('hidden'), 2000); };
-    window.openModal = function(id) { document.getElementById(id).classList.remove('hidden'); };
-    window.closeModal = function(id) { document.getElementById(id).classList.add('hidden'); };
-    document.addEventListener('click', function(e) { if (e.target.classList.contains('modal-overlay')) e.target.classList.add('hidden'); });
-
-    // Sıralama fonksiyonu
-    function sortGames(criteria) {
-        currentSort = criteria;
-        document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-        document.querySelector(`.sort-btn[onclick="sortGames('${criteria}')"]`).classList.add('active');
-        renderGames(document.getElementById('searchInput').value, activeCategory);
-    }
-
-    function getSortedGames(games) {
-        if (currentSort === 'downloads') return [...games].sort((a,b) => (b.downloads||0) - (a.downloads||0));
-        if (currentSort === 'name') return [...games].sort((a,b) => a.title.localeCompare(b.title));
-        if (currentSort === 'rating') return [...games].sort((a,b) => (b.rating||0) - (a.rating||0));
-        return games;
-    }
-
-    // Oyun render
-    function renderGames(filter = '', category = 'all') {
-        const games = getGames();
-        let filtered = games;
-        if (filter) { const f = filter.toLowerCase(); filtered = filtered.filter(g => g.title.toLowerCase().includes(f) || g.category.toLowerCase().includes(f) || (g.tags||[]).some(t=>t.toLowerCase().includes(f))); }
-        if (category !== 'all') filtered = filtered.filter(g => g.category === category);
-        filtered = getSortedGames(filtered);
-        const grid = document.getElementById('gameGrid');
-        grid.innerHTML = filtered.length ? filtered.map(g => `
-            <div class="game-card" onclick="openGameDetail('${g.id}')">
-                <div class="img-wrap">${g.image ? `<img src="${g.image}" onerror="this.innerHTML='🎮'">` : '🎮'}</div>
-                <div class="info"><h3>${g.title}</h3><span class="category-tag">${g.category}</span>
-                <div class="downloads-count">📥 ${g.downloads || 0} indirme</div>
-                <div class="rating">⭐ ${g.rating ? g.rating.toFixed(1) : '?'}</div></div>
-            </div>
-        `).join('') : '<p style="grid-column:1/-1;text-align:center;">😔 Oyun bulunamadı</p>';
-        updateCategoryFilters();
-        updateSelects();
-        updateStats();
-    }
-
-    function updateCategoryFilters() {
-        const games = getGames();
-        const categories = [...new Set(games.map(g => g.category))];
-        const container = document.getElementById('categoryFilters');
-        container.innerHTML = `<button class="cat-btn ${activeCategory === 'all' ? 'active' : ''}" onclick="filterCategory('all')">Tümü</button>` +
-            categories.map(c => `<button class="cat-btn ${activeCategory === c ? 'active' : ''}" onclick="filterCategory('${c}')">${c}</button>`).join('');
-    }
-
-    window.filterCategory = function(cat) { activeCategory = cat; renderGames(document.getElementById('searchInput').value, cat); };
-    document.getElementById('searchInput').addEventListener('input', function() { renderGames(this.value, activeCategory); });
-
-    function updateSelects() {
-        const games = getGames();
-        const opts = games.map(g => `<option value="${g.id}">${g.title}</option>`).join('');
-        document.getElementById('compareGame1').innerHTML = '<option value="">Oyun 1 seç</option>' + opts;
-        document.getElementById('compareGame2').innerHTML = '<option value="">Oyun 2 seç</option>' + opts;
-        document.getElementById('testGameSelect').innerHTML = '<option value="">Oyun seç</option>' + opts;
-        document.getElementById('editSelect').innerHTML = '<option value="">Oyun seç</option>' + opts;
-        document.getElementById('duyuruInput').value = safeGet('gh_duyuru', '');
-        document.getElementById('siteTitleInput').value = safeGet('gh_siteTitle', 'OyunDeposu');
-        renderComments();
-        renderDuyuru();
-    }
-
-    window.openGameDetail = function(id) {
-        const game = getGames().find(g => g.id === id);
-        if (!game) return;
-        document.getElementById('gameDetailContent').innerHTML = `
-            <button class="close-btn" onclick="closeModal('gameDetailModal')">✕</button>
-            <div style="height:140px;background:var(--soft);border-radius:4px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;overflow:hidden;">${game.image ? `<img src="${game.image}" style="width:100%;height:100%;object-fit:cover;">` : '🎮'}</div>
-            <h3>${game.title}</h3><p style="font-size:0.8rem;opacity:0.8;">📦 ${game.size} | 🏷️ ${game.category}</p>
-            <p style="margin:6px 0;">${game.desc}</p>
-            <p style="font-size:0.75rem;opacity:0.7;">🖥️ Min: ${game.minCpu||'?'} | ${game.minRam||'?'} GB RAM | ${game.minGpu||'?'}</p>
-            <p style="font-size:0.8rem;">⭐ Puan: ${game.rating ? game.rating.toFixed(1) : 'Henüz puanlanmamış'}</p>
-            <p style="font-size:0.75rem;">Etiketler: ${(game.tags||[]).join(', ') || 'Yok'}</p>
-            <a href="${game.download}" class="download-btn" target="_blank">⬇️ İndir</a>`;
-        openModal('gameDetailModal');
-    };
-
-    window.compareGames = function() {
-        const id1 = document.getElementById('compareGame1').value;
-        const id2 = document.getElementById('compareGame2').value;
-        if (!id1 || !id2) return showToast('Lütfen iki oyun seçin!');
-        const a = getGames().find(g => g.id === id1);
-        const b = getGames().find(g => g.id === id2);
-        if (!a || !b) return;
-        document.getElementById('compareResult').innerHTML = `
-            <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
-                <tr style="border-bottom:1px solid var(--border);"><th>Özellik</th><th>${a.title}</th><th>${b.title}</th></tr>
-                <tr><td>Kategori</td><td>${a.category}</td><td>${b.category}</td></tr>
-                <tr><td>Boyut</td><td>${a.size}</td><td>${b.size}</td></tr>
-                <tr><td>Min İşlemci</td><td>${a.minCpu||'?'}</td><td>${b.minCpu||'?'}</td></tr>
-                <tr><td>Min RAM</td><td>${a.minRam||'?'} GB</td><td>${b.minRam||'?'} GB</td></tr>
-                <tr><td>Min GPU</td><td>${a.minGpu||'?'}</td><td>${b.minGpu||'?'}</td></tr>
-                <tr><td>İndirme</td><td>${a.downloads||0}</td><td>${b.downloads||0}</td></tr>
-                <tr><td>Puan</td><td>⭐ ${a.rating?.toFixed(1)||'?'}</td><td>⭐ ${b.rating?.toFixed(1)||'?'}</td></tr>
-            </table>`;
-    };
-
-    window.runPcTest = function() {
-        const gameId = document.getElementById('testGameSelect').value;
-        if (!gameId) return showToast('Lütfen bir oyun seçin!');
-        const game = getGames().find(g => g.id === gameId);
-        if (!game) return;
-        const cpu = document.getElementById('cpuInput').value.trim().toLowerCase();
-        const ram = parseInt(document.getElementById('ramInput').value.trim());
-        const gpu = document.getElementById('gpuInput').value.trim().toLowerCase();
-        const cpuOk = cpu.includes(game.minCpu?.toLowerCase() || '') || !game.minCpu;
-        const ramOk = ram >= parseInt(game.minRam || 0);
-        const gpuOk = gpu.includes(game.minGpu?.toLowerCase() || '') || !game.minGpu;
-        const ok = cpuOk && ramOk && gpuOk;
-        document.getElementById('pcTestResult').innerHTML = `
-            <p><b>${game.title}</b> için sonuç:</p>
-            <p style="font-size:1.1rem;font-weight:700;color:${ok?'var(--green)':'#e94560'};">${ok ? '✅ AÇILIR' : '❌ AÇILMAZ'}</p>
-            <p style="font-size:0.8rem;">CPU: ${cpuOk?'✅':'❌'} | RAM: ${ramOk?'✅':'❌'} | GPU: ${gpuOk?'✅':'❌'}</p>`;
-    };
-
-    function renderComments() {
-        const comments = getComments();
-        const container = document.getElementById('globalComments');
-        container.innerHTML = comments.length ? comments.slice(-10).reverse().map((c, idx) => `
-            <div class="comment">
-                <b style="color:var(--accent);">${c.author}</b> <small style="opacity:0.6;">${c.date}</small>
-                <p>${c.text}</p>
-                <button class="like-btn" onclick="likeComment(${idx})">❤️ ${c.likes || 0}</button>
-            </div>
-        `).join('') : '<p style="opacity:0.6;">Henüz yorum yok.</p>';
-    }
-
-    window.likeComment = function(idx) {
-        const comments = getComments();
-        const reversedIdx = comments.length - 1 - idx;
-        if (reversedIdx >= 0 && reversedIdx < comments.length) {
-            if (!comments[reversedIdx].likes) comments[reversedIdx].likes = 0;
-            comments[reversedIdx].likes++;
-            saveComments(comments);
-            etkinlikEkle('❤️ Bir yorum beğenildi.');
-            if (canliKanal) canliKanal.postMessage({ type: 'begeniGuncelle' });
+    window.addEventListener('load', () => {
+        if (typeof db === 'undefined') {
+            alert('Firebase yüklenemedi. Lütfen internet bağlantını kontrol et.');
+            return;
         }
-    };
+        const gamesRef = ref(db, 'games');
+        const commentsRef = ref(db, 'comments');
+        const usersRef = ref(db, 'users');
+        const settingsRef = ref(db, 'settings');
+        const etkinlikRef = ref(db, 'etkinlikler');
 
-    window.addGlobalComment = function() {
-        const user = getCurrentUser();
-        if (!user) return showToast('Yorum yapmak için giriş yapın!');
-        const text = document.getElementById('globalCommentInput').value.trim();
-        if (!text) return showToast('Yorum boş olamaz!');
-        const comments = getComments();
-        comments.push({ author: user.username, text, date: new Date().toLocaleString('tr-TR'), likes: 0 });
-        saveComments(comments);
-        document.getElementById('globalCommentInput').value = '';
-        etkinlikEkle(`💬 ${user.username} yeni bir yorum yaptı.`);
-        renderComments();
-    };
+        let adminPanelVisible = false;
+        let activeCategory = 'all';
+        let currentSort = 'default';
+        let gamesList = [];
+        let commentsList = [];
 
-    function renderDuyuru() {
-        const duyuru = safeGet('gh_duyuru', '');
-        const el = document.getElementById('duyuruAlani');
-        el.classList.toggle('hidden', !duyuru);
-        if (duyuru) el.textContent = '📢 ' + duyuru;
-    }
+        onValue(settingsRef, (snapshot) => {
+            const data = snapshot.val() || {};
+            document.getElementById('duyuruAlani').textContent = data.duyuru ? '📢 ' + data.duyuru : '';
+            document.getElementById('duyuruAlani').classList.toggle('hidden', !data.duyuru);
+            document.getElementById('siteTitleInput').value = data.siteTitle || 'OyunDeposu';
+            const siteTitle = data.siteTitle || 'OyunDeposu';
+            document.querySelector('.logo').textContent = '🎮 ' + siteTitle;
+            document.title = siteTitle + ' - Ücretsiz Oyun İndir (Canlı)';
+        });
 
-    // İstatistikleri güncelle
-    function updateStats() {
-        document.getElementById('statTotalGames').textContent = getGames().length;
-        document.getElementById('statTotalComments').textContent = getComments().length;
-        document.getElementById('statTotalUsers').textContent = getUsers().length;
-        const top = getGames().sort((a,b)=>(b.downloads||0)-(a.downloads||0))[0];
-        document.getElementById('statTopGame').textContent = top ? top.title : '-';
-    }
+        onValue(gamesRef, (snapshot) => {
+            gamesList = [];
+            snapshot.forEach((child) => {
+                gamesList.push({ id: child.key, ...child.val() });
+            });
+            renderGames();
+        });
 
-    // Ayarları kaydet
-    window.saveSettings = function() {
-        const duyuru = document.getElementById('duyuruInput').value.trim();
-        const siteTitle = document.getElementById('siteTitleInput').value.trim();
-        safeSet('gh_duyuru', duyuru);
-        safeSet('gh_siteTitle', siteTitle || 'OyunDeposu');
-        document.querySelector('.logo').textContent = '🎮 ' + (siteTitle || 'OyunDeposu');
-        document.title = (siteTitle || 'OyunDeposu') + ' - Ücretsiz Oyun İndir (Canlı)';
-        renderDuyuru();
-        etkinlikEkle('⚙️ Site ayarları güncellendi.');
-        if (canliKanal) canliKanal.postMessage({ type: 'ayarlarGuncelle' });
-        showToast('✅ Ayarlar kaydedildi!');
-    };
+        onValue(commentsRef, (snapshot) => {
+            commentsList = [];
+            snapshot.forEach((child) => {
+                commentsList.push({ id: child.key, ...child.val() });
+            });
+            renderComments();
+            updateStats();
+        });
 
-    window.saveDuyuru = function() { saveSettings(); }; // Geriye dönük uyum
+        onValue(etkinlikRef, (snapshot) => {
+            const etkinlikler = [];
+            snapshot.forEach((child) => {
+                etkinlikler.push(child.val());
+            });
+            const sonEtkinlikler = etkinlikler.slice(-10).reverse();
+            const el = document.getElementById('canliEtkinlik');
+            if (el) el.innerHTML = sonEtkinlikler.length ? sonEtkinlikler.map(e => `• ${e.mesaj} <small>${e.zaman}</small>`).join('<br>') : 'Henüz etkinlik yok.';
+        });
 
-    // Bölüm göster/gizle
-    window.showSection = function(section) {
-        ['gamesSection','compareSection','pctestSection','commentsSection','helpSection'].forEach(id => document.getElementById(id).classList.add('hidden'));
-        document.getElementById(section + 'Section').classList.remove('hidden');
-        document.querySelectorAll('.section-btn').forEach(b => b.classList.remove('active'));
-        const btn = document.querySelector(`.section-btn[onclick="showSection('${section}')"]`);
-        if (btn) btn.classList.add('active');
-    };
+        function etkinlikEkle(mesaj) {
+            const yeniRef = push(etkinlikRef);
+            set(yeniRef, {
+                mesaj: mesaj,
+                zaman: new Date().toLocaleTimeString()
+            });
+        }
 
-    // Kullanıcı işlemleri
-    window.login = function() {
-        const u = document.getElementById('loginUsername').value.trim();
-        const p = document.getElementById('loginPassword').value.trim();
-        if (!u || !p) return showToast('Boş bırakmayın!');
-        const user = getUsers().find(x => x.username === u && x.password === p);
-        if (!user) return showToast('Hatalı!');
-        setCurrentUser({ username: user.username });
-        closeModal('loginModal');
-        etkinlikEkle(`👤 ${user.username} giriş yaptı.`);
-        updateUI();
-    };
+        function getGames() { return gamesList; }
+        function getComments() { return commentsList; }
+        function getUsers() { return JSON.parse(localStorage.getItem('gh_users') || '[]'); }
+        function saveUsers(u) { localStorage.setItem('gh_users', JSON.stringify(u)); }
+        function getCurrentUser() { return JSON.parse(localStorage.getItem('gh_user')); }
+        function setCurrentUser(u) { localStorage.setItem('gh_user', JSON.stringify(u)); }
+        function isAdmin() { return localStorage.getItem('gh_admin') === 'true'; }
+        function setAdmin(v) { localStorage.setItem('gh_admin', v ? 'true' : 'false'); }
 
-    window.register = function() {
-        const u = document.getElementById('regUsername').value.trim();
-        const p = document.getElementById('regPassword').value.trim();
-        if (!u || !p) return showToast('Kullanıcı adı ve şifre zorunlu!');
-        if (getUsers().find(x => x.username === u)) return showToast('Alınmış!');
-        getUsers().push({ username: u, email: document.getElementById('regEmail').value.trim(), password: p });
-        saveUsers(getUsers());
-        setCurrentUser({ username: u });
-        closeModal('registerModal');
-        etkinlikEkle(`✨ ${u} kayıt oldu.`);
-        updateUI();
-    };
+        window.setTheme = function(t) {
+            if (!isAdmin() && (t === 'admin-gold' || t === 'admin-purple' || t === 'admin-orange')) t = 'default';
+            document.body.className = '';
+            if (t === 'pink') document.body.classList.add('theme-pink');
+            else if (t === 'hacker') document.body.classList.add('theme-hacker');
+            else if (t === 'admin-gold') document.body.classList.add('theme-admin-gold');
+            else if (t === 'admin-purple') document.body.classList.add('theme-admin-purple');
+            else if (t === 'admin-orange') document.body.classList.add('theme-admin-orange');
+            localStorage.setItem('gh_theme', t);
+            if (isAdmin()) document.body.classList.add('admin-active');
+        };
 
-    window.anonymousLogin = function() {
-        const name = 'Anon_'+Math.random().toString(36).substr(2,5);
-        setCurrentUser({ username: name });
-        etkinlikEkle(`👻 ${name} anonim giriş yaptı.`);
-        updateUI();
-    };
+        setTheme(localStorage.getItem('gh_theme') || 'default');
 
-    window.logout = function() {
-        const user = getCurrentUser();
-        setCurrentUser(null);
-        setAdmin(false);
-        adminPanelVisible = false;
-        if (user) etkinlikEkle(`🚪 ${user.username} çıkış yaptı.`);
-        updateUI();
-    };
+        setInterval(() => {
+            const sessions = JSON.parse(localStorage.getItem('gh_sessions') || '{}');
+            const now = Date.now();
+            for (let key in sessions) { if (now - sessions[key] > 15000) delete sessions[key]; }
+            sessions['self'] = now;
+            localStorage.setItem('gh_sessions', JSON.stringify(sessions));
+            document.getElementById('onlineText').textContent = Object.keys(sessions).length + ' çevrimiçi';
+        }, 5000);
 
-    // Admin paneli açma/kapama
-    window.openAdminPanel = function() { adminPanelVisible = true; updateUI(); };
-    window.adminLogin = function() {
-        if (document.getElementById('adminKey').value.trim() === ADMIN_PASSWORD) {
-            setAdmin(true);
-            if (!getCurrentUser()) setCurrentUser({ username: 'Admin' });
-            closeModal('adminLoginModal');
-            adminPanelVisible = true;
-            etkinlikEkle('🛡️ Admin giriş yaptı.');
+        window.showToast = function(msg) { const toast = document.getElementById('toast'); toast.textContent = msg; toast.classList.remove('hidden'); setTimeout(() => toast.classList.add('hidden'), 2000); };
+        window.openModal = function(id) { document.getElementById(id).classList.remove('hidden'); };
+        window.closeModal = function(id) { document.getElementById(id).classList.add('hidden'); };
+        document.addEventListener('click', function(e) { if (e.target.classList.contains('modal-overlay')) e.target.classList.add('hidden'); });
+
+        function sortGames(criteria) {
+            currentSort = criteria;
+            document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.sort-btn[onclick="sortGames('${criteria}')"]`).classList.add('active');
+            renderGames();
+        }
+
+        function getSortedGames(games) {
+            if (currentSort === 'downloads') return [...games].sort((a,b) => (b.downloads||0) - (a.downloads||0));
+            if (currentSort === 'name') return [...games].sort((a,b) => a.title.localeCompare(b.title));
+            if (currentSort === 'rating') return [...games].sort((a,b) => (b.rating||0) - (a.rating||0));
+            return games;
+        }
+
+        function renderGames() {
+            const filter = document.getElementById('searchInput').value.toLowerCase();
+            let filtered = gamesList.filter(g => g.title.toLowerCase().includes(filter) || g.category.toLowerCase().includes(filter) || (g.tags||[]).some(t=>t.toLowerCase().includes(filter)));
+            if (activeCategory !== 'all') filtered = filtered.filter(g => g.category === activeCategory);
+            filtered = getSortedGames(filtered);
+            const grid = document.getElementById('gameGrid');
+            grid.innerHTML = filtered.length ? filtered.map(g => `
+                <div class="game-card" onclick="openGameDetail('${g.id}')">
+                    <div class="img-wrap">${g.image ? `<img src="${g.image}" onerror="this.innerHTML='🎮'">` : '🎮'}</div>
+                    <div class="info"><h3>${g.title}</h3><span class="category-tag">${g.category}</span>
+                    <div class="downloads-count">📥 ${g.downloads || 0} indirme</div>
+                    <div class="rating">⭐ ${g.rating ? g.rating.toFixed(1) : '?'}</div></div>
+                </div>
+            `).join('') : '<p style="grid-column:1/-1;text-align:center;">😔 Oyun bulunamadı</p>';
+            updateCategoryFilters();
+            updateSelects();
+            updateStats();
+        }
+
+        function updateCategoryFilters() {
+            const categories = [...new Set(gamesList.map(g => g.category))];
+            const container = document.getElementById('categoryFilters');
+            container.innerHTML = `<button class="cat-btn ${activeCategory === 'all' ? 'active' : ''}" onclick="filterCategory('all')">Tümü</button>` +
+                categories.map(c => `<button class="cat-btn ${activeCategory === c ? 'active' : ''}" onclick="filterCategory('${c}')">${c}</button>`).join('');
+        }
+
+        window.filterCategory = function(cat) { activeCategory = cat; renderGames(); };
+        document.getElementById('searchInput').addEventListener('input', renderGames);
+
+        function updateSelects() {
+            const opts = gamesList.map(g => `<option value="${g.id}">${g.title}</option>`).join('');
+            document.getElementById('compareGame1').innerHTML = '<option value="">Oyun 1 seç</option>' + opts;
+            document.getElementById('compareGame2').innerHTML = '<option value="">Oyun 2 seç</option>' + opts;
+            document.getElementById('testGameSelect').innerHTML = '<option value="">Oyun seç</option>' + opts;
+            document.getElementById('editSelect').innerHTML = '<option value="">Oyun seç</option>' + opts;
+        }
+
+        window.openGameDetail = function(id) {
+            const game = gamesList.find(g => g.id === id);
+            if (!game) return;
+            document.getElementById('gameDetailContent').innerHTML = `
+                <button class="close-btn" onclick="closeModal('gameDetailModal')">✕</button>
+                <div style="height:140px;background:var(--soft);border-radius:4px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;overflow:hidden;">${game.image ? `<img src="${game.image}" style="width:100%;height:100%;object-fit:cover;">` : '🎮'}</div>
+                <h3>${game.title}</h3><p style="font-size:0.8rem;opacity:0.8;">📦 ${game.size} | 🏷️ ${game.category}</p>
+                <p style="margin:6px 0;">${game.desc}</p>
+                <p style="font-size:0.75rem;opacity:0.7;">🖥️ Min: ${game.minCpu||'?'} | ${game.minRam||'?'} GB RAM | ${game.minGpu||'?'}</p>
+                <p style="font-size:0.8rem;">⭐ Puan: ${game.rating ? game.rating.toFixed(1) : 'Henüz puanlanmamış'}</p>
+                <p style="font-size:0.75rem;">Etiketler: ${(game.tags||[]).join(', ') || 'Yok'}</p>
+                <a href="${game.download}" class="download-btn" target="_blank">⬇️ İndir</a>`;
+            openModal('gameDetailModal');
+        };
+
+        window.compareGames = function() {
+            const id1 = document.getElementById('compareGame1').value;
+            const id2 = document.getElementById('compareGame2').value;
+            if (!id1 || !id2) return showToast('Lütfen iki oyun seçin!');
+            const a = gamesList.find(g => g.id === id1);
+            const b = gamesList.find(g => g.id === id2);
+            if (!a || !b) return;
+            document.getElementById('compareResult').innerHTML = `
+                <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+                    <tr style="border-bottom:1px solid var(--border);"><th>Özellik</th><th>${a.title}</th><th>${b.title}</th></tr>
+                    <tr><td>Kategori</td><td>${a.category}</td><td>${b.category}</td></tr>
+                    <tr><td>Boyut</td><td>${a.size}</td><td>${b.size}</td></tr>
+                    <tr><td>Min İşlemci</td><td>${a.minCpu||'?'}</td><td>${b.minCpu||'?'}</td></tr>
+                    <tr><td>Min RAM</td><td>${a.minRam||'?'} GB</td><td>${b.minRam||'?'} GB</td></tr>
+                    <tr><td>Min GPU</td><td>${a.minGpu||'?'}</td><td>${b.minGpu||'?'}</td></tr>
+                    <tr><td>İndirme</td><td>${a.downloads||0}</td><td>${b.downloads||0}</td></tr>
+                    <tr><td>Puan</td><td>⭐ ${a.rating?.toFixed(1)||'?'}</td><td>⭐ ${b.rating?.toFixed(1)||'?'}</td></tr>
+                </table>`;
+        };
+
+        window.runPcTest = function() {
+            const gameId = document.getElementById('testGameSelect').value;
+            if (!gameId) return showToast('Lütfen bir oyun seçin!');
+            const game = gamesList.find(g => g.id === gameId);
+            if (!game) return;
+            const cpu = document.getElementById('cpuInput').value.trim().toLowerCase();
+            const ram = parseInt(document.getElementById('ramInput').value.trim());
+            const gpu = document.getElementById('gpuInput').value.trim().toLowerCase();
+            const cpuOk = cpu.includes(game.minCpu?.toLowerCase() || '') || !game.minCpu;
+            const ramOk = ram >= parseInt(game.minRam || 0);
+            const gpuOk = gpu.includes(game.minGpu?.toLowerCase() || '') || !game.minGpu;
+            const ok = cpuOk && ramOk && gpuOk;
+            document.getElementById('pcTestResult').innerHTML = `
+                <p><b>${game.title}</b> için sonuç:</p>
+                <p style="font-size:1.1rem;font-weight:700;color:${ok?'var(--green)':'#e94560'};">${ok ? '✅ AÇILIR' : '❌ AÇILMAZ'}</p>
+                <p style="font-size:0.8rem;">CPU: ${cpuOk?'✅':'❌'} | RAM: ${ramOk?'✅':'❌'} | GPU: ${gpuOk?'✅':'❌'}</p>`;
+        };
+
+        function renderComments() {
+            const container = document.getElementById('globalComments');
+            container.innerHTML = commentsList.length ? commentsList.slice(-10).reverse().map((c, idx) => `
+                <div class="comment">
+                    <b style="color:var(--accent);">${c.author}</b> <small style="opacity:0.6;">${c.date}</small>
+                    <p>${c.text}</p>
+                    <button class="like-btn" onclick="likeComment('${c.id}')">❤️ ${c.likes || 0}</button>
+                </div>
+            `).join('') : '<p style="opacity:0.6;">Henüz yorum yok.</p>';
+        }
+
+        window.likeComment = function(commentId) {
+            const commentRef = ref(db, 'comments/' + commentId);
+            get(commentRef).then((snap) => {
+                if (snap.exists()) {
+                    const data = snap.val();
+                    update(commentRef, { likes: (data.likes || 0) + 1 });
+                    etkinlikEkle('❤️ Bir yorum beğenildi.');
+                }
+            });
+        };
+
+        window.addGlobalComment = function() {
+            const user = getCurrentUser();
+            if (!user) return showToast('Yorum yapmak için giriş yapın!');
+            const text = document.getElementById('globalCommentInput').value.trim();
+            if (!text) return showToast('Yorum boş olamaz!');
+            const newCommentRef = push(commentsRef);
+            set(newCommentRef, {
+                author: user.username,
+                text: text,
+                date: new Date().toLocaleString('tr-TR'),
+                likes: 0
+            });
+            document.getElementById('globalCommentInput').value = '';
+            etkinlikEkle(`💬 ${user.username} yeni bir yorum yaptı.`);
+        };
+
+        function updateStats() {
+            document.getElementById('statTotalGames').textContent = gamesList.length;
+            document.getElementById('statTotalComments').textContent = commentsList.length;
+            document.getElementById('statTotalUsers').textContent = getUsers().length;
+            const top = [...gamesList].sort((a,b)=>(b.downloads||0)-(a.downloads||0))[0];
+            document.getElementById('statTopGame').textContent = top ? top.title : '-';
+        }
+
+        window.saveSettings = function() {
+            const duyuru = document.getElementById('duyuruInput').value.trim();
+            const siteTitle = document.getElementById('siteTitleInput').value.trim();
+            set(settingsRef, {
+                duyuru: duyuru,
+                siteTitle: siteTitle || 'OyunDeposu'
+            });
+            etkinlikEkle('⚙️ Site ayarları güncellendi.');
+            showToast('✅ Ayarlar kaydedildi!');
+        };
+
+        window.showSection = function(section) {
+            ['gamesSection','compareSection','pctestSection','commentsSection','helpSection'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            document.getElementById(section + 'Section').classList.remove('hidden');
+            document.querySelectorAll('.section-btn').forEach(b => b.classList.remove('active'));
+            const btn = document.querySelector(`.section-btn[onclick="showSection('${section}')"]`);
+            if (btn) btn.classList.add('active');
+        };
+
+        window.login = function() {
+            const u = document.getElementById('loginUsername').value.trim();
+            const p = document.getElementById('loginPassword').value.trim();
+            if (!u || !p) return showToast('Boş bırakmayın!');
+            const user = getUsers().find(x => x.username === u && x.password === p);
+            if (!user) return showToast('Hatalı!');
+            setCurrentUser({ username: user.username });
+            closeModal('loginModal');
+            etkinlikEkle(`👤 ${user.username} giriş yaptı.`);
             updateUI();
-        } else showToast('❌ Hatalı şifre!');
-    };
-    window.closeAdminPanel = function() { adminPanelVisible = false; updateUI(); };
-
-    // Admin bölümü göster
-    window.showAdminSection = function(s) {
-        ['sectionAdd','sectionList','sectionEdit','sectionSettings','sectionStats'].forEach(id => document.getElementById(id).classList.add('hidden'));
-        ['menuAdd','menuList','menuEdit','menuSettings','menuStats'].forEach(id => document.getElementById(id).classList.remove('active'));
-        document.getElementById('section' + s.charAt(0).toUpperCase() + s.slice(1)).classList.remove('hidden');
-        document.getElementById('menu' + s.charAt(0).toUpperCase() + s.slice(1)).classList.add('active');
-        if (s === 'list') renderAdminList();
-        if (s === 'settings') updateSelects();
-        if (s === 'stats') updateStats();
-    };
-
-    function renderAdminList() {
-        document.getElementById('adminGameList').innerHTML = getGames().map(g => `
-            <div class="admin-game-list-item"><span><b>${g.title}</b> (${g.category}) - ${g.size} ⭐${g.rating?.toFixed(1)||'?'}</span><div><button class="btn-edit" onclick="editDirect('${g.id}')">✏️</button> <button class="btn-delete" onclick="delGame('${g.id}')">🗑️</button></div></div>
-        `).join('');
-    }
-    window.editDirect = function(id) { showAdminSection('edit'); document.getElementById('editSelect').value = id; loadGameForEdit(); };
-    window.loadGameForEdit = function() {
-        const id = document.getElementById('editSelect').value;
-        const game = getGames().find(g => g.id === id);
-        if (!game) return;
-        document.getElementById('editGameId').value = game.id;
-        document.getElementById('editTitle').value = game.title;
-        document.getElementById('editDesc').value = game.desc;
-        document.getElementById('editImage').value = game.image || '';
-        document.getElementById('editDownload').value = game.download;
-        document.getElementById('editCategory').value = game.category;
-        document.getElementById('editSize').value = game.size;
-        document.getElementById('editCpu').value = game.minCpu || '';
-        document.getElementById('editRam').value = game.minRam || '';
-        document.getElementById('editGpu').value = game.minGpu || '';
-        document.getElementById('editTags').value = (game.tags||[]).join(', ');
-        document.getElementById('editRating').value = game.rating || '';
-    };
-    window.addGame = function() {
-        const title = document.getElementById('addTitle').value.trim();
-        const desc = document.getElementById('addDesc').value.trim();
-        const download = document.getElementById('addDownload').value.trim();
-        const category = document.getElementById('addCategory').value.trim();
-        if (!title || !desc || !download || !category) return showToast('Zorunlu alanları doldurun!');
-        const newGame = {
-            id: Date.now().toString(),
-            title, desc,
-            image: document.getElementById('addImage').value.trim(),
-            download, category,
-            size: document.getElementById('addSize').value.trim() || '?',
-            minCpu: document.getElementById('addCpu').value.trim(),
-            minRam: document.getElementById('addRam').value.trim(),
-            minGpu: document.getElementById('addGpu').value.trim(),
-            tags: document.getElementById('addTags').value.split(',').map(t=>t.trim()).filter(t=>t),
-            rating: 0,
-            downloads: 0
         };
-        const games = getGames(); games.push(newGame); saveGames(games);
-        ['addTitle','addDesc','addImage','addDownload','addCategory','addSize','addCpu','addRam','addGpu','addTags'].forEach(id => document.getElementById(id).value = '');
-        etkinlikEkle(`➕ Yeni oyun eklendi: ${title}`);
-        showToast('✅ Oyun eklendi!'); renderGames();
-    };
-    window.updateGame = function() {
-        const id = document.getElementById('editGameId').value;
-        if (!id) return showToast('Önce bir oyun seçin!');
-        const games = getGames();
-        const idx = games.findIndex(g => g.id === id);
-        if (idx === -1) return;
-        const oldTitle = games[idx].title;
-        games[idx] = {
-            ...games[idx],
-            title: document.getElementById('editTitle').value.trim(),
-            desc: document.getElementById('editDesc').value.trim(),
-            image: document.getElementById('editImage').value.trim(),
-            download: document.getElementById('editDownload').value.trim(),
-            category: document.getElementById('editCategory').value.trim(),
-            size: document.getElementById('editSize').value.trim(),
-            minCpu: document.getElementById('editCpu').value.trim(),
-            minRam: document.getElementById('editRam').value.trim(),
-            minGpu: document.getElementById('editGpu').value.trim(),
-            tags: document.getElementById('editTags').value.split(',').map(t=>t.trim()).filter(t=>t),
-            rating: parseFloat(document.getElementById('editRating').value) || 0
+
+        window.register = function() {
+            const u = document.getElementById('regUsername').value.trim();
+            const p = document.getElementById('regPassword').value.trim();
+            if (!u || !p) return showToast('Kullanıcı adı ve şifre zorunlu!');
+            if (getUsers().find(x => x.username === u)) return showToast('Alınmış!');
+            getUsers().push({ username: u, email: document.getElementById('regEmail').value.trim(), password: p });
+            saveUsers(getUsers());
+            setCurrentUser({ username: u });
+            closeModal('registerModal');
+            etkinlikEkle(`✨ ${u} kayıt oldu.`);
+            updateUI();
         };
-        saveGames(games);
-        etkinlikEkle(`✏️ Oyun güncellendi: ${oldTitle}`);
-        showToast('✅ Oyun güncellendi!'); renderGames(); showAdminSection('list');
-    };
-    window.delGame = function(id) {
-        const game = getGames().find(g => g.id === id);
-        if (!game || !confirm('Silmek istediğinize emin misiniz?')) return;
-        saveGames(getGames().filter(g => g.id !== id));
-        etkinlikEkle(`🗑️ Oyun silindi: ${game.title}`);
-        showToast('🗑️ Oyun silindi!'); renderGames(); renderAdminList();
-    };
 
-    // Arayüz güncelleme
-    function updateUI() {
-        const user = getCurrentUser();
-        const admin = isAdmin();
-        const badge = document.getElementById('userBadge');
-        if (user) {
-            badge.classList.remove('hidden');
-            if (admin) { badge.className = 'admin-badge'; badge.textContent = '👑 Admin'; }
-            else { badge.className = ''; badge.style.background = 'var(--soft)'; badge.style.color = 'var(--text)'; badge.style.border = '1px solid var(--border)'; badge.style.boxShadow = 'none'; badge.style.animation = 'none'; badge.textContent = '👤 ' + user.username; }
-        } else badge.classList.add('hidden');
-        document.getElementById('btnLogout').classList.toggle('hidden', !user);
-        document.querySelectorAll('.nav-links button:not(#btnLogout):not(#adminPanelBtn):not([onclick*="showSection"])').forEach(b => b.classList.toggle('hidden', !!user));
-        document.getElementById('adminPanelBtn').classList.toggle('hidden', !admin);
-        document.getElementById('adminThemeLabel').classList.toggle('hidden', !admin);
-        document.getElementById('adminThemeDots').classList.toggle('hidden', !admin);
-        document.getElementById('mainContent').classList.toggle('hidden', admin && adminPanelVisible);
-        document.getElementById('adminContainer').classList.toggle('hidden', !(admin && adminPanelVisible));
-        applyAdminPanelGlow();
-        if (!admin) { const ct = safeGet('gh_theme', 'default'); if (ct.startsWith('admin-')) setTheme('default'); }
-        if (admin && adminPanelVisible) showAdminSection('add');
-        const siteTitle = safeGet('gh_siteTitle', 'OyunDeposu');
-        document.querySelector('.logo').textContent = '🎮 ' + siteTitle;
-        document.title = siteTitle + ' - Ücretsiz Oyun İndir (Canlı)';
-        renderGames(document.getElementById('searchInput').value, activeCategory);
-    }
+        window.anonymousLogin = function() {
+            const name = 'Anon_'+Math.random().toString(36).substr(2,5);
+            setCurrentUser({ username: name });
+            etkinlikEkle(`👻 ${name} anonim giriş yaptı.`);
+            updateUI();
+        };
 
-    document.addEventListener('keydown', function(e) {
-        if (e.ctrlKey && e.shiftKey && e.key === 'A') {
-            e.preventDefault();
-            if (isAdmin()) { adminPanelVisible = !adminPanelVisible; updateUI(); }
-            else openModal('adminLoginModal');
+        window.logout = function() {
+            const user = getCurrentUser();
+            setCurrentUser(null);
+            setAdmin(false);
+            adminPanelVisible = false;
+            if (user) etkinlikEkle(`🚪 ${user.username} çıkış yaptı.`);
+            updateUI();
+        };
+
+        window.openAdminPanel = function() { adminPanelVisible = true; updateUI(); };
+        window.adminLogin = function() {
+            const ADMIN_PASSWORD = 'GameHub2024!Admin';
+            if (document.getElementById('adminKey').value.trim() === ADMIN_PASSWORD) {
+                setAdmin(true);
+                if (!getCurrentUser()) setCurrentUser({ username: 'Admin' });
+                closeModal('adminLoginModal');
+                adminPanelVisible = true;
+                etkinlikEkle('🛡️ Admin giriş yaptı.');
+                updateUI();
+            } else showToast('❌ Hatalı şifre!');
+        };
+        window.closeAdminPanel = function() { adminPanelVisible = false; updateUI(); };
+
+        window.showAdminSection = function(s) {
+            ['sectionAdd','sectionList','sectionEdit','sectionSettings','sectionStats'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            ['menuAdd','menuList','menuEdit','menuSettings','menuStats'].forEach(id => document.getElementById(id).classList.remove('active'));
+            document.getElementById('section' + s.charAt(0).toUpperCase() + s.slice(1)).classList.remove('hidden');
+            document.getElementById('menu' + s.charAt(0).toUpperCase() + s.slice(1)).classList.add('active');
+            if (s === 'list') renderAdminList();
+            if (s === 'settings') updateSelects();
+            if (s === 'stats') updateStats();
+        };
+
+        function renderAdminList() {
+            document.getElementById('adminGameList').innerHTML = gamesList.map(g => `
+                <div class="admin-game-list-item"><span><b>${g.title}</b> (${g.category}) - ${g.size} ⭐${g.rating?.toFixed(1)||'?'}</span><div><button class="btn-edit" onclick="editDirect('${g.id}')">✏️</button> <button class="btn-delete" onclick="delGame('${g.id}')">🗑️</button></div></div>
+            `).join('');
         }
-    });
+        window.editDirect = function(id) { showAdminSection('edit'); document.getElementById('editSelect').value = id; loadGameForEdit(); };
+        window.loadGameForEdit = function() {
+            const id = document.getElementById('editSelect').value;
+            const game = gamesList.find(g => g.id === id);
+            if (!game) return;
+            document.getElementById('editGameId').value = game.id;
+            document.getElementById('editTitle').value = game.title;
+            document.getElementById('editDesc').value = game.desc;
+            document.getElementById('editImage').value = game.image || '';
+            document.getElementById('editDownload').value = game.download;
+            document.getElementById('editCategory').value = game.category;
+            document.getElementById('editSize').value = game.size;
+            document.getElementById('editCpu').value = game.minCpu || '';
+            document.getElementById('editRam').value = game.minRam || '';
+            document.getElementById('editGpu').value = game.minGpu || '';
+            document.getElementById('editTags').value = (game.tags||[]).join(', ');
+            document.getElementById('editRating').value = game.rating || '';
+        };
+        window.addGame = function() {
+            const title = document.getElementById('addTitle').value.trim();
+            const desc = document.getElementById('addDesc').value.trim();
+            const download = document.getElementById('addDownload').value.trim();
+            const category = document.getElementById('addCategory').value.trim();
+            if (!title || !desc || !download || !category) return showToast('Zorunlu alanları doldurun!');
+            const newGameRef = push(gamesRef);
+            set(newGameRef, {
+                title, desc,
+                image: document.getElementById('addImage').value.trim(),
+                download, category,
+                size: document.getElementById('addSize').value.trim() || '?',
+                minCpu: document.getElementById('addCpu').value.trim(),
+                minRam: document.getElementById('addRam').value.trim(),
+                minGpu: document.getElementById('addGpu').value.trim(),
+                tags: document.getElementById('addTags').value.split(',').map(t=>t.trim()).filter(t=>t),
+                rating: 0,
+                downloads: 0
+            });
+            ['addTitle','addDesc','addImage','addDownload','addCategory','addSize','addCpu','addRam','addGpu','addTags'].forEach(id => document.getElementById(id).value = '');
+            etkinlikEkle(`➕ Yeni oyun eklendi: ${title}`);
+            showToast('✅ Oyun eklendi!');
+        };
+        window.updateGame = function() {
+            const id = document.getElementById('editGameId').value;
+            if (!id) return showToast('Önce bir oyun seçin!');
+            const gameRef = ref(db, 'games/' + id);
+            update(gameRef, {
+                title: document.getElementById('editTitle').value.trim(),
+                desc: document.getElementById('editDesc').value.trim(),
+                image: document.getElementById('editImage').value.trim(),
+                download: document.getElementById('editDownload').value.trim(),
+                category: document.getElementById('editCategory').value.trim(),
+                size: document.getElementById('editSize').value.trim(),
+                minCpu: document.getElementById('editCpu').value.trim(),
+                minRam: document.getElementById('editRam').value.trim(),
+                minGpu: document.getElementById('editGpu').value.trim(),
+                tags: document.getElementById('editTags').value.split(',').map(t=>t.trim()).filter(t=>t),
+                rating: parseFloat(document.getElementById('editRating').value) || 0
+            });
+            etkinlikEkle(`✏️ Oyun güncellendi.`);
+            showToast('✅ Oyun güncellendi!');
+            showAdminSection('list');
+        };
+        window.delGame = function(id) {
+            if (!confirm('Silmek istediğinize emin misiniz?')) return;
+            const gameRef = ref(db, 'games/' + id);
+            remove(gameRef);
+            etkinlikEkle(`🗑️ Oyun silindi.`);
+            showToast('🗑️ Oyun silindi!');
+        };
 
-    renderCanliEtkinlik();
-    updateUI();
-    etkinlikEkle('🟢 Siteye bağlanıldı.', false);
+        function updateUI() {
+            const user = getCurrentUser();
+            const admin = isAdmin();
+            const badge = document.getElementById('userBadge');
+            if (user) {
+                badge.classList.remove('hidden');
+                if (admin) { badge.className = 'admin-badge'; badge.textContent = '👑 Admin'; }
+                else { badge.className = ''; badge.style.background = 'var(--soft)'; badge.style.color = 'var(--text)'; badge.style.border = '1px solid var(--border)'; badge.style.boxShadow = 'none'; badge.style.animation = 'none'; badge.textContent = '👤 ' + user.username; }
+            } else badge.classList.add('hidden');
+            document.getElementById('btnLogout').classList.toggle('hidden', !user);
+            document.querySelectorAll('.nav-links button:not(#btnLogout):not(#adminPanelBtn):not([onclick*="showSection"])').forEach(b => b.classList.toggle('hidden', !!user));
+            document.getElementById('adminPanelBtn').classList.toggle('hidden', !admin);
+            document.getElementById('adminThemeLabel').classList.toggle('hidden', !admin);
+            document.getElementById('adminThemeDots').classList.toggle('hidden', !admin);
+            document.getElementById('mainContent').classList.toggle('hidden', admin && adminPanelVisible);
+            document.getElementById('adminContainer').classList.toggle('hidden', !(admin && adminPanelVisible));
+            if (isAdmin()) document.body.classList.add('admin-active'); else document.body.classList.remove('admin-active');
+            if (admin && adminPanelVisible) showAdminSection('add');
+            renderGames();
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                e.preventDefault();
+                if (isAdmin()) { adminPanelVisible = !adminPanelVisible; updateUI(); }
+                else openModal('adminLoginModal');
+            }
+        });
+
+        updateUI();
+        etkinlikEkle('🟢 Siteye bağlanıldı (Firebase Canlı).');
+    });
 </script>
-<!-- ==================== JAVASCRIPT SONU ==================== -->
 </body>
 </html>
