@@ -34,6 +34,114 @@
             --green: #00cc33;
             --orange: #ffcc00;
         }
+        /* FELAKET ADMIN TEMASI */
+        body.admin-mode {
+            --bg: #0d0d0d;
+            --card: #1a1a1a;
+            --accent: #ffd700;
+            --text: #f0e6b2;
+            --soft: #262626;
+            --border: #ffd700;
+            --green: #ffcc00;
+            --orange: #ffaa00;
+            background: #0a0a0a;
+            background-image: 
+                linear-gradient(45deg, rgba(255,215,0,0.05) 0%, transparent 50%),
+                linear-gradient(135deg, transparent 50%, rgba(255,140,0,0.07) 100%);
+            background-attachment: fixed;
+            animation: adminBgShift 8s ease-in-out infinite alternate;
+        }
+        @keyframes adminBgShift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        body.admin-mode .navbar {
+            background: #111;
+            border-bottom: 2px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255,215,0,0.3);
+        }
+        body.admin-mode .logo {
+            color: #ffd700;
+            text-shadow: 0 0 15px #ffaa00;
+        }
+        body.admin-mode .nav-links button {
+            background: #1a1a1a;
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+        body.admin-mode .nav-links button:hover {
+            background: #ffd700;
+            color: #000;
+            box-shadow: 0 0 20px #ffd700;
+        }
+        body.admin-mode .online-counter {
+            background: #1a1a1a;
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+        body.admin-mode .dot {
+            background: #ffd700;
+            box-shadow: 0 0 10px #ffd700;
+        }
+        body.admin-mode .admin-panel {
+            background: rgba(20,20,20,0.95);
+            border: 3px solid #ffd700;
+            box-shadow: 0 0 40px rgba(255,215,0,0.3), inset 0 0 20px rgba(255,215,0,0.05);
+            animation: panelGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes panelGlow {
+            0% { box-shadow: 0 0 40px rgba(255,215,0,0.3), inset 0 0 20px rgba(255,215,0,0.05); }
+            100% { box-shadow: 0 0 70px rgba(255,215,0,0.5), inset 0 0 30px rgba(255,215,0,0.1); }
+        }
+        body.admin-mode .admin-menu button {
+            background: #111;
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+        body.admin-mode .admin-menu button.active {
+            background: #ffd700 !important;
+            color: #000 !important;
+            box-shadow: 0 0 25px #ffaa00;
+        }
+        body.admin-mode .admin-form input,
+        body.admin-mode .admin-form textarea,
+        body.admin-mode .admin-form select {
+            background: #111;
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+        body.admin-mode .btn-save {
+            background: #ffd700;
+            color: #000;
+            box-shadow: 0 0 15px #ffaa00;
+        }
+        body.admin-mode .btn-delete {
+            background: #ff4444;
+            color: #fff;
+        }
+        body.admin-mode .btn-edit {
+            background: #ffaa00;
+            color: #000;
+        }
+        body.admin-mode .admin-game-list-item {
+            border-bottom-color: #ffd700;
+        }
+        body.admin-mode .toast {
+            background: #ffd700;
+            color: #000;
+            box-shadow: 0 0 30px #ffaa00;
+        }
+        body.admin-mode .modal {
+            background: #111;
+            border-color: #ffd700;
+            box-shadow: 0 0 50px rgba(255,215,0,0.4);
+        }
+        body.admin-mode .download-btn {
+            background: #ffd700;
+            color: #000;
+            box-shadow: 0 0 20px #ffaa00;
+        }
+        /* Diğer stiller aynen korunuyor */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -333,12 +441,22 @@
     function isAdmin(){ return localStorage.getItem('gh_admin') === 'true'; }
     function setAdmin(v){ localStorage.setItem('gh_admin', v); }
 
+    // Tema ayarlama
     window.setTheme = function(t){
         document.body.className = '';
-        if(t==='pink') document.body.classList.add('theme-pink');
-        else if(t==='hacker') document.body.classList.add('theme-hacker');
+        if(isAdmin()) document.body.classList.add('admin-mode'); // admin teması korunur
+        else {
+            if(t==='pink') document.body.classList.add('theme-pink');
+            else if(t==='hacker') document.body.classList.add('theme-hacker');
+        }
         G('gh_theme', t);
     };
+    // Admin modunu güncelle
+    function applyAdminMode() {
+        if(isAdmin()) document.body.classList.add('admin-mode');
+        else document.body.classList.remove('admin-mode');
+    }
+
     setTheme(S('gh_theme','default'));
 
     setInterval(()=>{
@@ -551,6 +669,7 @@
         document.querySelector('.online-counter').classList.remove('hidden');
         document.getElementById('mainContent').classList.toggle('hidden', a);
         document.getElementById('adminContainer').classList.toggle('hidden', !a);
+        applyAdminMode(); // admin teması uygula/kaldır
         if(a) showAdminSection('add');
         renderGames(document.getElementById('searchInput').value);
     }
