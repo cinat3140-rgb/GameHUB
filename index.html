@@ -1101,6 +1101,22 @@
             color: #e94560;
         }
 
+        /* Seviye Rozetleri */
+        .level-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        .level-caylak { background: #95a5a6; color: #000; }
+        .level-acemi { background: #2ecc71; color: #000; }
+        .level-usta { background: #3498db; color: #fff; }
+        .level-efsane { background: #9b59b6; color: #fff; }
+        .level-tanri { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
+
         .toggle-switch {
             position: relative;
             display: inline-block;
@@ -1346,6 +1362,9 @@
                 </button>
                 <button id="navSettings" onclick="showAdminSection('settings')">
                     <i class="fas fa-cog"></i> Site Ayarları
+                </button>
+                <button id="navLevels" onclick="showAdminSection('levels')">
+                    <i class="fas fa-star"></i> Seviyeler
                 </button>
                 <button id="navStats" onclick="showAdminSection('adminStats')">
                     <i class="fas fa-chart-pie"></i> İstatistikler
@@ -1627,6 +1646,84 @@
                     </button>
                 </div>
 
+                <!-- YENİ SEVİYE YÖNETİMİ BÖLÜMÜ -->
+                <div id="sectionLevels" class="hidden">
+                    <div class="admin-card" style="margin-bottom:20px;">
+                        <div class="admin-card-header">
+                            <div class="admin-card-icon green">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div>
+                                <div class="admin-card-title">Kullanıcı Seviye Yönetimi</div>
+                                <div style="color:var(--text-secondary);font-size:0.8rem;">Kullanıcıların seviyelerini ve seviye isimlerini belirleyin</div>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-grid" style="margin-top:20px;">
+                            <div>
+                                <h4 style="margin-bottom:15px;color:var(--text);">Mevcut Seviyeler</h4>
+                                <div id="currentLevels" style="margin-bottom:20px;"></div>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom:15px;color:var(--text);">Yeni Seviye Ekle</h4>
+                                <div class="admin-form-group">
+                                    <label>Seviye Numarası</label>
+                                    <input type="number" id="newLevelNumber" class="admin-input" placeholder="1" min="1">
+                                </div>
+                                <div class="admin-form-group">
+                                    <label>Seviye Adı</label>
+                                    <input type="text" id="newLevelName" class="admin-input" placeholder="Örn: Çaylak">
+                                </div>
+                                <div class="admin-form-group">
+                                    <label>Minimum Puan</label>
+                                    <input type="number" id="newLevelMinPoints" class="admin-input" placeholder="0" min="0">
+                                </div>
+                                <div class="admin-form-group">
+                                    <label>CSS Sınıfı (opsiyonel)</label>
+                                    <select id="newLevelCssClass" class="admin-select">
+                                        <option value="">Varsayılan</option>
+                                        <option value="level-caylak">Çaylak (Gri)</option>
+                                        <option value="level-acemi">Acemi (Yeşil)</option>
+                                        <option value="level-usta">Usta (Mavi)</option>
+                                        <option value="level-efsane">Efsane (Mor)</option>
+                                        <option value="level-tanri">Tanrı (Altın)</option>
+                                    </select>
+                                </div>
+                                <button class="btn-admin btn-admin-primary" onclick="addLevel()">
+                                    <i class="fas fa-plus"></i> Seviye Ekle
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <div class="admin-card-icon blue">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div>
+                                <div class="admin-card-title">Kullanıcı Seviyeleri</div>
+                                <div style="color:var(--text-secondary);font-size:0.8rem;">Kullanıcıların puanlarını ve seviyelerini görüntüleyin</div>
+                            </div>
+                        </div>
+                        <div style="overflow-x:auto;">
+                            <table class="admin-table" style="margin-top:10px;">
+                                <thead>
+                                    <tr>
+                                        <th>Kullanıcı</th>
+                                        <th>Puan</th>
+                                        <th>Seviye</th>
+                                        <th>Rozet</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userLevelsTable">
+                                    <tr><td colspan="4" style="text-align:center;">Henüz kullanıcı yok</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="sectionAdminStats" class="hidden">
                     <div class="admin-grid">
                         <div class="admin-card">
@@ -1717,6 +1814,8 @@
             const gamesRef = ref(db, 'games');
             const commentsRef = ref(db, 'comments');
             const settingsRef = ref(db, 'settings');
+            const levelsRef = ref(db, 'levels');
+            const userPointsRef = ref(db, 'userPoints');
             const etkinlikRef = ref(db, 'etkinlikler');
             const onlineRef = ref(db, 'online_users');
             const connectedRef = ref(db, '.info/connected');
@@ -1728,6 +1827,42 @@
             let gamesList = [];
             let commentsList = [];
             let notifications = [];
+            let levelsList = [];
+            let userPointsList = [];
+
+            // Varsayılan seviyeler
+            const defaultLevels = [
+                { number: 1, name: 'Çaylak', minPoints: 0, cssClass: 'level-caylak' },
+                { number: 2, name: 'Acemi', minPoints: 100, cssClass: 'level-acemi' },
+                { number: 3, name: 'Usta', minPoints: 500, cssClass: 'level-usta' },
+                { number: 4, name: 'Efsane', minPoints: 2000, cssClass: 'level-efsane' },
+                { number: 5, name: 'Tanrı', minPoints: 10000, cssClass: 'level-tanri' }
+            ];
+
+            // Seviyeleri yükle
+            onValue(levelsRef, (snapshot) => {
+                levelsList = [];
+                snapshot.forEach((child) => {
+                    levelsList.push({ id: child.key, ...child.val() });
+                });
+                if (levelsList.length === 0) {
+                    // Varsayılan seviyeleri yükle
+                    defaultLevels.forEach(level => {
+                        push(levelsRef, level);
+                    });
+                }
+                levelsList.sort((a, b) => a.minPoints - b.minPoints);
+                renderLevels();
+            });
+
+            // Kullanıcı puanlarını yükle
+            onValue(userPointsRef, (snapshot) => {
+                userPointsList = [];
+                snapshot.forEach((child) => {
+                    userPointsList.push({ id: child.key, ...child.val() });
+                });
+                renderUserLevels();
+            });
 
             onValue(settingsRef, (snapshot) => {
                 const data = snapshot.val() || {};
@@ -1823,6 +1958,36 @@
             function setCurrentUser(u) { localStorage.setItem('gh_user', JSON.stringify(u)); }
             function isAdmin() { return localStorage.getItem('gh_admin') === 'true'; }
             function setAdmin(v) { localStorage.setItem('gh_admin', v ? 'true' : 'false'); }
+
+            // Kullanıcı seviyesini hesapla
+            function getUserLevel(username) {
+                const userPoints = userPointsList.find(up => up.username === username);
+                const points = userPoints ? userPoints.points : 0;
+                let userLevel = levelsList[0] || { name: 'Seviyesiz', cssClass: '' };
+                
+                for (let i = levelsList.length - 1; i >= 0; i--) {
+                    if (points >= levelsList[i].minPoints) {
+                        userLevel = levelsList[i];
+                        break;
+                    }
+                }
+                return { points, level: userLevel };
+            }
+
+            // Kullanıcıya puan ekle
+            function addUserPoints(username, points) {
+                const existingUser = userPointsList.find(up => up.username === username);
+                if (existingUser) {
+                    update(ref(db, 'userPoints/' + existingUser.id), {
+                        points: (existingUser.points || 0) + points
+                    });
+                } else {
+                    push(userPointsRef, {
+                        username: username,
+                        points: points
+                    });
+                }
+            }
 
             window.setTheme = function(t) {
                 if (!isAdmin() && t.startsWith('admin-')) t = 'default';
@@ -1938,6 +2103,11 @@
                 get(gameRef).then(s => {
                     if (s.exists()) {
                         update(gameRef, { downloads: (s.val().downloads||0) + 1 });
+                        const user = getCurrentUser();
+                        if (user && !user.isAnon) {
+                            addUserPoints(user.username, 10); // İndirme başına 10 puan
+                            etkinlikEkle(`📥 ${user.username} oyun indirdi (+10 puan)`);
+                        }
                     }
                 });
             };
@@ -2023,6 +2193,7 @@
                                 likes: (data.likes||0) + 1,
                                 likedBy: [...likedBy, user.username]
                             });
+                            addUserPoints(data.author, 5); // Beğeni alana 5 puan
                         }
                     }
                 });
@@ -2044,6 +2215,7 @@
                             });
                             update(ref(db, 'comments/' + id), { replies });
                             addNotification(`💬 ${user.username} yorumunuza yanıt verdi!`);
+                            addUserPoints(user.username, 5); // Yanıtlayana 5 puan
                         }
                     });
                 }
@@ -2063,7 +2235,8 @@
                     replies: []
                 });
                 document.getElementById('globalCommentInput').value = '';
-                etkinlikEkle(`💬 ${user.username} yorum yaptı`);
+                addUserPoints(user.username, 15); // Yorum yapana 15 puan
+                etkinlikEkle(`💬 ${user.username} yorum yaptı (+15 puan)`);
             };
 
             function updateStats() {
@@ -2091,7 +2264,8 @@
                 if (!user) return showToast('Hatalı!');
                 setCurrentUser({ username: user.username });
                 closeModal('loginModal');
-                etkinlikEkle(`👤 ${user.username} giriş yaptı`);
+                addUserPoints(user.username, 5); // Giriş yapana 5 puan
+                etkinlikEkle(`👤 ${user.username} giriş yaptı (+5 puan)`);
                 updateUI();
             };
 
@@ -2104,13 +2278,14 @@
                 saveUsers(getUsers());
                 setCurrentUser({ username: u });
                 closeModal('registerModal');
-                etkinlikEkle(`✨ ${u} kayıt oldu`);
+                addUserPoints(u, 50); // Kayıt olana 50 puan
+                etkinlikEkle(`✨ ${u} kayıt oldu (+50 puan)`);
                 updateUI();
             };
 
             window.anonymousLogin = function() {
                 const name = 'Anon_' + Math.random().toString(36).substr(2,5);
-                setCurrentUser({ username: name });
+                setCurrentUser({ username: name, isAnon: true });
                 etkinlikEkle(`👻 ${name} anonim giriş`);
                 updateUI();
             };
@@ -2137,21 +2312,92 @@
 
             window.closeAdminPanel = function() { adminPanelVisible = false; updateUI(); };
 
+            // Seviye yönetimi fonksiyonları
+            function renderLevels() {
+                const container = document.getElementById('currentLevels');
+                if (!container) return;
+                container.innerHTML = levelsList.map(l => `
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px;border-bottom:1px solid var(--border);margin-bottom:5px;">
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <span class="level-badge ${l.cssClass || ''}">Lv${l.number}</span>
+                            <span><b>${l.name}</b></span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <span style="color:var(--text-secondary);">Min: ${l.minPoints} puan</span>
+                            <button class="btn-admin btn-admin-danger" style="padding:4px 10px;font-size:0.7rem;" onclick="deleteLevel('${l.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('') || '<p>Henüz seviye tanımlanmadı.</p>';
+            }
+
+            function renderUserLevels() {
+                const container = document.getElementById('userLevelsTable');
+                if (!container) return;
+                if (userPointsList.length === 0) {
+                    container.innerHTML = '<tr><td colspan="4" style="text-align:center;">Henüz kullanıcı yok</td></tr>';
+                    return;
+                }
+                container.innerHTML = userPointsList.map(up => {
+                    const { points, level } = getUserLevel(up.username);
+                    return `
+                        <tr>
+                            <td><b>${up.username}</b></td>
+                            <td>${points}</td>
+                            <td>${level.name}</td>
+                            <td><span class="level-badge ${level.cssClass || ''}">${level.name}</span></td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            window.addLevel = function() {
+                const number = parseInt(document.getElementById('newLevelNumber').value);
+                const name = document.getElementById('newLevelName').value.trim();
+                const minPoints = parseInt(document.getElementById('newLevelMinPoints').value);
+                const cssClass = document.getElementById('newLevelCssClass').value;
+
+                if (!number || !name || isNaN(minPoints)) {
+                    return showToast('Lütfen tüm alanları doldurun!');
+                }
+
+                push(levelsRef, {
+                    number: number,
+                    name: name,
+                    minPoints: minPoints,
+                    cssClass: cssClass || ''
+                });
+
+                document.getElementById('newLevelNumber').value = '';
+                document.getElementById('newLevelName').value = '';
+                document.getElementById('newLevelMinPoints').value = '';
+                document.getElementById('newLevelCssClass').value = '';
+                showToast('✅ Seviye eklendi!');
+            };
+
+            window.deleteLevel = function(id) {
+                if (confirm('Bu seviyeyi silmek istediğinize emin misiniz?')) {
+                    remove(ref(db, 'levels/' + id));
+                    showToast('🗑️ Seviye silindi!');
+                }
+            };
+
             window.showAdminSection = function(s) {
-                ['sectionAdd','sectionList','sectionEdit','sectionSettings','sectionAdminStats'].forEach(id => {
+                ['sectionAdd','sectionList','sectionEdit','sectionSettings','sectionLevels','sectionAdminStats'].forEach(id => {
                     document.getElementById(id)?.classList.add('hidden');
                 });
-                ['navAdd','navList','navEdit','navSettings','navStats'].forEach(id => {
+                ['navAdd','navList','navEdit','navSettings','navLevels','navStats'].forEach(id => {
                     document.getElementById(id)?.classList.remove('active');
                 });
                 
                 const sectionMap = {
                     'add': 'sectionAdd', 'list': 'sectionList', 'edit': 'sectionEdit',
-                    'settings': 'sectionSettings', 'adminStats': 'sectionAdminStats'
+                    'settings': 'sectionSettings', 'levels': 'sectionLevels', 'adminStats': 'sectionAdminStats'
                 };
                 const navMap = {
                     'add': 'navAdd', 'list': 'navList', 'edit': 'navEdit',
-                    'settings': 'navSettings', 'adminStats': 'navStats'
+                    'settings': 'navSettings', 'levels': 'navLevels', 'adminStats': 'navStats'
                 };
                 
                 document.getElementById(sectionMap[s])?.classList.remove('hidden');
@@ -2182,6 +2428,11 @@
                 if (s === 'settings') {
                     document.getElementById('duyuruInput').value = safeGet('gh_duyuru', '');
                     document.getElementById('siteTitleInput').value = safeGet('gh_siteTitle', 'OyunDeposu');
+                }
+                
+                if (s === 'levels') {
+                    renderLevels();
+                    renderUserLevels();
                 }
                 
                 if (s === 'adminStats') {
@@ -2317,8 +2568,9 @@
                         badge.style.cssText = 'background:linear-gradient(135deg, #ffd700, #ffaa00);color:#000;padding:8px 16px;border-radius:30px;font-weight:800;';
                     } else {
                         badge.className = '';
-                        badge.textContent = '👤 ' + user.username;
-                        badge.style.cssText = 'background:var(--glass);color:var(--text);padding:8px 16px;border-radius:30px;';
+                        const userLevel = getUserLevel(user.username);
+                        badge.innerHTML = `👤 ${user.username} <span class="level-badge ${userLevel.level.cssClass || ''}">${userLevel.level.name}</span>`;
+                        badge.style.cssText = 'background:var(--glass);color:var(--text);padding:8px 16px;border-radius:30px;display:flex;align-items:center;gap:8px;';
                     }
                 } else {
                     badge.classList.add('hidden');
