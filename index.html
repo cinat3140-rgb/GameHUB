@@ -654,6 +654,91 @@
             transform: scale(1.2);
         }
 
+        /* ==================== YORUMLAR ==================== */
+        .comment {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            margin: 12px 0;
+            transition: var(--transition);
+        }
+
+        .comment:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow);
+        }
+
+        .comment-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .comment-author i {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        .comment-author strong {
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .comment-date {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-left: auto;
+        }
+
+        .comment-text {
+            margin: 10px 0;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .like-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--accent);
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .like-btn:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .like-btn.liked {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        .like-btn i {
+            transition: var(--transition);
+        }
+
+        .like-btn:hover i {
+            animation: pulse 0.5s ease-in-out;
+        }
+
         /* ==================== ADMIN PANELİ ==================== */
         .admin-panel {
             background: var(--card);
@@ -1332,22 +1417,77 @@
                 document.getElementById('globalComments').innerHTML = commentsList.length ? 
                     commentsList.slice(-10).reverse().map(c => `
                         <div class="comment">
-                            <strong style="color:var(--accent);">${c.author}</strong> <small>${c.date}</small>
-                            <p>${c.text}</p>
-                            <button class="like-btn" onclick="likeComment('${c.id}')">
-                                <i class="fas fa-heart"></i> ${c.likes||0}
-                            </button>
+                            <div class="comment-author">
+                                <i class="fas fa-user-circle"></i>
+                                <strong>${c.author}</strong>
+                                <span class="comment-date">${c.date}</span>
+                            </div>
+                            <p class="comment-text">${c.text}</p>
+                            <div class="comment-actions">
+                                <button class="like-btn ${c.likedBy?.includes(getCurrentUser()?.username) ? 'liked' : ''}" onclick="likeComment('${c.id}')">
+                                    <i class="fas fa-thumbs-up"></i> <span>${c.likes||0}</span>
+                                </button>
+                                <button class="like-btn" onclick="replyComment('${c.id}')">
+                                    <i class="fas fa-reply"></i> Yanıtla
+                                </button>
+                            </div>
+                            ${c.replies ? c.replies.map(r => `
+                                <div style="margin-left:30px;margin-top:10px;padding:10px;background:var(--soft);border-radius:10px;">
+                                    <div class="comment-author">
+                                        <i class="fas fa-user-circle"></i>
+                                        <strong>${r.author}</strong>
+                                        <span class="comment-date">${r.date}</span>
+                                    </div>
+                                    <p>${r.text}</p>
+                                </div>
+                            `).join('') : ''}
                         </div>
                     `).join('') : '<p>Henüz yorum yok.</p>';
             }
 
             window.likeComment = function(id) {
+                const user = getCurrentUser();
+                if (!user) return showToast('Beğenmek için giriş yapın!');
                 get(ref(db, 'comments/' + id)).then(s => {
                     if (s.exists()) {
-                        update(ref(db, 'comments/' + id), { likes: (s.val().likes||0) + 1 });
-                        addNotification('❤️ Yorumunuz beğenildi!');
+                        const data = s.val();
+                        const likedBy = data.likedBy || [];
+                        if (likedBy.includes(user.username)) {
+                            // Beğeniyi geri al
+                            update(ref(db, 'comments/' + id), { 
+                                likes: Math.max((data.likes||1) - 1, 0),
+                                likedBy: likedBy.filter(u => u !== user.username)
+                            });
+                        } else {
+                            // Beğen
+                            update(ref(db, 'comments/' + id), { 
+                                likes: (data.likes||0) + 1,
+                                likedBy: [...likedBy, user.username]
+                            });
+                        }
                     }
                 });
+            };
+
+            window.replyComment = function(id) {
+                const user = getCurrentUser();
+                if (!user) return showToast('Yanıtlamak için giriş yapın!');
+                const reply = prompt('Yanıtınızı yazın:');
+                if (reply && reply.trim()) {
+                    get(ref(db, 'comments/' + id)).then(s => {
+                        if (s.exists()) {
+                            const data = s.val();
+                            const replies = data.replies || [];
+                            replies.push({
+                                author: user.username,
+                                text: reply.trim(),
+                                date: new Date().toLocaleString('tr-TR')
+                            });
+                            update(ref(db, 'comments/' + id), { replies });
+                            addNotification(`💬 ${user.username} yorumunuza yanıt verdi!`);
+                        }
+                    });
+                }
             };
 
             window.addGlobalComment = function() {
@@ -1359,7 +1499,9 @@
                     author: user.username, 
                     text, 
                     date: new Date().toLocaleString('tr-TR'), 
-                    likes: 0 
+                    likes: 0,
+                    likedBy: [],
+                    replies: []
                 });
                 document.getElementById('globalCommentInput').value = '';
                 etkinlikEkle(`💬 ${user.username} yorum yaptı`);
