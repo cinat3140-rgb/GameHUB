@@ -6,7 +6,7 @@
     <title>OyunDeposu - Canlı</title>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getDatabase, ref, set, onValue, push, update, remove, get } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+        import { getDatabase, ref, set, onValue, push, update, remove, get, onDisconnect } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAcovKVK_M5AAIV-2eRMwOAypTLCAKjfqE",
@@ -29,6 +29,7 @@
         window.update = update;
         window.remove = remove;
         window.get = get;
+        window.onDisconnect = onDisconnect;
     </script>
     <style>
         :root {
@@ -465,6 +466,7 @@
         const settingsRef = ref(db, 'settings');
         const etkinlikRef = ref(db, 'etkinlikler');
         const onlineRef = ref(db, 'online_users');
+        const connectedRef = ref(db, '.info/connected');
 
         let adminPanelVisible = false;
         let activeCategory = 'all';
@@ -515,43 +517,58 @@
             set(yeniRef, { mesaj, zaman: new Date().toLocaleTimeString() });
         }
 
-        // ==================== CANLI ÇEVRİMİÇİ SAYACI (DÜZELTİLMİŞ) ====================
+        // ==================== CANLI ÇEVRİMİÇİ SAYACI (onDisconnect İLE KESİN ÇÖZÜM) ====================
         const mySessionId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        function updateMyPresence() {
-            set(ref(db, 'online_users/' + mySessionId), { lastSeen: Date.now() });
-        }
-        updateMyPresence();
-        const presenceInterval = setInterval(updateMyPresence, 5000);
+        const myOnlineRef = ref(db, 'online_users/' + mySessionId);
 
-        window.addEventListener('beforeunload', () => {
-            clearInterval(presenceInterval);
-            remove(ref(db, 'online_users/' + mySessionId));
-        });
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible') updateMyPresence();
+        // Firebase bağlantısını dinle
+        onValue(connectedRef, (snap) => {
+            if (snap.val() === true) {
+                // Bağlıyız, kendimizi ekle
+                set(myOnlineRef, {
+                    lastSeen: Date.now(),
+                    sessionId: mySessionId
+                });
+                
+                // BAĞLANTI KOPTUĞUNDA VEYA SAYFA KAPANDIĞINDA OTOMATİK SİL
+                onDisconnect(myOnlineRef).remove();
+                
+                // Her 10 saniyede bir lastSeen güncelle
+                setInterval(() => {
+                    set(myOnlineRef, {
+                        lastSeen: Date.now(),
+                        sessionId: mySessionId
+                    });
+                }, 10000);
+            }
         });
 
+        // Tüm çevrimiçi kullanıcıları dinle ve say
         onValue(onlineRef, (snapshot) => {
             const now = Date.now();
             let count = 0;
+            const updates = {};
+            
             snapshot.forEach((child) => {
                 const data = child.val();
-                if (data && data.lastSeen && (now - data.lastSeen < 15000)) count++;
+                if (data && data.lastSeen) {
+                    if (now - data.lastSeen > 30000) {
+                        updates[child.key] = null; // 30 saniyeden eskiyi sil
+                    } else if (now - data.lastSeen < 15000) {
+                        count++; // 15 saniyeden yeniyi say
+                    }
+                } else {
+                    updates[child.key] = null; // geçersiz kaydı sil
+                }
             });
+            
+            // Eski kayıtları temizle
+            if (Object.keys(updates).length > 0) {
+                update(onlineRef, updates);
+            }
+            
             document.getElementById('onlineText').textContent = count + ' çevrimiçi';
         });
-
-        setInterval(() => {
-            get(onlineRef).then((snapshot) => {
-                const now = Date.now();
-                const updates = {};
-                snapshot.forEach((child) => {
-                    const data = child.val();
-                    if (!data || !data.lastSeen || (now - data.lastSeen > 30000)) updates[child.key] = null;
-                });
-                if (Object.keys(updates).length > 0) update(onlineRef, updates);
-            });
-        }, 30000);
 
         // ==================== YARDIMCI FONKSİYONLAR ====================
         function getUsers() { return JSON.parse(localStorage.getItem('gh_users') || '[]'); }
