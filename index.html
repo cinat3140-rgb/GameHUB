@@ -2600,8 +2600,8 @@
             etkinlikEkle('🟢 OyunDeposu başlatıldı');
         });
     </script>
-    <!-- ======================================== -->
-<!-- TAM OTOMATİK AI BOT - KOPYALA YAPIŞTIR  -->
+<!-- ======================================== -->
+<!-- AKILLI VE MÜTEVAZI AI BOT - REZİL OLMAYIN -->
 <!-- ======================================== -->
 <style>
 .ai-chat-container{position:fixed;bottom:100px;right:30px;z-index:9998;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
@@ -2689,49 +2689,152 @@
 <script>
 (function(){
 // =============================================
-// TAM OTOMATİK AI - HİÇBİR ŞEY YAPMAYIN!
-// HER ŞEY KENDİLİĞİNDEN ÇALIŞIR
+// MÜTEVAZI AI BOT - KESİN KONUŞMAZ, REZİL ETMEZ!
 // =============================================
 
-// ★ BURAYI DEĞİŞTİRMEK İSTEMİYORSANIZ DOKUNMAYIN ★
-// Bot kendi kendine çalışır, hiçbir müdahale gerektirmez!
-
+// ★ BOTUN KİŞİLİĞİ - MÜTEVAZI VE DÜRÜST ★
 const BOT = {
     name: 'OyunBot',
     emoji: '🤖',
-    welcome: '👋 Merhaba! Ben OyunBot, OyunDeposu\'nun yapay zeka asistanıyım. Sana nasıl yardımcı olabilirim? 🎮',
-    tip: '💡 İpucu: "Site hakkında", "Oyun indirme", "Sistem testi" gibi konularda soru sorabilirsin. 🔒 Admin bilgileri gizlidir!'
+    welcome: '👋 Merhaba! Ben OyunBot. Sana yardımcı olmaya çalışırım ama bazı şeyleri tam bilmiyor olabilirim. Çekinmeden sorabilirsin! 😊',
+    tip: '💡 Siteyle ilgili sorularını cevaplamaya çalışırım. Ama kesin bilgi için siteyi kontrol etmeni öneririm!'
 };
 
-// ★ SİZ HİÇBİR ŞEY YAPMAYIN, BOT KENDİ CEVAPLARINI BİLİR ★
-const ANSWERS = {
-    'site hakkında': '🎮 OyunDeposu: Türkiye\'nin en büyük oyun arşivi! 100+ oyun, 10+ kategori, yorumlar, puanlama, sistem testi ve karşılaştırma aracı.',
-    'nasıl oyun eklerim': '🎯 Admin yetkin varsa Ctrl+Shift+A ile paneli aç, "Oyun Ekle" sekmesinden ekleyebilirsin.',
-    'nasıl kayıt olurum': '📝 Sağ üstteki "Kayıt" butonuna tıkla, bilgilerini gir ve kaydol!',
-    'nasıl giriş yaparım': '🔑 Sağ üstteki "Giriş" butonuna tıkla, kullanıcı adı ve şifrenle giriş yap.',
-    'oyun nasıl indiririm': '📥 Oyun kartına tıkla, açılan pencerede "İndir" butonuna bas.',
-    'oyun nasıl ararım': '🔍 Arama çubuğuna oyun adı, kategori veya etiket yaz, anında filtrele.',
-    'sistem testi': '🖥️ "PC Test" sekmesine git, sistem özelliklerini gir, oyun seç ve test et.',
-    'karşılaştırma': '⚖️ "Karşılaştır" sekmesinde 2 oyun seç, özellikleri karşılaştır.',
-    'yorum': '💬 "Yorumlar" sekmesinde yorum yapabilir, beğenebilir ve yanıtlayabilirsin.',
-    'seviye': '⭐ Çaylak → Acemi → Usta → Efsane → Tanrı. Yorum yap, oyun indir, aktif ol!',
-    'en popüler oyun': '🔥 En çok indirilen oyunları görmek için "En Çok İndirilen" sıralamasını seç.',
-    'yardım': '🆘 Ne konuda yardım istersin? Oyunlar, hesap, sistem testi, karşılaştırma...'
-};
+// ★ GÜNCEL OYUN SAYISINI OTOMATİK AL ★
+function getGameCount() {
+    try {
+        // Oyun sayısını Firebase'den veya mevcut listeden al
+        if (window.gamesList) {
+            return window.gamesList.length;
+        }
+        // Alternatif: DOM'dan oyun kartlarını say
+        const cards = document.querySelectorAll('.game-card');
+        if (cards.length > 0) return cards.length;
+        return 'birkaç'; // Kesin sayı bilinmiyorsa
+    } catch(e) {
+        return 'birkaç';
+    }
+}
 
-// ★ ADMIN SORULARINA OTOMATİK GİZLİLİK CEVABI ★
-const SECRET_WORDS = ['admin şifre', 'admin anahtar', 'admin kodu', 'admin key', 'şifre nedir', 'anahtar nedir', 'admin panel şifre'];
+// ★ EN POPÜLER OYUNU BUL (Gerçek verilerden) ★
+function getTopGame() {
+    try {
+        if (window.gamesList && window.gamesList.length > 0) {
+            const sorted = [...window.gamesList].sort((a,b) => (b.downloads||0) - (a.downloads||0));
+            if (sorted.length > 0 && sorted[0].downloads > 0) {
+                return `${sorted[0].title} (${sorted[0].downloads} indirme)`;
+            }
+        }
+        return 'henüz net bir veri yok, siteyi kontrol et!';
+    } catch(e) {
+        return 'henüz net bir veri yok!';
+    }
+}
 
+// ★ CEVAPLAR - MÜTEVAZI VE ESNEK ★
 function getReply(msg) {
     msg = msg.toLowerCase().trim();
-    for (let word of SECRET_WORDS) {
-        if (msg.includes(word)) return '🔒 Bu bilgi gizlidir! Admin bilgileri sadece yetkili kişiler tarafından bilinir.';
+    
+    // ★ ADMIN SORULARI - KESİN GİZLİ ★
+    const secretWords = ['admin şifre', 'admin anahtar', 'admin kodu', 'admin key', 'şifre nedir', 'anahtar nedir', 'admin panel şifre'];
+    for (let word of secretWords) {
+        if (msg.includes(word)) {
+            return '🔒 Bu bilgiyi paylaşamıyorum, üzgünüm! Güvenlik nedeniyle gizli tutuluyor. 🙏';
+        }
     }
-    for (let key in ANSWERS) {
-        if (msg.includes(key)) return ANSWERS[key];
+
+    // ★ SİTE HAKKINDA - KESİN RAKAM VERME, GENEL KONUŞ ★
+    if (msg.includes('site hakkında') || msg.includes('site nedir') || msg.includes('burası ne')) {
+        return `🎮 OyunDeposu hakkında bildiklerim:
+
+• 🎯 Bir oyun arşivi sitesi
+• 📂 Çeşitli kategorilerde oyunlar var: Aksiyon, Macera, RPG, Strateji vb.
+• 💬 Kullanıcılar yorum yapabiliyor ve oyunları puanlayabiliyor
+• 🖥️ Sistem gereksinimi testi yapılabiliyor
+• ⚖️ Oyun karşılaştırma aracı var
+
+📌 *Tam olarak kaç oyun var?* Sanırım şu an ${getGameCount()} kadar oyun var ama emin değilim, siteyi kontrol etsen daha iyi olur! 😅`;
+
+    // ★ OYUN SAYISI - KESİN KONUŞMA ★
+    } else if (msg.includes('kaç oyun') || msg.includes('oyun sayısı') || msg.includes('toplam oyun')) {
+        const count = getGameCount();
+        if (typeof count === 'number') {
+            return `📊 Şu anki oyun sayısı: ${count} civarında görünüyor. Ama emin olmak için ana sayfayı kontrol etmeni öneririm! 😊`;
+        }
+        return `📊 Oyun sayısı hakkında net bir bilgim yok ama sanırım ${count} tane var. Siteyi ziyaret edip göz atabilirsin! 🎮`;
+
+    // ★ EN POPÜLER OYUN - KESİN KONUŞMA ★
+    } else if (msg.includes('en popüler') || msg.includes('popüler oyun') || msg.includes('en çok indirilen')) {
+        const top = getTopGame();
+        return `🔥 En popüler oyun sanırım ${top}. Ama bu değişebilir, en güncel bilgi için siteye bakman daha doğru olur! 📊`;
+
+    // ★ NASIL OYUN EKLERİM ★
+    } else if (msg.includes('nasıl oyun eklerim') || msg.includes('oyun ekleme')) {
+        return `🎯 Oyun eklemek için admin yetkisi gerekiyor. Eğer adminsen Ctrl+Shift+A ile paneli açabilirsin. Değilsen site sahibiyle iletişime geçmen lazım. Detaylı bilgiyi admin bilir! 😅`;
+
+    // ★ KAYIT OLMA ★
+    } else if (msg.includes('nasıl kayıt olurum') || msg.includes('kayıt ol')) {
+        return `📝 Kayıt olmak çok kolay! Sağ üstteki "Kayıt" butonuna tıkla, bilgilerini gir ve kaydol. Ama detaylı bilgi için siteyi incelemen daha iyi olur! 😊`;
+
+    // ★ GİRİŞ YAPMA ★
+    } else if (msg.includes('nasıl giriş yaparım') || msg.includes('giriş yap')) {
+        return `🔑 Giriş yapmak için sağ üstteki "Giriş" butonuna tıkla, kullanıcı adı ve şifrenle giriş yap. Anonim giriş de mümkün! Ama en doğru bilgi site içinde var. 🎮`;
+
+    // ★ OYUN İNDİRME ★
+    } else if (msg.includes('oyun nasıl indiririm') || msg.includes('indirme') || msg.includes('download')) {
+        return `📥 Oyun indirmek için oyun kartına tıkla, açılan pencerede "İndir" butonuna bas. İndirme linki yeni sekmede açılır. Ama linkler değişebilir, siteyi takip et! 😉`;
+
+    // ★ SİSTEM TESTİ ★
+    } else if (msg.includes('sistem testi') || msg.includes('pc test') || msg.includes('sistem gereksinimi')) {
+        return `🖥️ "PC Test" sekmesinde sistem özelliklerini girip test edebilirsin. Ama ben kesin sonuç veremem, sen yine de dikkatli ol! 😅`;
+
+    // ★ KARŞILAŞTIRMA ★
+    } else if (msg.includes('karşılaştırma') || msg.includes('karşılaştır')) {
+        return `⚖️ "Karşılaştır" sekmesinde 2 oyun seçip özelliklerini karşılaştırabilirsin. Çok kullanışlı bir özellik! 🎮`;
+
+    // ★ YORUM ★
+    } else if (msg.includes('yorum') || msg.includes('nasıl yorum')) {
+        return `💬 Yorum yapmak için önce giriş yapmalısın. Sonra "Yorumlar" sekmesine git ve yorumunu yaz. Başkalarının yorumlarını beğenip yanıtlayabilirsin! 👍`;
+
+    // ★ MERHABA/SELAM ★
+    } else if (msg.includes('merhaba') || msg.includes('selam') || msg.includes('hey') || msg.includes('naber')) {
+        return `👋 Merhaba! Sana nasıl yardımcı olabilirim? Aklına takılan bir şey varsa sorabilirsin. Ama her şeyi bilemeyebilirim, şimdiden affola! 😅`;
+
+    // ★ NASILSIN ★
+    } else if (msg.includes('nasılsın') || msg.includes('nasılsınız')) {
+        return `😊 İyiyim, teşekkür ederim! Sitenin keyfini çıkarıyorum. Sen nasılsın? Yardımcı olabileceğim bir şey var mı? 🎮`;
+
+    // ★ TEŞEKKÜR ★
+    } else if (msg.includes('teşekkür') || msg.includes('sağol') || msg.includes('eyv')) {
+        return `🎉 Rica ederim! Yardımcı olabildiysem ne mutlu bana. Başka bir şey olursa yine beklerim! 😊`;
+
+    // ★ YARDIM ★
+    } else if (msg.includes('yardım') || msg.includes('help') || msg.includes('ne yapabilirim')) {
+        return `🆘 Yardım konuları:
+
+• "Site hakkında bilgi verir misin?" → Site genel bilgisi
+• "Kaç oyun var?" → Oyun sayısı (tahmini)
+• "En popüler oyun hangisi?" → Popüler oyun (tahmini)
+• "Nasıl oyun eklerim?" → Oyun ekleme (admin gerektirir)
+• "Nasıl kayıt olurum?" → Kayıt bilgisi
+• "Admin şifresi nedir?" → Gizli! 🔒
+
+Aklına takılan ne varsa sorabilirsin! 😊`;
+
+    // ★ GÜZEL SÖZLER ★
+    } else if (msg.includes('aşk') || msg.includes('sevgi') || msg.includes('hayat')) {
+        return `❤️ Bu konuda pek bilgili değilim ama sanırım siteyi beğeniyorsun! Umarım OyunDeposu'nda keyifli vakit geçirirsin! 🎮`;
+
+    // ★ KÜFÜR/KÖTÜ SÖZ ★
+    } else if (msg.includes('küfür') || msg.includes('siktir') || msg.includes('amk') || msg.includes('salak') || msg.includes('mal')) {
+        return `😅 Hey, sakin ol! Ben sadece yardım etmeye çalışan bir yapay zekayım. Daha medeni konuşalım mı? 🤖`;
+
+    // ★ FALLBACK - BİLMİYORUM ★
+    } else {
+        return `🤔 Bunu tam olarak bilmiyorum, üzgünüm! Ama eğer siteyle ilgili bir sorunsa, siteyi gezerek veya diğer kullanıcılara sorarak öğrenebilirsin. Yardımcı olabildiğim konularda sorabilirsin! 😊
+
+💡 İpucu: "Yardım" yazarak neler yapabileceğimi görebilirsin.`;
     }
-    if (msg.length < 3) return '🤔 Biraz daha açık yazabilir misin? Yardım etmek isterim!';
-    return '🤔 Anlamadım ama yardımcı olmak isterim! "Yardım" yazarak neler yapabileceğimi görebilirsin.';
 }
 
 // ★ SOHBET MOTORU - DOKUNMAYIN ★
@@ -2794,7 +2897,7 @@ window.sendAiMessage = function(input) {
     }, Math.floor(Math.random() * 600) + 400);
 };
 
-// ★ KLAVYE KISAYOLU: Ctrl+Shift+S ★
+// ★ KLAVYE KISAYOLU ★
 document.addEventListener('keydown', function(e) {
     if (e.ctrlKey && e.shiftKey && e.key === 'S') {
         e.preventDefault();
@@ -2802,12 +2905,13 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-console.log('🤖 OyunBot AI aktif! Ctrl+Shift+S ile sohbeti aç.');
-console.log('🔒 Admin bilgileri otomatik korumada.');
+console.log('🤖 Mütevazı OyunBot AI aktif! Ctrl+Shift+S ile sohbeti aç.');
+console.log('🔒 Admin bilgileri korumada.');
+console.log('⚠️ Bot kesin konuşmuyor, rezil olma riski yok! 😄');
 })();
 </script>
 <!-- ======================================== -->
-<!-- TAM OTOMATİK AI BOT - BİTTİ              -->
+<!-- MÜTEVAZI BOT - BİTTİ                     -->
 <!-- ======================================== -->
 </body>
 </html>
