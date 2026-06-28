@@ -2602,14 +2602,14 @@
     </script>
 
 <!-- ========================================================== -->
-<!-- 👥 KULLANICI PANELİ – BAĞIMSIZ, SORUNSUZ, HAZIR           -->
+<!-- 👥 KULLANICI PANELİ – BUTON SAĞ ÜST, PANEL SAĞ ÜST       -->
 <!-- ========================================================== -->
 <style>
-/* ----- PANEL BUTONU ----- */
+/* ----- PANEL BUTONU (SAĞ ÜST) ----- */
 .kp-btn {
     position: fixed;
-    top: 80px;
-    right: 20px;
+    top: 80px;          /* Sayfanın üstünden 80px aşağıda */
+    right: 20px;        /* Sağdan 20px içeride */
     z-index: 999997;
     width: 50px;
     height: 50px;
@@ -2643,11 +2643,11 @@
 }
 .kp-btn:hover .tip { opacity: 1; }
 
-/* ----- PANEL KUTUSU ----- */
+/* ----- PANEL KUTUSU (SAĞ ÜST) ----- */
 .kp-panel {
     position: fixed;
-    top: 140px;
-    right: 20px;
+    top: 140px;         /* Butonun hemen altında */
+    right: 20px;        /* Sağdan 20px içeride */
     z-index: 999998;
     width: 360px;
     max-width: 90vw;
@@ -2748,15 +2748,8 @@
     font-size: 0.9rem;
 }
 
+/* ----- MOBİL DÜZENLEME ----- */
 @media (max-width: 768px) {
-    .kp-panel {
-        width: 100%;
-        max-width: 100vw;
-        max-height: 80vh;
-        top: 70px;
-        right: 0;
-        border-radius: 0;
-    }
     .kp-btn {
         top: 70px;
         right: 16px;
@@ -2764,16 +2757,24 @@
         height: 44px;
         font-size: 18px;
     }
+    .kp-panel {
+        top: 125px;
+        right: 0;
+        width: 100%;
+        max-width: 100vw;
+        max-height: 80vh;
+        border-radius: 0;
+    }
 }
 </style>
 
-<!-- BUTON -->
+<!-- BUTON (SAĞ ÜST) -->
 <button class="kp-btn" id="kpBtn">
     👥
     <span class="tip">👥 Kimler Var?</span>
 </button>
 
-<!-- PANEL -->
+<!-- PANEL (SAĞ ÜST) -->
 <div class="kp-panel" id="kpPanel">
     <div class="kp-header">
         <h4 id="kpTitle">👥 Kullanıcılar</h4>
@@ -2786,7 +2787,7 @@
 
 <script>
 // ==========================================================
-// KULLANICI PANELİ – BAĞIMSIZ, ÇALIŞIR, SORUNSUZ
+// KULLANICI PANELİ – SAĞ ÜST, SORUNSUZ
 // ==========================================================
 (function() {
     'use strict';
@@ -2862,7 +2863,7 @@
             const color = levelColors[level] || '#666';
             const stats = getUserStats(u.username);
             const isMe = current && current.username === u.username;
-            const online = Math.random() > 0.3; // simüle
+            const online = Math.random() > 0.3;
 
             html += `
                 <div class="kp-item" style="${isMe ? 'border-color:#fdcb6e;' : ''}">
@@ -2914,8 +2915,7 @@
         }
     });
 
-    // ---- BAŞLANGIÇ ----
-    console.log('👥 Kullanıcı Paneli hazır! Ctrl+Shift+U ile aç.');
+    console.log('👥 Kullanıcı Paneli (sağ üst) hazır! Ctrl+Shift+U ile aç.');
 })();
 </script>
 <!-- ========================================================== -->
