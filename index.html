@@ -35,7 +35,8 @@
         window.onDisconnect = onDisconnect;
     </script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
     
     <style>
         :root {
@@ -1795,7 +1796,7 @@
             const commentsRef = ref(db, 'comments');
             const settingsRef = ref(db, 'settings');
             const levelsRef = ref(db, 'levels');
-            const userLevelsRef = ref(db, 'userLevels'); // Kullanıcı-seviye eşleşmeleri
+            const userLevelsRef = ref(db, 'userLevels');
             const etkinlikRef = ref(db, 'etkinlikler');
             const onlineRef = ref(db, 'online_users');
             const connectedRef = ref(db, '.info/connected');
@@ -1810,14 +1811,12 @@
             let levelsList = [];
             let userLevelsList = [];
 
-            // Seviyeleri yükle
             onValue(levelsRef, (snapshot) => {
                 levelsList = [];
                 snapshot.forEach((child) => {
                     levelsList.push({ id: child.key, ...child.val() });
                 });
                 if (levelsList.length === 0) {
-                    // Varsayılan seviyeleri yükle
                     const defaultLevels = [
                         { name: 'Çaylak', color: '#95a5a6' },
                         { name: 'Acemi', color: '#2ecc71' },
@@ -1831,14 +1830,13 @@
                 renderUserLevelsTable();
             });
 
-            // Kullanıcı seviyelerini yükle
             onValue(userLevelsRef, (snapshot) => {
                 userLevelsList = [];
                 snapshot.forEach((child) => {
                     userLevelsList.push({ id: child.key, ...child.val() });
                 });
                 renderUserLevelsTable();
-                updateUI(); // Rozetleri güncelle
+                updateUI();
             });
 
             onValue(settingsRef, (snapshot) => {
@@ -1931,7 +1929,6 @@
                             </div>`
                         ).join('') || 'Bildirim yok.';
                     
-                    // Tüm bildirimleri okundu olarak işaretle
                     notifications.forEach(n => {
                         if (!n.read) {
                             update(ref(db, 'notifications/' + n.id), { read: true });
@@ -1949,7 +1946,6 @@
             function isAdmin() { return localStorage.getItem('gh_admin') === 'true'; }
             function setAdmin(v) { localStorage.setItem('gh_admin', v ? 'true' : 'false'); }
 
-            // Kullanıcının atanmış seviyesini bul
             function getUserLevel(username) {
                 const userLevelEntry = userLevelsList.find(ul => ul.username === username);
                 if (!userLevelEntry) return { name: 'Seviyesiz', color: '#666' };
@@ -2009,7 +2005,7 @@
                 document.getElementById('gameGrid').innerHTML = filtered.length ? filtered.map(g => `
                     <div class="game-card ${g.pinned ? 'pinned' : ''}" onclick="openGameDetail('${g.id}')">
                         <div class="game-card-image">
-                            ${g.image ? `<img src="${g.image}" onerror="this.innerHTML='<i class=\\'fas fa-gamepad\\'></i>'">` : '<i class="fas fa-gamepad"></i>'}
+                            ${g.image ? `<img src="${g.image}" loading="lazy" onerror="this.innerHTML='<i class=\\'fas fa-gamepad\\'></i>'">` : '<i class="fas fa-gamepad"></i>'}
                         </div>
                         <div class="game-card-content">
                             <h3>${g.title}</h3>
@@ -2270,7 +2266,6 @@
 
             window.closeAdminPanel = function() { adminPanelVisible = false; updateUI(); };
 
-            // Seviye yönetimi fonksiyonları
             function renderLevels() {
                 const container = document.getElementById('currentLevels');
                 if (!container) return;
@@ -2352,11 +2347,9 @@
                 if (!select) return;
                 const levelId = select.value;
                 
-                // Mevcut kaydı bul
                 const existingEntry = userLevelsList.find(ul => ul.username === username);
                 
                 if (levelId === '') {
-                    // Seviyesiz yap
                     if (existingEntry) {
                         remove(ref(db, 'userLevels/' + existingEntry.id));
                     }
@@ -2602,114 +2595,9 @@
     </script>
 
 <!-- ================================================== -->
-<!-- 👥 KULLANICI PANELİ - SAĞ ÜST KÖŞE (DETAYLI)      -->
+<!-- 👥 KULLANICI PANELİ - SAĞ ÜST (SABİT)              -->
 <!-- ================================================== -->
 <style>
-.user-panel-btn-t{
-    position:fixed;
-    top:80px;
-    right:20px;
-    z-index:999997;
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    background:linear-gradient(135deg,#fdcb6e,#f39c12);
-    border:none;
-    color:#000;
-    font-size:22px;
-    cursor:pointer;
-    box-shadow:0 8px 32px rgba(243,156,18,0.4);
-    transition:.3s;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    animation:floatT 3s ease-in-out infinite
-}
-.user-panel-btn-t:hover{transform:scale(1.15) rotate(-5deg)}
-.user-panel-btn-t .tip{
-    position:absolute;right:60px;
-    background:#1a1a2e;color:#e8e8e8;padding:6px 14px;border-radius:20px;
-    font-size:.8rem;white-space:nowrap;border:1px solid #2a2a3e;
-    opacity:0;transition:opacity .3s;pointer-events:none
-}
-.user-panel-btn-t:hover .tip{opacity:1}
-.user-panel-t{
-    position:fixed;
-    top:140px;
-    right:20px;
-    z-index:999998;
-    width:340px;
-    max-width:90vw;
-    max-height:70vh;
-    background:#1a1a2e;
-    border:2px solid #fdcb6e;
-    border-radius:16px;
-    padding:16px 20px;
-    box-shadow:0 20px 60px rgba(0,0,0,0.6);
-    display:none;
-    overflow-y:auto
-}
-.user-panel-t.open{display:block}
-.user-panel-t::-webkit-scrollbar{width:4px}
-.user-panel-t::-webkit-scrollbar-thumb{background:#fdcb6e;border-radius:4px}
-.user-panel-header-t{
-    display:flex;align-items:center;justify-content:space-between;
-    border-bottom:1px solid #2a2a3e;padding-bottom:10px;margin-bottom:12px
-}
-.user-panel-header-t h4{color:#fdcb6e;margin:0;font-size:1rem}
-.user-panel-header-t .close-btn{
-    background:none;border:none;color:#a0a0b0;font-size:1.2rem;cursor:pointer
-}
-.user-panel-header-t .close-btn:hover{color:#fff}
-.user-item-t{
-    display:flex;align-items:center;gap:10px;
-    padding:8px 12px;margin-bottom:6px;border-radius:10px;
-    background:#0f0f1a;border:1px solid #2a2a3e;transition:.3s
-}
-.user-item-t:hover{border-color:#fdcb6e}
-.user-item-t .avatar{
-    width:36px;height:36px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0
-}
-.user-item-t .info{flex:1}
-.user-item-t .info .name{font-weight:600;font-size:.9rem}
-.user-item-t .info .level{font-size:.7rem;opacity:.7}
-.user-item-t .info .detail{font-size:.65rem;color:#a0a0b0;margin-top:2px}
-.user-item-t .badge{
-    font-size:.6rem;padding:2px 10px;border-radius:12px;
-    background:#2a2a3e;color:#a0a0b0;white-space:nowrap
-}
-.user-item-t .status-dot{
-    width:8px;height:8px;border-radius:50%;flex-shrink:0
-}
-.status-online-t{background:#2ecc71;animation:pulseT 2s infinite}
-.status-offline-t{background:#666}
-.empty-users-t{text-align:center;color:#a0a0b0;padding:20px 0;font-size:.9rem}
-@keyframes pulseT{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
-@keyframes floatT{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-</style>
-
-<button class="user-panel-btn-t" onclick="toggleUserPanelT()" id="userPanelBtnT">
-    👥
-    <span class="tip">👥 Kimler Var?</span>
-</button>
-
-<div class="user-panel-t" id="userPanelT">
-    <div class="user-panel-header-t">
-        <h4>👥 Kullanıcılar</h4>
-        <button class="close-btn" onclick="closeUserPanelT()"><i class="fas fa-times"></i></button>
-    </div>
-    <div id="userListContainerT">
-        <div class="empty-users-t">⏳ Yükleniyor...</div>
-    </div>
-</div>
-
-<script>
-<!-- ================================================== -->
-<!-- 👥 KULLANICI PANELİ - SAĞ ÜST (SABİT, DETAYLI)    -->
-<!-- ================================================== -->
-<style>
-/* ----- KULLANICI PANELİ ----- */
 .kullanici-btn {
     position: fixed;
     top: 80px;
@@ -2841,13 +2729,11 @@
 }
 </style>
 
-<!-- BUTON -->
 <button class="kullanici-btn" id="kullaniciBtn">
     👥
     <span class="ipucu">👥 Kimler Var?</span>
 </button>
 
-<!-- KUTU -->
 <div class="kullanici-kutu" id="kullaniciKutu">
     <div class="kullanici-header">
         <h4 id="kullaniciBaslik">👥 Kullanıcılar</h4>
@@ -2859,9 +2745,6 @@
 </div>
 
 <script>
-// =============================================
-// KULLANICI PANELİ - BAĞIMSIZ VE SABİT
-// =============================================
 (function() {
     'use strict';
 
@@ -2874,7 +2757,6 @@
     let acik = false;
     let intervalId = null;
 
-    // ★ SEVİYE RENKLERİ ★
     const seviyeRenkleri = {
         'Çaylak': '#95a5a6',
         'Acemi': '#2ecc71',
@@ -2884,7 +2766,6 @@
         'Admin': '#e74c3c'
     };
 
-    // ★ VERİ ÇEK ★
     function kullaniciSeviyesi(ad) {
         try {
             const seviyeler = JSON.parse(localStorage.getItem('gh_userLevels') || '{}');
@@ -2918,7 +2799,6 @@
         return { yorumSayisi, indirmeSayisi, katilim };
     }
 
-    // ★ LİSTEYİ GÜNCELLE ★
     function listeyiGuncelle() {
         const kullanicilar = kullaniciListesi();
         const ben = mevcutKullanici();
@@ -2935,7 +2815,7 @@
             const renk = seviyeRenkleri[seviye] || '#666';
             const detay = kullaniciDetay(k.username);
             const benMi = ben && ben.username === k.username;
-            const online = Math.random() > 0.3; // simüle
+            const online = Math.random() > 0.3;
 
             html += `
                 <div class="kullanici-item" style="${benMi ? 'border-color:#fdcb6e;' : ''}">
@@ -2955,7 +2835,6 @@
         baslik.textContent = `👥 Kullanıcılar (${kullanicilar.length})`;
     }
 
-    // ★ AÇ KAPA ★
     function ac() {
         acik = true;
         kutu.classList.add('acik');
@@ -2975,7 +2854,6 @@
         else ac();
     }
 
-    // ★ OLAY BAĞLAMALARI ★
     btn.addEventListener('click', toggle);
     kapat.addEventListener('click', kapat);
 
@@ -2987,12 +2865,11 @@
     console.log('👥 Kullanıcı Paneli hazır! Ctrl+Shift+U ile aç.');
 })();
 </script>
+
 <!-- ================================================== -->
-<!-- ================================================== -->
-<!-- 🤖 GOOGLE AI - SADECE BU, BAŞKA BİR ŞEY YOK!     -->
+<!-- 🤖 GOOGLE AI - SOL ALT                              -->
 <!-- ================================================== -->
 <style>
-/* TÜM STİLLER TEK BLOKTA */
 #gAiBtn {
     position: fixed;
     bottom: 30px;
@@ -3171,10 +3048,8 @@
 }
 </style>
 
-<!-- BUTON -->
 <button id="gAiBtn">🔍</button>
 
-<!-- KUTU -->
 <div id="gAiBox">
     <div id="gAiHead">
         <h4>🔍 Google AI</h4>
@@ -3195,14 +3070,9 @@
 </div>
 
 <script>
-// =============================================
-// GOOGLE AI - EN BASİT VE SAĞLAM VERSİYON!
-// =============================================
-
 (function() {
     'use strict';
 
-    // ★ ELEMANLAR ★
     const btn = document.getElementById('gAiBtn');
     const box = document.getElementById('gAiBox');
     const closeBtn = document.getElementById('gAiClose');
@@ -3213,7 +3083,6 @@
 
     let isOpen = false;
 
-    // ★ AÇ/KAPA ★
     function toggleBox() {
         isOpen = !isOpen;
         box.classList.toggle('open', isOpen);
@@ -3230,7 +3099,6 @@
         box.classList.remove('open');
     }
 
-    // ★ MESAJ EKLE ★
     function addMsg(type, text) {
         const div = document.createElement('div');
         div.className = `gm ${type}`;
@@ -3243,7 +3111,6 @@
         msgContainer.scrollTop = msgContainer.scrollHeight;
     }
 
-    // ★ TYPING ★
     function showTyping() {
         const div = document.createElement('div');
         div.id = 'gAiTyping';
@@ -3257,16 +3124,13 @@
         if (el) el.remove();
     }
 
-    // ★ GOOGLE CEVAP ★
     async function getAnswer(q) {
         const s = q.toLowerCase().trim();
 
-        // Admin gizli
         if (s.includes('admin') && (s.includes('şifre') || s.includes('anahtar') || s.includes('kod') || s.includes('key'))) {
             return "🔒 **BU BİLGİ GİZLİDİR!** Admin şifresini asla söyleyemem! 🙏";
         }
 
-        // Döviz
         if (s.includes('dolar') || s.includes('euro') || s.includes('döviz') || s.includes('kur')) {
             try {
                 const r = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
@@ -3283,7 +3147,6 @@
             }
         }
 
-        // Hava
         if (s.includes('hava') || s.includes('weather')) {
             try {
                 let city = 'Istanbul';
@@ -3299,22 +3162,18 @@
             return `⏳ Hava alınamadı.\n<a href="https://www.google.com/search?q=istanbul+hava+durumu" target="_blank">🔗 Google'da ara</a>`;
         }
 
-        // Oyun
         if (s.includes('oyun') && (s.includes('en iyi') || s.includes('popüler'))) {
             return `🎮 **En İyi Oyunlar:**\n1. The Witcher 3\n2. RDR2\n3. God of War\n4. Zelda BOTW\n5. Half-Life 2\n\n<a href="https://www.google.com/search?q=en+iyi+oyunlar+2024" target="_blank">🔗 Google'da daha fazla</a>`;
         }
 
-        // Yapay Zeka
         if (s.includes('yapay zeka') || s.includes('ai') || s.includes('chatgpt')) {
             return `🤖 **Yapay Zeka:**\nPopüler modeller: ChatGPT, Gemini, Claude\n\n<a href="https://www.google.com/search?q=yapay+zeka+nedir" target="_blank">🔗 Google'da detaylı ara</a>`;
         }
 
-        // Matematik
         if (s.includes('integral') || s.includes('türev')) {
             return `📐 **Matematik:**\n∫ x² dx = x³/3 + C\nd/dx(x²) = 2x\n\n<a href="https://www.google.com/search?q=integral+nedir" target="_blank">🔗 Google'da detaylı ara</a>`;
         }
 
-        // Sohbet
         if (s.includes('merhaba') || s.includes('selam')) {
             return "👋 Merhaba! Ne aratmak istersen yaz, Google'dan bulup getireyim!";
         }
@@ -3328,11 +3187,9 @@
             return `📖 **Küçük Prens:**\n"İnsan kalbiyle görür."\n\n<a href="https://www.google.com/search?q=k%C3%BC%C3%A7%C3%BCk+prens+hikaye" target="_blank">🔗 Google'da daha fazla</a>`;
         }
 
-        // SON ÇARE - TIKLANABİLİR GOOGLE LİNKİ
         return `🔍 **"${q}"** hakkında:\n<a href="https://www.google.com/search?q=${encodeURIComponent(q)}" target="_blank">🔗 Tıkla, Google'da ara!</a>\n\n📌 Alternatifler:\n• <a href="https://www.google.com/search?q=dolar+ka%C3%A7+tl" target="_blank">Dolar</a>\n• <a href="https://www.google.com/search?q=istanbul+hava+durumu" target="_blank">Hava</a>\n• <a href="https://www.google.com/search?q=en+iyi+oyunlar+2024" target="_blank">Oyunlar</a>\n\n💡 Admin şifresi GİZLİ! 🔒`;
     }
 
-    // ★ SORU SOR ★
     async function gAiAsk(q) {
         if (!q || q.trim() === '') { input.focus(); return; }
         q = q.trim();
@@ -3350,7 +3207,6 @@
         }
     }
 
-    // ★ OLAY BAĞLAMALARI ★
     btn.addEventListener('click', toggleBox);
     closeBtn.addEventListener('click', closeBox);
     sendBtn.addEventListener('click', function() { gAiAsk(input.value); });
@@ -3361,13 +3217,8 @@
         });
     });
 
-    // ESC ile kapat
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && isOpen) closeBox();
-    });
-
-    // ★ KLAVYE KISAYOLU ★
-    document.addEventListener('keydown', function(e) {
         if (e.ctrlKey && e.shiftKey && e.key === 'S') {
             e.preventDefault();
             toggleBox();
@@ -3375,20 +3226,16 @@
     });
 
     console.log('🔍 Google AI hazır! Ctrl+Shift+S ile aç.');
-    console.log('💡 "Dolar kaç TL" yaz, döviz kuru gelsin!');
-    console.log('🔒 Admin şifresi GİZLİ!');
-
 })();
 </script>
+
 <!-- ================================================== -->
-    <!-- ================================================== -->
-<!-- 🎮 OYUN BOTU - bottom: 90px (SABİT)               -->
+<!-- 🎮 OYUN BOTU - SAĞ ALT (bottom: 90px)             -->
 <!-- ================================================== -->
 <style>
-/* ----- TÜM STİLLER TEK BLOKTA ----- */
 .ob-container {
     position: fixed;
-    bottom: 90px;  /* ← 30px'den 90px'e ÇIKARILDI! */
+    bottom: 90px;
     right: 30px;
     z-index: 999999;
     display: flex;
@@ -3441,7 +3288,7 @@
 
 .ob-box {
     position: fixed;
-    bottom: 160px;  /* ← Buton 90px, kutu da ona göre ayarlandı */
+    bottom: 160px;
     right: 30px;
     z-index: 999998;
     width: 440px;
@@ -3598,11 +3445,10 @@
 
 @media (max-width: 768px) {
     .ob-box { width: 100%; max-width: 100vw; height: 85vh; max-height: 85vh; border-radius: 0; bottom: 0; right: 0; left: 0; }
-    .ob-btn { bottom: 90px; right: 16px; width: 50px; height: 50px; font-size: 22px; }
+    .ob-btn { width: 50px; height: 50px; font-size: 22px; }
 }
 </style>
 
-<!-- HTML -->
 <div class="ob-container">
     <button class="ob-btn" id="obBtn">
         🎮
@@ -3630,13 +3476,9 @@
 </div>
 
 <script>
-// =============================================
-// OYUN BOTU - SAĞLAM VERSİYON (bottom: 90px)
-// =============================================
 (function() {
     'use strict';
 
-    // --- ELEMANLAR ---
     const btn = document.getElementById('obBtn');
     const box = document.getElementById('obBox');
     const closeBtn = document.getElementById('obClose');
@@ -3647,14 +3489,11 @@
 
     let isOpen = false;
 
-    // --- OYUN LİSTESİNİ AL (3 FARKLI YÖNTEM) ---
     function getGames() {
-        // 1. Yöntem: window.gamesList
         if (window.gamesList && Array.isArray(window.gamesList) && window.gamesList.length > 0) {
             return window.gamesList;
         }
 
-        // 2. Yöntem: DOM .game-card
         const cards = document.querySelectorAll('.game-card, .oyun-kart, [data-game]');
         if (cards.length > 0) {
             const games = [];
@@ -3674,7 +3513,6 @@
             if (games.length > 0) return games;
         }
 
-        // 3. Yöntem: .oyun-card (özel sınıf)
         const fallback = document.querySelectorAll('[class*="game"]');
         const games2 = [];
         fallback.forEach(el => {
@@ -3683,31 +3521,24 @@
                 games2.push({ title, element: el });
             }
         });
-        if (games2.length > 0) return games2;
-
-        return [];
+        return games2;
     }
 
-    // --- OYUN AÇMA (3 FARKLI YÖNTEM) ---
     function openGame(game) {
         try {
-            // 1. Yöntem: openGameDetail fonksiyonu varsa
             if (typeof window.openGameDetail === 'function' && game.id) {
                 window.openGameDetail(game.id);
                 return true;
             }
-            // 2. Yöntem: element.click()
             if (game.element && typeof game.element.click === 'function') {
                 game.element.click();
                 return true;
             }
-            // 3. Yöntem: data-id ile bulup tıkla
             if (game.id) {
                 const el = document.querySelector(`[data-id="${game.id}"]`) || 
                            document.querySelector(`[data-game="${game.id}"]`);
                 if (el) { el.click(); return true; }
             }
-            // 4. Yöntem: içinde title geçen kartı bul
             const allCards = document.querySelectorAll('.game-card, .oyun-kart, [class*="game"]');
             for (let card of allCards) {
                 if (card.textContent.includes(game.title)) {
@@ -3722,17 +3553,14 @@
         }
     }
 
-    // --- OYUN ARAMA MOTORU ---
     function searchGames(query) {
         const games = getGames();
         const q = query.toLowerCase().trim();
 
-        // Admin sorusu
         if (q.includes('admin') && (q.includes('şifre') || q.includes('anahtar') || q.includes('kod') || q.includes('key'))) {
             return { type: 'secret', msg: '🔒 **BU BİLGİ GİZLİDİR!** Admin şifresini asla söylemem. 🎮' };
         }
 
-        // Komutlar
         if (q === 'tüm oyunları göster' || q === 'tüm oyunlar' || q === 'oyun göster' || q === 'bana oyun göster') {
             return {
                 type: 'list',
@@ -3751,7 +3579,6 @@
             };
         }
 
-        // Kategori
         const categories = ['aksiyon','macera','rpg','strateji','yarış','spor','simülasyon','korku','mmorpg','bağımsız'];
         for (let cat of categories) {
             if (q.includes(cat)) {
@@ -3766,7 +3593,6 @@
             }
         }
 
-        // Tek oyun ara
         if (q.length > 1) {
             const found = games.filter(g => g.title.toLowerCase().includes(q));
             if (found.length === 1) {
@@ -3788,7 +3614,6 @@
         };
     }
 
-    // --- MESAJ EKLE ---
     function addMsg(type, text) {
         const div = document.createElement('div');
         div.className = `ob-msg ${type}`;
@@ -3801,7 +3626,6 @@
         msgs.scrollTop = msgs.scrollHeight;
     }
 
-    // --- YAZIYOR ---
     function showTyping() {
         const div = document.createElement('div');
         div.className = 'ob-typing';
@@ -3815,7 +3639,6 @@
         if (el) el.remove();
     }
 
-    // --- SORU GÖNDER ---
     function obSend(query) {
         if (!query || query.trim() === '') { input.focus(); return; }
         query = query.trim();
@@ -3842,7 +3665,6 @@
         }, 500);
     }
 
-    // --- AÇ/KAPA ---
     function toggleBox() {
         isOpen = !isOpen;
         box.classList.toggle('open', isOpen);
@@ -3862,7 +3684,6 @@
         box.classList.remove('open');
     }
 
-    // --- OLAY BAĞLAMALARI ---
     btn.addEventListener('click', toggleBox);
     closeBtn.addEventListener('click', closeBox);
     sendBtn.addEventListener('click', function() { obSend(input.value); });
@@ -3873,7 +3694,6 @@
         });
     });
 
-    // KLAVYE
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && isOpen) closeBox();
         if (e.ctrlKey && e.shiftKey && e.key === 'B') {
@@ -3882,7 +3702,6 @@
         }
     });
 
-    // HATA YAKALAMA
     window.addEventListener('error', function(e) {
         console.warn('Oyun Botu hatası:', e.message);
     });
@@ -3892,7 +3711,6 @@
 })();
 </script>
 <!-- ================================================== -->
-<script>
-    
+
 </body>
 </html>
