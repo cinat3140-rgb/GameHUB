@@ -1187,6 +1187,108 @@
                 flex-wrap: wrap;
             }
         }
+
+        /* ================================================== */
+        /* 🎨 SEVİYE RENKLERİ VE KROMATİK EFEKTLER (EKLENDİ) */
+        /* ================================================== */
+        .level-caylak { background: linear-gradient(135deg, #95a5a6, #bdc3c7); color: #000; }
+        .level-acemi { background: linear-gradient(135deg, #2ecc71, #1abc9c); color: #000; animation: shimmer 3s infinite; }
+        .level-ender { background: linear-gradient(135deg, #3498db, #8e44ad); color: #fff; animation: glow-blue 2s infinite; }
+        .level-usta { background: linear-gradient(135deg, #9b59b6, #e91e63); color: #fff; animation: glow-purple 2s infinite; }
+        .level-efsanevi { background: linear-gradient(135deg, #f1c40f, #e67e22); color: #000; animation: sparkle 1.5s infinite; }
+        .level-tanri { background: linear-gradient(135deg, #00d4ff, #7b2ffc); color: #fff; animation: chroma 3s infinite; }
+        .level-vip { background: linear-gradient(135deg, #00ff88, #00d4ff, #7b2ffc); color: #000; animation: prism 2s infinite; }
+        .level-admin { background: linear-gradient(135deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff); color: #fff; animation: rainbow 4s linear infinite; }
+
+        @keyframes shimmer {
+            0% { background-position: -200%; }
+            100% { background-position: 200%; }
+        }
+        @keyframes glow-blue {
+            0%, 100% { box-shadow: 0 0 10px #3498db, 0 0 20px #8e44ad; }
+            50% { box-shadow: 0 0 20px #3498db, 0 0 40px #8e44ad; }
+        }
+        @keyframes glow-purple {
+            0%, 100% { box-shadow: 0 0 10px #9b59b6, 0 0 20px #e91e63; }
+            50% { box-shadow: 0 0 20px #9b59b6, 0 0 40px #e91e63; }
+        }
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        @keyframes chroma {
+            0% { background: linear-gradient(135deg, #00d4ff, #7b2ffc); }
+            50% { background: linear-gradient(135deg, #7b2ffc, #00d4ff); }
+            100% { background: linear-gradient(135deg, #00d4ff, #7b2ffc); }
+        }
+        @keyframes prism {
+            0% { background: linear-gradient(135deg, #00ff88, #00d4ff, #7b2ffc); }
+            33% { background: linear-gradient(135deg, #7b2ffc, #00ff88, #00d4ff); }
+            66% { background: linear-gradient(135deg, #00d4ff, #7b2ffc, #00ff88); }
+            100% { background: linear-gradient(135deg, #00ff88, #00d4ff, #7b2ffc); }
+        }
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        /* ----- ADMIN PANELİ KROMATİK (GÖKKUŞAĞI) ----- */
+        .admin-container {
+            position: relative;
+            background: var(--card);
+            border-radius: 20px;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            margin-top: 30px;
+            border: none;
+        }
+        .admin-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);
+            background-size: 300% 300%;
+            animation: rainbow-border 5s ease infinite;
+            z-index: -1;
+            border-radius: 22px;
+        }
+        @keyframes rainbow-border {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .admin-header {
+            background: linear-gradient(135deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);
+            background-size: 300% 300%;
+            animation: rainbow-header 8s linear infinite;
+            padding: 30px;
+            border-bottom: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        @keyframes rainbow-header {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+        .admin-title h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(0,0,0,0.5);
+            margin: 0;
+        }
+        .admin-title p {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+            margin: 5px 0 0 0;
+        }
     </style>
 </head>
 <body>
@@ -2009,7 +2111,7 @@
                 document.getElementById('gameGrid').innerHTML = filtered.length ? filtered.map(g => `
                     <div class="game-card ${g.pinned ? 'pinned' : ''}" onclick="openGameDetail('${g.id}')">
                         <div class="game-card-image">
-                            ${g.image ? `<img src="${g.image}" onerror="this.innerHTML='<i class=\\'fas fa-gamepad\\'></i>'">` : '<i class="fas fa-gamepad"></i>'}
+                            ${g.image ? `<img src="${g.image}" loading="lazy" onerror="this.innerHTML='<i class=\\'fas fa-gamepad\\'></i>'">` : '<i class="fas fa-gamepad"></i>'}
                         </div>
                         <div class="game-card-content">
                             <h3>${g.title}</h3>
@@ -2759,9 +2861,16 @@
     let isOpen = false;
     let interval = null;
 
+    // GÜNCELLENMİŞ SEVİYE RENKLERİ
     const levelColors = {
-        'Çaylak': '#95a5a6', 'Acemi': '#2ecc71', 'Usta': '#3498db',
-        'Efsane': '#9b59b6', 'Tanrı': '#f1c40f', 'Admin': '#e74c3c'
+        'Çaylak': '#95a5a6',
+        'Acemi': '#2ecc71',
+        'Ender': '#3498db',
+        'Usta': '#9b59b6',
+        'Efsanevi': '#f1c40f',
+        'Tanrı': '#00d4ff',
+        'V.I.P': '#00ff88',
+        'Admin': '#ff0000'
     };
 
     function getUsers() {
@@ -2805,12 +2914,14 @@
             const stats = getUserStats(u.username);
             const isMe = current && current.username === u.username;
             const online = Math.random() > 0.3;
+            // Rozete özel sınıf ekle (animasyon için)
+            const levelClass = level.toLowerCase().replace(/ /g, '-').replace(/\./g, '');
             html += `
                 <div class="kp-item" style="${isMe ? 'border-color:#fdcb6e;' : ''}">
                     <div class="avatar" style="background:${color};color:#000;">${isMe ? '👑' : '👤'}</div>
                     <div class="info">
                         <div class="name" style="color:${color};">${u.username} ${isMe ? '⭐' : ''}</div>
-                        <div class="level">🎯 ${level}</div>
+                        <div class="level">🎯 <span class="level-badge level-${levelClass}" style="background:${color};color:#000;">${level}</span></div>
                         <div class="detail">📅 ${stats.joinDate} • 💬 ${stats.comments} • 📥 ${stats.downloads}</div>
                     </div>
                     <span class="status ${online ? 'status-on' : 'status-off'}"></span>
@@ -3758,7 +3869,6 @@
 })();
 </script>
 <!-- ================================================== -->
-<script>
-    
+
 </body>
 </html>
