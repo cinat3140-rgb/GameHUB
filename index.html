@@ -2602,14 +2602,13 @@
     </script>
 
 <!-- ========================================================== -->
-<!-- 👥 KULLANICI PANELİ – BUTON SAĞ ÜST, PANEL SAĞ ÜST       -->
+<!-- 👥 KULLANICI PANELİ – SADECE BU, BAŞKA YOK!              -->
 <!-- ========================================================== -->
 <style>
-/* ----- PANEL BUTONU (SAĞ ÜST) ----- */
 .kp-btn {
     position: fixed;
-    top: 80px;          /* Sayfanın üstünden 80px aşağıda */
-    right: 20px;        /* Sağdan 20px içeride */
+    top: 80px;
+    right: 20px;
     z-index: 999997;
     width: 50px;
     height: 50px;
@@ -2643,11 +2642,10 @@
 }
 .kp-btn:hover .tip { opacity: 1; }
 
-/* ----- PANEL KUTUSU (SAĞ ÜST) ----- */
 .kp-panel {
     position: fixed;
-    top: 140px;         /* Butonun hemen altında */
-    right: 20px;        /* Sağdan 20px içeride */
+    top: 140px;
+    right: 20px;
     z-index: 999998;
     width: 360px;
     max-width: 90vw;
@@ -2664,7 +2662,6 @@
 .kp-panel::-webkit-scrollbar { width: 4px; }
 .kp-panel::-webkit-scrollbar-thumb { background: #fdcb6e; border-radius: 4px; }
 
-/* ----- BAŞLIK ----- */
 .kp-header {
     display: flex;
     align-items: center;
@@ -2673,11 +2670,7 @@
     padding-bottom: 10px;
     margin-bottom: 12px;
 }
-.kp-header h4 {
-    color: #fdcb6e;
-    margin: 0;
-    font-size: 1rem;
-}
+.kp-header h4 { color: #fdcb6e; margin: 0; font-size: 1rem; }
 .kp-header button {
     background: none;
     border: none;
@@ -2687,7 +2680,6 @@
 }
 .kp-header button:hover { color: #fff; }
 
-/* ----- KULLANICI KARTI ----- */
 .kp-item {
     display: flex;
     align-items: center;
@@ -2711,19 +2703,9 @@
     flex-shrink: 0;
 }
 .kp-item .info { flex: 1; }
-.kp-item .info .name {
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-.kp-item .info .level {
-    font-size: 0.7rem;
-    opacity: 0.7;
-}
-.kp-item .info .detail {
-    font-size: 0.65rem;
-    color: #a0a0b0;
-    margin-top: 2px;
-}
+.kp-item .info .name { font-weight: 600; font-size: 0.9rem; }
+.kp-item .info .level { font-size: 0.7rem; opacity: 0.7; }
+.kp-item .info .detail { font-size: 0.65rem; color: #a0a0b0; margin-top: 2px; }
 .kp-item .badge {
     font-size: 0.6rem;
     padding: 2px 10px;
@@ -2748,90 +2730,52 @@
     font-size: 0.9rem;
 }
 
-/* ----- MOBİL DÜZENLEME ----- */
 @media (max-width: 768px) {
-    .kp-btn {
-        top: 70px;
-        right: 16px;
-        width: 44px;
-        height: 44px;
-        font-size: 18px;
-    }
-    .kp-panel {
-        top: 125px;
-        right: 0;
-        width: 100%;
-        max-width: 100vw;
-        max-height: 80vh;
-        border-radius: 0;
-    }
+    .kp-btn { top: 70px; right: 16px; width: 44px; height: 44px; font-size: 18px; }
+    .kp-panel { top: 125px; right: 0; width: 100%; max-width: 100vw; max-height: 80vh; border-radius: 0; }
 }
 </style>
 
-<!-- BUTON (SAĞ ÜST) -->
 <button class="kp-btn" id="kpBtn">
     👥
     <span class="tip">👥 Kimler Var?</span>
 </button>
 
-<!-- PANEL (SAĞ ÜST) -->
 <div class="kp-panel" id="kpPanel">
     <div class="kp-header">
         <h4 id="kpTitle">👥 Kullanıcılar</h4>
         <button id="kpClose">✕</button>
     </div>
-    <div id="kpList">
-        <div class="kp-empty">⏳ Yükleniyor...</div>
-    </div>
+    <div id="kpList"><div class="kp-empty">⏳ Yükleniyor...</div></div>
 </div>
 
 <script>
-// ==========================================================
-// KULLANICI PANELİ – SAĞ ÜST, SORUNSUZ
-// ==========================================================
 (function() {
-    'use strict';
-
-    // ---- ELEMANLAR ----
     const btn = document.getElementById('kpBtn');
     const panel = document.getElementById('kpPanel');
     const closeBtn = document.getElementById('kpClose');
     const listDiv = document.getElementById('kpList');
     const title = document.getElementById('kpTitle');
-
     let isOpen = false;
     let interval = null;
 
-    // ---- SEVİYE RENKLERİ ----
     const levelColors = {
-        'Çaylak': '#95a5a6',
-        'Acemi': '#2ecc71',
-        'Usta': '#3498db',
-        'Efsane': '#9b59b6',
-        'Tanrı': '#f1c40f',
-        'Admin': '#e74c3c'
+        'Çaylak': '#95a5a6', 'Acemi': '#2ecc71', 'Usta': '#3498db',
+        'Efsane': '#9b59b6', 'Tanrı': '#f1c40f', 'Admin': '#e74c3c'
     };
 
-    // ---- VERİ OKUMA ----
     function getUsers() {
-        try {
-            return JSON.parse(localStorage.getItem('gh_users') || '[]');
-        } catch(e) { return []; }
+        try { return JSON.parse(localStorage.getItem('gh_users') || '[]'); } catch(e) { return []; }
     }
-
     function getCurrentUser() {
-        try {
-            return JSON.parse(localStorage.getItem('gh_user'));
-        } catch(e) { return null; }
+        try { return JSON.parse(localStorage.getItem('gh_user')); } catch(e) { return null; }
     }
-
     function getUserLevel(username) {
         try {
             const levels = JSON.parse(localStorage.getItem('gh_userLevels') || '{}');
             return levels[username] || 'Çaylak';
         } catch(e) { return 'Çaylak'; }
     }
-
     function getUserStats(username) {
         let comments = 0, downloads = 0, joinDate = 'Bilinmiyor';
         try {
@@ -2846,17 +2790,14 @@
         return { comments, downloads, joinDate };
     }
 
-    // ---- LİSTEYİ GÜNCELLE ----
     function renderList() {
         const users = getUsers();
         const current = getCurrentUser();
-
         if (!users || users.length === 0) {
             listDiv.innerHTML = `<div class="kp-empty">👤 Henüz kayıtlı kullanıcı yok.</div>`;
             title.textContent = '👥 Kullanıcılar (0)';
             return;
         }
-
         let html = '';
         users.forEach(u => {
             const level = getUserLevel(u.username);
@@ -2864,7 +2805,6 @@
             const stats = getUserStats(u.username);
             const isMe = current && current.username === u.username;
             const online = Math.random() > 0.3;
-
             html += `
                 <div class="kp-item" style="${isMe ? 'border-color:#fdcb6e;' : ''}">
                     <div class="avatar" style="background:${color};color:#000;">${isMe ? '👑' : '👤'}</div>
@@ -2878,12 +2818,10 @@
                 </div>
             `;
         });
-
         listDiv.innerHTML = html;
         title.textContent = `👥 Kullanıcılar (${users.length})`;
     }
 
-    // ---- AÇ / KAPA ----
     function openPanel() {
         isOpen = true;
         panel.classList.add('open');
@@ -2891,19 +2829,16 @@
         if (interval) clearInterval(interval);
         interval = setInterval(renderList, 5000);
     }
-
     function closePanel() {
         isOpen = false;
         panel.classList.remove('open');
         if (interval) { clearInterval(interval); interval = null; }
     }
-
     function togglePanel() {
         if (isOpen) closePanel();
         else openPanel();
     }
 
-    // ---- OLAY BAĞLAMALARI ----
     btn.addEventListener('click', togglePanel);
     closeBtn.addEventListener('click', closePanel);
 
