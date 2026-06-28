@@ -2601,11 +2601,11 @@
         });
     </script>
 <!-- ================================================== -->
-<!-- 🎮 OYUN BULMA BOTU - SAĞ ALT (SABİT)              -->
+<!-- 🎮 OYUN BOTU - SORUNSUZ ÇALIŞIR!                  -->
 <!-- ================================================== -->
 <style>
-/* ----- OYUN BOTU ----- */
-.oyun-bot {
+/* ----- TÜM STİLLER TEK BLOKTA ----- */
+.ob-container {
     position: fixed;
     bottom: 30px;
     right: 30px;
@@ -2615,7 +2615,7 @@
     align-items: flex-end;
     gap: 12px;
 }
-.oyun-btn {
+.ob-btn {
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -2625,14 +2625,14 @@
     font-size: 28px;
     cursor: pointer;
     box-shadow: 0 8px 32px rgba(0, 206, 201, 0.5);
-    transition: 0.3s;
+    transition: 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
 }
-.oyun-btn:hover { transform: scale(1.1); }
-.oyun-btn .nokta {
+.ob-btn:hover { transform: scale(1.05); }
+.ob-btn .dot {
     position: absolute;
     top: 4px;
     right: 4px;
@@ -2642,7 +2642,7 @@
     background: #2ecc71;
     border: 2px solid #0f0f1a;
 }
-.oyun-btn .ipucu {
+.ob-btn .tip {
     position: absolute;
     right: 70px;
     background: #1a1a2e;
@@ -2653,12 +2653,12 @@
     white-space: nowrap;
     border: 1px solid #2a2a3e;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.2s;
     pointer-events: none;
 }
-.oyun-btn:hover .ipucu { opacity: 1; }
+.ob-btn:hover .tip { opacity: 1; }
 
-.oyun-kutu {
+.ob-box {
     position: fixed;
     bottom: 100px;
     right: 30px;
@@ -2672,12 +2672,12 @@
     border-radius: 16px;
     display: none;
     flex-direction: column;
-    box-shadow: 0 20px 60px rgba(0, 206, 201, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 206, 201, 0.25);
     overflow: hidden;
 }
-.oyun-kutu.acik { display: flex; }
+.ob-box.open { display: flex; }
 
-.oyun-header {
+.ob-header {
     background: linear-gradient(135deg, #00b894, #00cec9);
     padding: 12px 16px;
     display: flex;
@@ -2685,8 +2685,8 @@
     justify-content: space-between;
     flex-shrink: 0;
 }
-.oyun-header h4 { color: #fff; margin: 0; font-size: 1rem; }
-.oyun-header button {
+.ob-header h4 { color: #fff; margin: 0; font-size: 1rem; }
+.ob-header button {
     background: rgba(255, 255, 255, 0.15);
     border: none;
     color: #fff;
@@ -2696,9 +2696,9 @@
     cursor: pointer;
     font-size: 1rem;
 }
-.oyun-header button:hover { background: rgba(255, 255, 255, 0.3); }
+.ob-header button:hover { background: rgba(255, 255, 255, 0.3); }
 
-.oyun-mesaj {
+.ob-msgs {
     flex: 1;
     padding: 12px 16px;
     overflow-y: auto;
@@ -2708,17 +2708,17 @@
     background: #0f0f1a;
     min-height: 300px;
 }
-.oyun-mesaj::-webkit-scrollbar { width: 4px; }
-.oyun-mesaj::-webkit-scrollbar-thumb { background: #00cec9; border-radius: 4px; }
+.ob-msgs::-webkit-scrollbar { width: 4px; }
+.ob-msgs::-webkit-scrollbar-thumb { background: #00cec9; border-radius: 4px; }
 
-.oyun-msg {
+.ob-msg {
     display: flex;
     gap: 8px;
     max-width: 90%;
 }
-.oyun-msg.bot { align-self: flex-start; }
-.oyun-msg.user { align-self: flex-end; flex-direction: row-reverse; }
-.oyun-msg .av {
+.ob-msg.bot { align-self: flex-start; }
+.ob-msg.user { align-self: flex-end; flex-direction: row-reverse; }
+.ob-msg .av {
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -2728,21 +2728,21 @@
     justify-content: center;
     font-size: 0.8rem;
 }
-.oyun-msg.bot .av { background: linear-gradient(135deg, #00b894, #00cec9); color: #fff; }
-.oyun-msg.user .av { background: #e94560; color: #000; }
-.oyun-msg .balon {
+.ob-msg.bot .av { background: linear-gradient(135deg, #00b894, #00cec9); color: #fff; }
+.ob-msg.user .av { background: #e94560; color: #000; }
+.ob-msg .bubble {
     padding: 8px 14px;
     border-radius: 14px;
     font-size: 0.85rem;
     line-height: 1.5;
     word-wrap: break-word;
 }
-.oyun-msg.bot .balon { background: #1a1a2e; border: 1px solid #00cec9; color: #e8e8e8; border-bottom-left-radius: 4px; }
-.oyun-msg.user .balon { background: #e94560; color: #000; border-bottom-right-radius: 4px; }
-.oyun-msg .zaman { font-size: 0.6rem; color: #a0a0b0; margin-top: 3px; display: block; }
-.oyun-msg.user .zaman { text-align: right; }
+.ob-msg.bot .bubble { background: #1a1a2e; border: 1px solid #00cec9; color: #e8e8e8; border-bottom-left-radius: 4px; }
+.ob-msg.user .bubble { background: #e94560; color: #000; border-bottom-right-radius: 4px; }
+.ob-msg .time { font-size: 0.6rem; color: #a0a0b0; margin-top: 3px; display: block; }
+.ob-msg.user .time { text-align: right; }
 
-.oyun-yaziyor {
+.ob-typing {
     align-self: flex-start;
     display: flex;
     align-items: center;
@@ -2754,19 +2754,19 @@
     color: #a0a0b0;
     font-size: 0.8rem;
 }
-.oyun-yaziyor .noktalar { display: flex; gap: 4px; }
-.oyun-yaziyor .noktalar span {
+.ob-typing .dots { display: flex; gap: 4px; }
+.ob-typing .dots span {
     width: 5px;
     height: 5px;
     border-radius: 50%;
     background: #00cec9;
-    animation: oyunYazi 1.4s infinite;
+    animation: obTyping 1.4s infinite;
 }
-.oyun-yaziyor .noktalar span:nth-child(2) { animation-delay: 0.2s; }
-.oyun-yaziyor .noktalar span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes oyunYazi { 0%,60%,100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-6px); opacity: 1; } }
+.ob-typing .dots span:nth-child(2) { animation-delay: 0.2s; }
+.ob-typing .dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes obTyping { 0%,60%,100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-6px); opacity: 1; } }
 
-.oyun-input {
+.ob-input {
     padding: 10px 14px;
     border-top: 1px solid #2a2a3e;
     display: flex;
@@ -2774,7 +2774,7 @@
     background: #1a1a2e;
     flex-shrink: 0;
 }
-.oyun-input input {
+.ob-input input {
     flex: 1;
     padding: 8px 14px;
     border-radius: 30px;
@@ -2784,8 +2784,8 @@
     font-size: 0.85rem;
     outline: none;
 }
-.oyun-input input:focus { border-color: #00cec9; }
-.oyun-input button {
+.ob-input input:focus { border-color: #00cec9; }
+.ob-input button {
     padding: 8px 16px;
     border-radius: 30px;
     border: none;
@@ -2794,9 +2794,9 @@
     font-weight: 700;
     cursor: pointer;
 }
-.oyun-input button:hover { transform: scale(1.05); }
+.ob-input button:hover { transform: scale(1.05); }
 
-.oyun-oneri {
+.ob-suggest {
     display: flex;
     gap: 4px;
     flex-wrap: wrap;
@@ -2804,7 +2804,7 @@
     background: #1a1a2e;
     border-top: 1px solid #2a2a3e;
 }
-.oyun-oneri button {
+.ob-suggest button {
     padding: 3px 10px;
     border-radius: 16px;
     border: 1px solid #2a2a3e;
@@ -2813,210 +2813,304 @@
     font-size: 0.65rem;
     cursor: pointer;
 }
-.oyun-oneri button:hover { border-color: #00cec9; color: #fff; }
+.ob-suggest button:hover { border-color: #00cec9; color: #fff; }
 
 @media (max-width: 768px) {
-    .oyun-kutu { width: 100%; max-width: 100vw; height: 85vh; max-height: 85vh; border-radius: 0; bottom: 0; right: 0; left: 0; }
-    .oyun-btn { bottom: 90px; right: 16px; width: 50px; height: 50px; font-size: 22px; }
+    .ob-box { width: 100%; max-width: 100vw; height: 85vh; max-height: 85vh; border-radius: 0; bottom: 0; right: 0; left: 0; }
+    .ob-btn { width: 50px; height: 50px; font-size: 22px; }
 }
 </style>
 
-<!-- BUTON -->
-<button class="oyun-btn" id="oyunBtn">
-    🎮
-    <span class="nokta"></span>
-    <span class="ipucu">🎮 Oyun Bul</span>
-</button>
-
-<!-- KUTU -->
-<div class="oyun-kutu" id="oyunKutu">
-    <div class="oyun-header">
-        <h4>🎮 Oyun Bulucu</h4>
-        <button id="oyunKapat">✕</button>
-    </div>
-    <div class="oyun-mesaj" id="oyunMesaj"></div>
-    <div class="oyun-oneri">
-        <button data-s="Bana oyun göster">📋 Tümü</button>
-        <button data-s="En popüler oyun hangisi">🔥 Popüler</button>
-        <button data-s="Aksiyon oyunları">⚔️ Aksiyon</button>
-        <button data-s="RPG oyunları">🧙 RPG</button>
-        <button data-s="Admin şifresi">🔒 Gizli</button>
-    </div>
-    <div class="oyun-input">
-        <input id="oyunGirdi" placeholder='Oyun adı yaz: "GTA" veya "oyun göster"' onkeydown="if(event.key==='Enter') oyunSoru(this.value)">
-        <button id="oyunGonder">🔍 BUL</button>
+<!-- HTML -->
+<div class="ob-container">
+    <button class="ob-btn" id="obBtn">
+        🎮
+        <span class="dot"></span>
+        <span class="tip">🎮 Oyun Bul</span>
+    </button>
+    <div class="ob-box" id="obBox">
+        <div class="ob-header">
+            <h4>🎮 Oyun Bulucu</h4>
+            <button id="obClose">✕</button>
+        </div>
+        <div class="ob-msgs" id="obMsgs"></div>
+        <div class="ob-suggest">
+            <button data-cmd="Tüm oyunları göster">📋 Tümü</button>
+            <button data-cmd="En popüler oyunlar">🔥 Popüler</button>
+            <button data-cmd="Aksiyon oyunları">⚔️ Aksiyon</button>
+            <button data-cmd="RPG oyunları">🧙 RPG</button>
+            <button data-cmd="Admin şifresi">🔒 Gizli</button>
+        </div>
+        <div class="ob-input">
+            <input id="obInput" placeholder='Oyun adı yaz: "GTA" veya "oyun göster"' onkeydown="if(event.key==='Enter') obSend(this.value)">
+            <button id="obSendBtn">🔍 BUL</button>
+        </div>
     </div>
 </div>
 
 <script>
 // =============================================
-// OYUN BULMA BOTU - BAĞIMSIZ VE SABİT
+// OYUN BOTU - SAĞLAM VERSİYON
 // =============================================
 (function() {
     'use strict';
 
-    const btn = document.getElementById('oyunBtn');
-    const kutu = document.getElementById('oyunKutu');
-    const kapat = document.getElementById('oyunKapat');
-    const mesaj = document.getElementById('oyunMesaj');
-    const girdi = document.getElementById('oyunGirdi');
-    const gonder = document.getElementById('oyunGonder');
-    const oneriButonlari = document.querySelectorAll('.oyun-oneri button');
+    // --- ELEMANLAR ---
+    const btn = document.getElementById('obBtn');
+    const box = document.getElementById('obBox');
+    const closeBtn = document.getElementById('obClose');
+    const msgs = document.getElementById('obMsgs');
+    const input = document.getElementById('obInput');
+    const sendBtn = document.getElementById('obSendBtn');
+    const suggestBtns = document.querySelectorAll('.ob-suggest button');
 
-    let acik = false;
+    let isOpen = false;
 
-    // ★ OYUN LİSTESİ ★
-    function oyunListesi() {
-        try {
-            if (window.gamesList && window.gamesList.length > 0) return window.gamesList;
-            const oyunlar = [];
-            document.querySelectorAll('.game-card').forEach(kart => {
-                const baslik = kart.querySelector('h3')?.textContent || '';
-                const kategori = kart.querySelector('.category-tag')?.textContent || '';
-                if (baslik) oyunlar.push({ baslik, kategori, eleman: kart });
-            });
-            return oyunlar;
-        } catch(e) { return []; }
-    }
-
-    // ★ OYUN ARA ★
-    function oyunAra(s) {
-        const oyunlar = oyunListesi();
-        const sorgu = s.toLowerCase().trim();
-
-        // Tümünü göster
-        if (sorgu === 'oyun göster' || sorgu === 'tüm oyunlar' || sorgu === 'bana oyun göster') {
-            return { tip: 'liste', oyunlar, mesaj: `🎮 **Sitedeki Oyunlar (${oyunlar.length} adet):**\n\n${oyunlar.map((o, i) => `${i+1}. ${o.baslik} (${o.kategori || '?'})`).join('\n')}` };
+    // --- OYUN LİSTESİNİ AL (3 FARKLI YÖNTEM) ---
+    function getGames() {
+        // 1. Yöntem: window.gamesList
+        if (window.gamesList && Array.isArray(window.gamesList) && window.gamesList.length > 0) {
+            return window.gamesList;
         }
 
-        // Popüler
-        if (sorgu.includes('popüler') || sorgu.includes('populer') || sorgu.includes('en çok')) {
-            const sirali = [...oyunlar].sort((a,b) => (b.indirme || 0) - (a.indirme || 0));
-            const ilk5 = sirali.slice(0, 5);
-            return { tip: 'liste', oyunlar: ilk5, mesaj: `🔥 **En Popüler Oyunlar:**\n\n${ilk5.map((o, i) => `${i+1}. ${o.baslik} (${o.indirme || 0} indirme)`).join('\n')}` };
+        // 2. Yöntem: DOM .game-card
+        const cards = document.querySelectorAll('.game-card, .oyun-kart, [data-game]');
+        if (cards.length > 0) {
+            const games = [];
+            cards.forEach(card => {
+                const title = card.querySelector('h3, .title, .game-title')?.textContent?.trim() || 
+                              card.getAttribute('data-title') || '';
+                const category = card.querySelector('.category-tag, .kategori, .cat')?.textContent?.trim() || '';
+                if (title) {
+                    games.push({
+                        title: title,
+                        category: category,
+                        element: card,
+                        id: card.getAttribute('data-id') || title.toLowerCase().replace(/\s+/g, '_')
+                    });
+                }
+            });
+            if (games.length > 0) return games;
+        }
+
+        // 3. Yöntem: .oyun-card (özel sınıf)
+        const fallback = document.querySelectorAll('[class*="game"]');
+        const games2 = [];
+        fallback.forEach(el => {
+            const title = el.textContent?.trim()?.split('\n')[0] || '';
+            if (title && title.length > 2) {
+                games2.push({ title, element: el });
+            }
+        });
+        if (games2.length > 0) return games2;
+
+        return [];
+    }
+
+    // --- OYUN AÇMA (3 FARKLI YÖNTEM) ---
+    function openGame(game) {
+        try {
+            // 1. Yöntem: openGameDetail fonksiyonu varsa
+            if (typeof window.openGameDetail === 'function' && game.id) {
+                window.openGameDetail(game.id);
+                return true;
+            }
+            // 2. Yöntem: element.click()
+            if (game.element && typeof game.element.click === 'function') {
+                game.element.click();
+                return true;
+            }
+            // 3. Yöntem: data-id ile bulup tıkla
+            if (game.id) {
+                const el = document.querySelector(`[data-id="${game.id}"]`) || 
+                           document.querySelector(`[data-game="${game.id}"]`);
+                if (el) { el.click(); return true; }
+            }
+            // 4. Yöntem: içinde title geçen kartı bul
+            const allCards = document.querySelectorAll('.game-card, .oyun-kart, [class*="game"]');
+            for (let card of allCards) {
+                if (card.textContent.includes(game.title)) {
+                    card.click();
+                    return true;
+                }
+            }
+            return false;
+        } catch(e) {
+            console.warn('Oyun açma hatası:', e);
+            return false;
+        }
+    }
+
+    // --- OYUN ARAMA MOTORU ---
+    function searchGames(query) {
+        const games = getGames();
+        const q = query.toLowerCase().trim();
+
+        // Admin sorusu
+        if (q.includes('admin') && (q.includes('şifre') || q.includes('anahtar') || q.includes('kod') || q.includes('key'))) {
+            return { type: 'secret', msg: '🔒 **BU BİLGİ GİZLİDİR!** Admin şifresini asla söylemem. 🎮' };
+        }
+
+        // Komutlar
+        if (q === 'tüm oyunları göster' || q === 'tüm oyunlar' || q === 'oyun göster' || q === 'bana oyun göster') {
+            return {
+                type: 'list',
+                games: games,
+                msg: `🎮 **Sitedeki Oyunlar (${games.length} adet):**\n\n${games.map((g, i) => `${i+1}. ${g.title} ${g.category ? '('+g.category+')' : ''}`).join('\n')}`
+            };
+        }
+
+        if (q.includes('popüler') || q.includes('populer') || q.includes('en çok')) {
+            const sorted = [...games].sort((a,b) => (b.downloads || 0) - (a.downloads || 0));
+            const top5 = sorted.slice(0, 5);
+            return {
+                type: 'list',
+                games: top5,
+                msg: `🔥 **En Popüler Oyunlar:**\n\n${top5.map((g, i) => `${i+1}. ${g.title} (${g.downloads || 0} indirme)`).join('\n')}`
+            };
         }
 
         // Kategori
-        const kategoriler = ['aksiyon','macera','rpg','strateji','yarış','spor','simülasyon','korku','mmorpg','bağımsız'];
-        for (let kat of kategoriler) {
-            if (sorgu.includes(kat)) {
-                const filtreli = oyunlar.filter(o => o.kategori && o.kategori.toLowerCase().includes(kat));
-                if (filtreli.length > 0) {
-                    return { tip: 'liste', oyunlar: filtreli, mesaj: `⚔️ **${kat.toUpperCase()} Oyunları (${filtreli.length} adet):**\n\n${filtreli.map((o, i) => `${i+1}. ${o.baslik}`).join('\n')}` };
+        const categories = ['aksiyon','macera','rpg','strateji','yarış','spor','simülasyon','korku','mmorpg','bağımsız'];
+        for (let cat of categories) {
+            if (q.includes(cat)) {
+                const filtered = games.filter(g => g.category && g.category.toLowerCase().includes(cat));
+                if (filtered.length > 0) {
+                    return {
+                        type: 'list',
+                        games: filtered,
+                        msg: `⚔️ **${cat.toUpperCase()} Oyunları (${filtered.length} adet):**\n\n${filtered.map((g, i) => `${i+1}. ${g.title}`).join('\n')}`
+                    };
                 }
             }
         }
 
         // Tek oyun ara
-        if (sorgu.length > 1) {
-            const bulunan = oyunlar.filter(o => o.baslik.toLowerCase().includes(sorgu));
-            if (bulunan.length === 1) {
-                return { tip: 'ac', oyun: bulunan[0], mesaj: `🎯 **"${bulunan[0].baslik}"** buldum! Açıyorum...` };
-            } else if (bulunan.length > 1) {
-                return { tip: 'liste', oyunlar: bulunan, mesaj: `🔍 **"${s}"** için ${bulunan.length} oyun bulundu:\n\n${bulunan.map((o, i) => `${i+1}. ${o.baslik} (${o.kategori || '?'})`).join('\n')}` };
+        if (q.length > 1) {
+            const found = games.filter(g => g.title.toLowerCase().includes(q));
+            if (found.length === 1) {
+                return { type: 'open', game: found[0], msg: `🎯 **"${found[0].title}"** buldum! Açıyorum...` };
+            } else if (found.length > 1) {
+                return {
+                    type: 'list',
+                    games: found,
+                    msg: `🔍 **"${query}"** için ${found.length} oyun bulundu:\n\n${found.map((g, i) => `${i+1}. ${g.title} ${g.category ? '('+g.category+')' : ''}`).join('\n')}`
+                };
             } else {
-                return { tip: 'bulunamadi', mesaj: `😅 **"${s}"** BULUNAMADI!\n📌 Farklı isim dene veya "oyun göster" yaz.` };
+                return { type: 'notfound', msg: `😅 **"${query}"** BULUNAMADI!\n📌 Farklı isim dene veya "Tüm oyunları göster" yaz.` };
             }
         }
 
-        return { tip: 'yardim', mesaj: `🎮 **Ne yapabilirim?**\n• Oyun adı yaz → Bulup açarım!\n• "oyun göster" → Tüm oyunlar\n• "popüler oyunlar" → En popülerler\n• "aksiyon oyunları" → Kategoriye göre\n\n🔒 Admin şifresi sorma! Gizli! 😅` };
+        return {
+            type: 'help',
+            msg: `🎮 **Ne yapabilirim?**\n• Oyun adı yaz → Bulup açarım!\n• "Tüm oyunları göster" → Tüm oyunlar\n• "En popüler oyunlar" → Popülerler\n• "Aksiyon oyunları" → Kategori\n\n🔒 Admin şifresi sorma! Gizli! 😅`
+        };
     }
 
-    // ★ CEVAP ★
-    function oyunCevap(s) {
-        const sorgu = s.toLowerCase().trim();
-        if (sorgu.includes('admin') && (sorgu.includes('şifre') || sorgu.includes('anahtar') || sorgu.includes('kod') || sorgu.includes('key'))) {
-            return { tip: 'gizli', mesaj: "🔒 **BU BİLGİ GİZLİDİR!** Admin şifresini asla söylemem. 🎮" };
-        }
-        return oyunAra(s);
-    }
-
-    // ★ MESAJ EKLE ★
-    function mesajEkle(tip, metin) {
+    // --- MESAJ EKLE ---
+    function addMsg(type, text) {
         const div = document.createElement('div');
-        div.className = `oyun-msg ${tip}`;
-        const avatar = tip === 'bot' ? '🎮' : '👤';
+        div.className = `ob-msg ${type}`;
+        const avatar = type === 'bot' ? '🎮' : '👤';
         div.innerHTML = `
             <div class="av">${avatar}</div>
-            <div class="balon">${metin.replace(/\n/g, '<br>')}<span class="zaman">${new Date().toLocaleTimeString('tr-TR', {hour:'2-digit',minute:'2-digit'})}</span></div>
+            <div class="bubble">${text.replace(/\n/g, '<br>')}<span class="time">${new Date().toLocaleTimeString('tr-TR', {hour:'2-digit',minute:'2-digit'})}</span></div>
         `;
-        mesaj.appendChild(div);
-        mesaj.scrollTop = mesaj.scrollHeight;
+        msgs.appendChild(div);
+        msgs.scrollTop = msgs.scrollHeight;
     }
 
-    // ★ YAZIYOR ★
-    function yaziyorGoster() {
+    // --- YAZIYOR ---
+    function showTyping() {
         const div = document.createElement('div');
-        div.className = 'oyun-yaziyor';
-        div.id = 'oyunYaziyor';
-        div.innerHTML = `<span>🎮 Aranıyor</span><span class="noktalar"><span></span><span></span><span></span></span>`;
-        mesaj.appendChild(div);
-        mesaj.scrollTop = mesaj.scrollHeight;
+        div.className = 'ob-typing';
+        div.id = 'obTyping';
+        div.innerHTML = `<span>🎮 Aranıyor</span><span class="dots"><span></span><span></span><span></span></span>`;
+        msgs.appendChild(div);
+        msgs.scrollTop = msgs.scrollHeight;
     }
-    function yaziyorGizle() {
-        const el = document.getElementById('oyunYaziyor');
+    function hideTyping() {
+        const el = document.getElementById('obTyping');
         if (el) el.remove();
     }
 
-    // ★ SORU SOR ★
-    function oyunSoru(s) {
-        if (!s || s.trim() === '') { girdi.focus(); return; }
-        s = s.trim();
-        mesajEkle('user', s);
-        girdi.value = '';
-        girdi.focus();
-        yaziyorGoster();
+    // --- SORU GÖNDER ---
+    function obSend(query) {
+        if (!query || query.trim() === '') { input.focus(); return; }
+        query = query.trim();
+        addMsg('user', query);
+        input.value = '';
+        input.focus();
+        showTyping();
+
         setTimeout(() => {
-            yaziyorGizle();
-            const sonuc = oyunCevap(s);
-            mesajEkle('bot', sonuc.mesaj);
-            if (sonuc.tip === 'ac' && sonuc.oyun) {
+            hideTyping();
+            const result = searchGames(query);
+            addMsg('bot', result.msg);
+
+            if (result.type === 'open' && result.game) {
                 setTimeout(() => {
-                    if (sonuc.oyun.eleman) sonuc.oyun.eleman.click();
-                    else {
-                        document.querySelectorAll('.game-card').forEach(kart => {
-                            if (kart.querySelector('h3')?.textContent === sonuc.oyun.baslik) kart.click();
-                        });
+                    const success = openGame(result.game);
+                    if (success) {
+                        addMsg('bot', `✅ **"${result.game.title}"** açıldı! İnceleyebilirsin.`);
+                    } else {
+                        addMsg('bot', `⚠️ **"${result.game.title}"** bulundu ama açılamadı. Ana sayfadan manuel olarak bulabilirsin.`);
                     }
-                    mesajEkle('bot', `🎯 **"${sonuc.oyun.baslik}"** açıldı!`);
                 }, 600);
             }
         }, 500);
     }
 
-    // ★ OLAY BAĞLAMALARI ★
-    function acKapa() {
-        acik = !acik;
-        kutu.classList.toggle('acik', acik);
-        if (acik) {
-            girdi.focus();
-            if (mesaj.children.length === 0) {
-                mesajEkle('bot', '🎮 **OYUN BULUCU!**\nBir oyun adı söyle, seni **direk oyuna götüreyim**!\n💡 Örnek: "GTA" veya "oyun göster"');
+    // --- AÇ/KAPA ---
+    function toggleBox() {
+        isOpen = !isOpen;
+        box.classList.toggle('open', isOpen);
+        if (isOpen) {
+            input.focus();
+            if (msgs.children.length === 0) {
+                addMsg('bot', '🎮 **OYUN BULUCU!**\nBir oyun adı söyle, seni **direk oyuna götüreyim**!\n💡 Örnek: "GTA" veya "Tüm oyunları göster"');
+                setTimeout(() => {
+                    const gameCount = getGames().length;
+                    addMsg('bot', `📊 Şu anda sitede **${gameCount}** oyun var. İstersen birini dene!`);
+                }, 1200);
             }
         }
     }
-    function kapat() {
-        acik = false;
-        kutu.classList.remove('acik');
+    function closeBox() {
+        isOpen = false;
+        box.classList.remove('open');
     }
 
-    btn.addEventListener('click', acKapa);
-    kapat.addEventListener('click', kapat);
-    gonder.addEventListener('click', function() { oyunSoru(girdi.value); });
+    // --- OLAY BAĞLAMALARI ---
+    btn.addEventListener('click', toggleBox);
+    closeBtn.addEventListener('click', closeBox);
+    sendBtn.addEventListener('click', function() { obSend(input.value); });
 
-    oneriButonlari.forEach(b => {
-        b.addEventListener('click', function() { oyunSoru(this.getAttribute('data-s')); });
+    suggestBtns.forEach(b => {
+        b.addEventListener('click', function() {
+            obSend(this.getAttribute('data-cmd'));
+        });
     });
 
+    // KLAVYE
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && acik) kapat();
-        if (e.ctrlKey && e.shiftKey && e.key === 'B') { e.preventDefault(); acKapa(); }
+        if (e.key === 'Escape' && isOpen) closeBox();
+        if (e.ctrlKey && e.shiftKey && e.key === 'B') {
+            e.preventDefault();
+            toggleBox();
+        }
     });
 
-    console.log('🎮 Oyun Botu hazır! Ctrl+Shift+B ile aç.');
+    // HATA YAKALAMA
+    window.addEventListener('error', function(e) {
+        console.warn('Oyun Botu hatası:', e.message);
+    });
+
+    console.log('🎮 Oyun Botu (sağlam) hazır! Ctrl+Shift+B ile aç.');
+    console.log('📋 Oyun listesi çekiliyor...', getGames().length, 'oyun bulundu.');
 })();
 </script>
-<!-- ================================================== -->->
+<!-- ================================================== -->
 <!-- ================================================== -->
 <!-- 👥 KULLANICI PANELİ - SAĞ ÜST KÖŞE (DETAYLI)      -->
 <!-- ================================================== -->
