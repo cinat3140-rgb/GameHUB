@@ -1189,47 +1189,140 @@
         }
 
         /* ================================================== */
-        /* 🎨 SEVİYE RENKLERİ VE KROMATİK EFEKTLER (EKLENDİ) */
+        /* LED SEVİYE ROZETLERİ – 12 KATMANLI ANİMASYON      */
         /* ================================================== */
-        .level-caylak { background: linear-gradient(135deg, #95a5a6, #bdc3c7); color: #000; }
-        .level-acemi { background: linear-gradient(135deg, #2ecc71, #1abc9c); color: #000; animation: shimmer 3s infinite; }
-        .level-ender { background: linear-gradient(135deg, #3498db, #8e44ad); color: #fff; animation: glow-blue 2s infinite; }
-        .level-usta { background: linear-gradient(135deg, #9b59b6, #e91e63); color: #fff; animation: glow-purple 2s infinite; }
-        .level-efsanevi { background: linear-gradient(135deg, #f1c40f, #e67e22); color: #000; animation: sparkle 1.5s infinite; }
-        .level-tanri { background: linear-gradient(135deg, #00d4ff, #7b2ffc); color: #fff; animation: chroma 3s infinite; }
-        .level-vip { background: linear-gradient(135deg, #00ff88, #00d4ff, #7b2ffc); color: #000; animation: prism 2s infinite; }
-        .level-admin { background: linear-gradient(135deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff); color: #fff; animation: rainbow 4s linear infinite; }
+        .level-badge { background-size: 200% 200%; }
+        .level-caylak {
+            background: linear-gradient(135deg, #95a5a6, #bdc3c7, #95a5a6);
+            color: #000;
+            animation: led-pulse-silver 2.5s ease-in-out infinite;
+        }
+        .level-acemi {
+            background: linear-gradient(90deg, #1abc9c, #2ecc71, #27ae60, #2ecc71, #1abc9c);
+            background-size: 300% 100%;
+            color: #000;
+            animation: led-flow 2s linear infinite;
+        }
+        .level-gezgin {
+            background: linear-gradient(90deg, #00bcd4, #26c6da, #4dd0e1, #26c6da, #00bcd4);
+            background-size: 300% 100%;
+            color: #000;
+            animation: led-flow 2.2s linear infinite;
+            box-shadow: 0 0 8px rgba(0, 188, 212, 0.5);
+        }
+        .level-ender {
+            background: linear-gradient(135deg, #3498db, #8e44ad, #3498db);
+            background-size: 200% 200%;
+            color: #fff;
+            animation: led-glow-blue 2s ease-in-out infinite;
+        }
+        .level-usta {
+            background: linear-gradient(135deg, #9b59b6, #e91e63, #9b59b6);
+            background-size: 200% 200%;
+            color: #fff;
+            animation: led-glow-purple 2s ease-in-out infinite;
+        }
+        .level-sampiyon {
+            background: linear-gradient(90deg, #f1c40f, #f39c12, #ffd700, #f39c12, #f1c40f);
+            background-size: 300% 100%;
+            color: #000;
+            animation: led-chase-gold 1.8s linear infinite;
+        }
+        .level-efsanevi {
+            background: linear-gradient(90deg, #e67e22, #f1c40f, #ff6b35, #f1c40f, #e67e22);
+            background-size: 400% 100%;
+            color: #000;
+            animation: led-chase-gold 1.5s linear infinite;
+            box-shadow: 0 0 12px rgba(241, 196, 15, 0.6);
+        }
+        .level-efsunlu {
+            background: linear-gradient(90deg, #ff006e, #8338ec, #3a86ff, #06d6a0, #ff006e);
+            background-size: 400% 100%;
+            color: #fff;
+            animation: led-prism 3s linear infinite;
+        }
+        .level-tanri {
+            background: linear-gradient(135deg, #00d4ff, #7b2ffc, #00d4ff);
+            background-size: 200% 200%;
+            color: #fff;
+            animation: led-chroma 3s ease infinite;
+        }
+        .level-vip {
+            background: linear-gradient(90deg, #00ff88, #00d4ff, #0099ff, #00d4ff, #00ff88);
+            background-size: 400% 100%;
+            color: #000;
+            animation: led-neon-strip 2s linear infinite;
+            box-shadow: 0 0 14px rgba(0, 255, 136, 0.5);
+        }
+        .level-elit {
+            background: linear-gradient(135deg, #fff8e7, #ffd700, #fff, #ffd700, #fff8e7);
+            background-size: 300% 300%;
+            color: #000;
+            animation: led-radiant 2.5s ease-in-out infinite;
+        }
+        .level-admin {
+            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff, #ff0000);
+            background-size: 400% 100%;
+            color: #fff;
+            animation: led-rainbow 4s linear infinite;
+            box-shadow: 0 0 16px rgba(255, 0, 128, 0.4);
+        }
+        .level-default {
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            background-size: 300% 100%;
+            color: #fff;
+            animation: led-flow 2.5s linear infinite;
+        }
 
-        @keyframes shimmer {
-            0% { background-position: -200%; }
-            100% { background-position: 200%; }
+        .kp-item .avatar.level-badge,
+        .kp-item .avatar[class*="level-"] {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1rem;
         }
-        @keyframes glow-blue {
-            0%, 100% { box-shadow: 0 0 10px #3498db, 0 0 20px #8e44ad; }
-            50% { box-shadow: 0 0 20px #3498db, 0 0 40px #8e44ad; }
+
+        @keyframes led-pulse-silver {
+            0%, 100% { opacity: 1; box-shadow: 0 0 4px rgba(189, 195, 199, 0.4); }
+            50% { opacity: 0.85; box-shadow: 0 0 10px rgba(189, 195, 199, 0.8); }
         }
-        @keyframes glow-purple {
-            0%, 100% { box-shadow: 0 0 10px #9b59b6, 0 0 20px #e91e63; }
-            50% { box-shadow: 0 0 20px #9b59b6, 0 0 40px #e91e63; }
-        }
-        @keyframes sparkle {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-        }
-        @keyframes chroma {
-            0% { background: linear-gradient(135deg, #00d4ff, #7b2ffc); }
-            50% { background: linear-gradient(135deg, #7b2ffc, #00d4ff); }
-            100% { background: linear-gradient(135deg, #00d4ff, #7b2ffc); }
-        }
-        @keyframes prism {
-            0% { background: linear-gradient(135deg, #00ff88, #00d4ff, #7b2ffc); }
-            33% { background: linear-gradient(135deg, #7b2ffc, #00ff88, #00d4ff); }
-            66% { background: linear-gradient(135deg, #00d4ff, #7b2ffc, #00ff88); }
-            100% { background: linear-gradient(135deg, #00ff88, #00d4ff, #7b2ffc); }
-        }
-        @keyframes rainbow {
+        @keyframes led-flow {
             0% { background-position: 0% 50%; }
             100% { background-position: 300% 50%; }
+        }
+        @keyframes led-glow-blue {
+            0%, 100% { box-shadow: 0 0 8px #3498db, 0 0 16px #8e44ad; background-position: 0% 50%; }
+            50% { box-shadow: 0 0 16px #3498db, 0 0 32px #8e44ad; background-position: 100% 50%; }
+        }
+        @keyframes led-glow-purple {
+            0%, 100% { box-shadow: 0 0 8px #9b59b6, 0 0 16px #e91e63; background-position: 0% 50%; }
+            50% { box-shadow: 0 0 16px #9b59b6, 0 0 32px #e91e63; background-position: 100% 50%; }
+        }
+        @keyframes led-chase-gold {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+        @keyframes led-prism {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+        @keyframes led-chroma {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes led-neon-strip {
+            0% { background-position: 0% 50%; box-shadow: 0 0 8px #00ff88; }
+            50% { box-shadow: 0 0 16px #00d4ff; }
+            100% { background-position: 400% 50%; box-shadow: 0 0 8px #00ff88; }
+        }
+        @keyframes led-radiant {
+            0%, 100% { box-shadow: 0 0 8px rgba(255, 215, 0, 0.5); background-position: 0% 50%; }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); background-position: 100% 50%; }
+        }
+        @keyframes led-rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
         }
 
         /* ----- ADMIN PANELİ KROMATİK (GÖKKUŞAĞI) ----- */
@@ -1768,8 +1861,21 @@
                                     <input type="text" id="newLevelName" class="admin-input" placeholder="Örn: Çaylak">
                                 </div>
                                 <div class="admin-form-group">
-                                    <label>Renk</label>
-                                    <input type="color" id="newLevelColor" class="admin-input" style="height:45px;padding:5px;" value="#95a5a6">
+                                    <label>LED Efekt Şablonu</label>
+                                    <select id="newLevelTemplate" class="admin-select">
+                                        <option value="level-caylak">Gümüş Nabız (Çaylak)</option>
+                                        <option value="level-acemi">Yeşil LED Akış (Acemi)</option>
+                                        <option value="level-gezgin">Turkuaz LED (Gezgin)</option>
+                                        <option value="level-ender">Mavi-Mor Glow (Ender)</option>
+                                        <option value="level-usta">Mor-Pembe Glow (Usta)</option>
+                                        <option value="level-sampiyon">Altın Chase (Şampiyon)</option>
+                                        <option value="level-efsanevi">Turuncu-Altın LED (Efsanevi)</option>
+                                        <option value="level-efsunlu">Prizma LED (Efsunlu)</option>
+                                        <option value="level-tanri">Cyan-Mor Chroma (Tanrı)</option>
+                                        <option value="level-vip">Neon Şerit (V.I.P)</option>
+                                        <option value="level-elit">Beyaz-Altın Radyant (Elit)</option>
+                                        <option value="level-admin">Gökkuşağı LED (Admin)</option>
+                                    </select>
                                 </div>
                                 <button class="btn-admin btn-admin-primary" onclick="addLevel()">
                                     <i class="fas fa-plus"></i> Seviye Ekle
@@ -1898,10 +2004,26 @@
             const settingsRef = ref(db, 'settings');
             const levelsRef = ref(db, 'levels');
             const userLevelsRef = ref(db, 'userLevels');
+            const registeredUsersRef = ref(db, 'registered_users');
             const etkinlikRef = ref(db, 'etkinlikler');
             const onlineRef = ref(db, 'online_users');
             const connectedRef = ref(db, '.info/connected');
             const notificationsRef = ref(db, 'notifications');
+
+            const DEFAULT_LEVELS = [
+                { name: 'Çaylak', cssClass: 'level-caylak', desc: 'Yeni üye' },
+                { name: 'Acemi', cssClass: 'level-acemi', desc: 'Aktif kullanıcı' },
+                { name: 'Gezgin', cssClass: 'level-gezgin', desc: 'Keşifçi' },
+                { name: 'Ender', cssClass: 'level-ender', desc: 'Deneyimli' },
+                { name: 'Usta', cssClass: 'level-usta', desc: 'Uzman' },
+                { name: 'Şampiyon', cssClass: 'level-sampiyon', desc: 'Mücadeleci' },
+                { name: 'Efsanevi', cssClass: 'level-efsanevi', desc: 'Efsane' },
+                { name: 'Efsunlu', cssClass: 'level-efsunlu', desc: 'Büyülü' },
+                { name: 'Tanrı', cssClass: 'level-tanri', desc: 'En üst seviye' },
+                { name: 'V.I.P', cssClass: 'level-vip', desc: 'Özel üye' },
+                { name: 'Elit', cssClass: 'level-elit', desc: 'Seçkin' },
+                { name: 'Admin', cssClass: 'level-admin', desc: 'Yönetici' }
+            ];
 
             let adminPanelVisible = false;
             let activeCategory = 'all';
@@ -1911,6 +2033,118 @@
             let notifications = [];
             let levelsList = [];
             let userLevelsList = [];
+            let registeredUsersList = [];
+            let onlineUsersList = [];
+            let presenceInterval = null;
+            let presenceBound = false;
+
+            const mySessionId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            const myOnlineRef = ref(db, 'online_users/' + mySessionId);
+
+            function encodeUsernameKey(username) {
+                return username.replace(/\./g, '_dot_').replace(/#/g, '_hash_').replace(/\$/g, '_dollar_').replace(/\//g, '_slash_').replace(/\[/g, '_lb_').replace(/\]/g, '_rb_');
+            }
+
+            function slugifyLevel(name) {
+                return (name || 'caylak').toLowerCase()
+                    .replace(/ı/g, 'i').replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ö/g, 'o').replace(/ç/g, 'c').replace(/İ/g, 'i')
+                    .replace(/ /g, '-').replace(/\./g, '');
+            }
+
+            function getUserLevel(username) {
+                const entry = userLevelsList.find(ul => ul.username === username);
+                if (entry && entry.levelId) {
+                    const levelObj = levelsList.find(l => l.id === entry.levelId);
+                    if (levelObj) return levelObj.name;
+                }
+                return 'Çaylak';
+            }
+
+            function getLevelCssClass(levelName) {
+                const levelObj = levelsList.find(l => l.name === levelName);
+                if (levelObj?.cssClass) return levelObj.cssClass;
+                const slug = 'level-' + slugifyLevel(levelName);
+                if (DEFAULT_LEVELS.some(l => l.cssClass === slug)) return slug;
+                return 'level-default';
+            }
+
+            function getLevelDesc(levelName) {
+                const levelObj = levelsList.find(l => l.name === levelName);
+                return levelObj?.desc || DEFAULT_LEVELS.find(l => l.name === levelName)?.desc || '';
+            }
+
+            function buildPresenceData(user) {
+                if (!user) return null;
+                const levelName = getUserLevel(user.username);
+                return {
+                    username: user.username,
+                    isAnon: !!user.isAnon,
+                    levelName,
+                    levelSlug: slugifyLevel(levelName),
+                    lastSeen: Date.now()
+                };
+            }
+
+            function updatePresence() {
+                const user = getCurrentUser();
+                if (!user) return;
+                set(myOnlineRef, buildPresenceData(user));
+            }
+
+            function clearPresence() {
+                remove(myOnlineRef);
+            }
+
+            function startPresenceHeartbeat() {
+                if (presenceInterval) clearInterval(presenceInterval);
+                updatePresence();
+                presenceInterval = setInterval(updatePresence, 10000);
+            }
+
+            function stopPresenceHeartbeat() {
+                if (presenceInterval) {
+                    clearInterval(presenceInterval);
+                    presenceInterval = null;
+                }
+                clearPresence();
+            }
+
+            function bindPresenceDisconnect() {
+                if (presenceBound) return;
+                presenceBound = true;
+                onDisconnect(myOnlineRef).remove();
+            }
+
+            async function migrateLocalStorageUsers() {
+                if (localStorage.getItem('gh_users_migrated') === 'true') return;
+                try {
+                    const localUsers = JSON.parse(localStorage.getItem('gh_users') || '[]');
+                    const localLevels = JSON.parse(localStorage.getItem('gh_userLevels') || '{}');
+                    for (const u of localUsers) {
+                        if (!u.username) continue;
+                        const key = encodeUsernameKey(u.username);
+                        const existing = await get(ref(db, 'registered_users/' + key));
+                        if (!existing.exists()) {
+                            await set(ref(db, 'registered_users/' + key), {
+                                username: u.username,
+                                password: u.password || '',
+                                joinDate: u.joinDate || new Date().toLocaleDateString('tr-TR'),
+                                lastLogin: null
+                            });
+                        }
+                        const levelName = localLevels[u.username];
+                        if (levelName) {
+                            const levelObj = levelsList.find(l => l.name === levelName);
+                            if (levelObj && !userLevelsList.find(ul => ul.username === u.username)) {
+                                await push(userLevelsRef, { username: u.username, levelId: levelObj.id });
+                            }
+                        }
+                    }
+                    localStorage.setItem('gh_users_migrated', 'true');
+                } catch (e) {
+                    console.warn('Kullanıcı taşıma hatası:', e);
+                }
+            }
 
             // Seviyeleri yükle
             onValue(levelsRef, (snapshot) => {
@@ -1919,17 +2153,21 @@
                     levelsList.push({ id: child.key, ...child.val() });
                 });
                 if (levelsList.length === 0) {
-                    const defaultLevels = [
-                        { name: 'Çaylak', color: '#95a5a6' },
-                        { name: 'Acemi', color: '#2ecc71' },
-                        { name: 'Usta', color: '#3498db' },
-                        { name: 'Efsane', color: '#9b59b6' },
-                        { name: 'Tanrı', color: '#ffd700' }
-                    ];
-                    defaultLevels.forEach(level => push(levelsRef, level));
+                    DEFAULT_LEVELS.forEach(level => push(levelsRef, level));
                 }
                 renderLevels();
                 renderUserLevelsTable();
+                migrateLocalStorageUsers();
+            });
+
+            onValue(registeredUsersRef, (snapshot) => {
+                registeredUsersList = [];
+                snapshot.forEach((child) => {
+                    registeredUsersList.push({ id: child.key, ...child.val() });
+                });
+                renderUserLevelsTable();
+                const totalUsersEl = document.getElementById('detailTotalUsers');
+                if (totalUsersEl) totalUsersEl.textContent = registeredUsersList.length;
             });
 
             onValue(userLevelsRef, (snapshot) => {
@@ -1938,6 +2176,7 @@
                     userLevelsList.push({ id: child.key, ...child.val() });
                 });
                 renderUserLevelsTable();
+                updatePresence();
                 updateUI();
             });
 
@@ -1984,14 +2223,10 @@
                 badge.classList.toggle('hidden', count === 0);
             });
 
-            const mySessionId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            const myOnlineRef = ref(db, 'online_users/' + mySessionId);
-
             onValue(connectedRef, (snap) => {
-                if (snap.val() === true) {
-                    set(myOnlineRef, { lastSeen: Date.now() });
-                    onDisconnect(myOnlineRef).remove();
-                    setInterval(() => set(myOnlineRef, { lastSeen: Date.now() }), 10000);
+                if (snap.val() === true && getCurrentUser()) {
+                    bindPresenceDisconnect();
+                    startPresenceHeartbeat();
                 }
             });
 
@@ -1999,15 +2234,21 @@
                 const now = Date.now();
                 let count = 0;
                 const updates = {};
+                onlineUsersList = [];
                 snapshot.forEach((child) => {
                     const data = child.val();
                     if (data && data.lastSeen) {
-                        if (now - data.lastSeen > 30000) updates[child.key] = null;
-                        else if (now - data.lastSeen < 15000) count++;
+                        if (now - data.lastSeen > 30000) {
+                            updates[child.key] = null;
+                        } else if (data.username) {
+                            onlineUsersList.push({ id: child.key, ...data });
+                            if (now - data.lastSeen < 15000) count++;
+                        }
                     }
                 });
                 if (Object.keys(updates).length > 0) update(onlineRef, updates);
                 document.getElementById('onlineText').textContent = count + ' çevrimiçi';
+                if (window.renderKimlerVarPanel) window.renderKimlerVarPanel();
             });
 
             function etkinlikEkle(mesaj) {
@@ -2041,20 +2282,22 @@
                 }
             };
 
-            function getUsers() { return JSON.parse(localStorage.getItem('gh_users') || '[]'); }
-            function saveUsers(u) { localStorage.setItem('gh_users', JSON.stringify(u)); }
-            function getCurrentUser() { return JSON.parse(localStorage.getItem('gh_user')); }
-            function setCurrentUser(u) { localStorage.setItem('gh_user', JSON.stringify(u)); }
+            function getUsers() { return registeredUsersList; }
+            function getCurrentUser() {
+                try { return JSON.parse(localStorage.getItem('gh_user')); } catch(e) { return null; }
+            }
+            function setCurrentUser(u) {
+                if (u) localStorage.setItem('gh_user', JSON.stringify(u));
+                else localStorage.removeItem('gh_user');
+            }
             function isAdmin() { return localStorage.getItem('gh_admin') === 'true'; }
             function setAdmin(v) { localStorage.setItem('gh_admin', v ? 'true' : 'false'); }
 
-            // ★★★ DÜZELTİLMİŞ getUserLevel (localStorage) ★★★
-            function getUserLevel(username) {
-                try {
-                    const levels = JSON.parse(localStorage.getItem('gh_userLevels') || '{}');
-                    return levels[username] || 'Çaylak';
-                } catch(e) { return 'Çaylak'; }
-            }
+            window.getUserLevelName = getUserLevel;
+            window.getLevelCssClass = getLevelCssClass;
+            window.getLevelDesc = getLevelDesc;
+            window.getOnlineUsers = () => onlineUsersList;
+            window.getCurrentUserPublic = getCurrentUser;
 
             window.setTheme = function(t) {
                 if (!isAdmin() && t.startsWith('admin-')) t = 'default';
@@ -2315,48 +2558,59 @@
                 document.querySelector(`[onclick="showSection('${s}')"]`)?.classList.add('active');
             };
 
-            window.login = function() {
+            window.login = async function() {
                 const u = document.getElementById('loginUsername').value.trim();
                 const p = document.getElementById('loginPassword').value.trim();
                 if (!u || !p) return showToast('Boş bırakmayın!');
-                const user = getUsers().find(x => x.username === u && x.password === p);
-                if (!user) return showToast('Hatalı!');
-                setCurrentUser({ username: user.username });
+                const key = encodeUsernameKey(u);
+                const snap = await get(ref(db, 'registered_users/' + key));
+                if (!snap.exists() || snap.val().password !== p) return showToast('Hatalı!');
+                setCurrentUser({ username: u });
+                await update(ref(db, 'registered_users/' + key), { lastLogin: Date.now() });
+                bindPresenceDisconnect();
+                startPresenceHeartbeat();
                 closeModal('loginModal');
-                etkinlikEkle(`👤 ${user.username} giriş yaptı`);
+                etkinlikEkle(`👤 ${u} giriş yaptı`);
                 updateUI();
             };
 
-            // ★★★ DÜZELTİLMİŞ register (varsayılan seviye 'Çaylak') ★★★
-            window.register = function() {
+            window.register = async function() {
                 const u = document.getElementById('regUsername').value.trim();
                 const p = document.getElementById('regPassword').value.trim();
                 if (!u || !p) return showToast('Kullanıcı adı ve şifre zorunlu!');
-                if (getUsers().find(x => x.username === u)) return showToast('Alınmış!');
-                getUsers().push({ username: u, password: p });
-                saveUsers(getUsers());
-                // Varsayılan seviye ata
-                const userLevels = JSON.parse(localStorage.getItem('gh_userLevels') || '{}');
-                userLevels[u] = 'Çaylak';
-                localStorage.setItem('gh_userLevels', JSON.stringify(userLevels));
+                const key = encodeUsernameKey(u);
+                const existing = await get(ref(db, 'registered_users/' + key));
+                if (existing.exists()) return showToast('Alınmış!');
+                await set(ref(db, 'registered_users/' + key), {
+                    username: u,
+                    password: p,
+                    joinDate: new Date().toLocaleDateString('tr-TR'),
+                    lastLogin: Date.now()
+                });
                 setCurrentUser({ username: u });
+                bindPresenceDisconnect();
+                startPresenceHeartbeat();
                 closeModal('registerModal');
                 etkinlikEkle(`✨ ${u} kayıt oldu`);
                 updateUI();
             };
 
             window.anonymousLogin = function() {
-                const name = 'Anon_' + Math.random().toString(36).substr(2,5);
+                const name = 'Anon_' + Math.random().toString(36).substr(2, 5);
                 setCurrentUser({ username: name, isAnon: true });
+                bindPresenceDisconnect();
+                startPresenceHeartbeat();
                 etkinlikEkle(`👻 ${name} anonim giriş`);
                 updateUI();
             };
 
-            window.logout = function() { 
-                setCurrentUser(null); 
-                setAdmin(false); 
-                updateUI(); 
-                etkinlikEkle('🚪 Kullanıcı çıkış yaptı');
+            window.logout = function() {
+                const user = getCurrentUser();
+                stopPresenceHeartbeat();
+                setCurrentUser(null);
+                setAdmin(false);
+                updateUI();
+                etkinlikEkle(user ? `🚪 ${user.username} çıkış yaptı` : '🚪 Kullanıcı çıkış yaptı');
             };
 
             window.openAdminPanel = function() { adminPanelVisible = true; updateUI(); };
@@ -2365,6 +2619,8 @@
                 if (document.getElementById('adminKey').value.trim() === 'GameHub2024!Admin') {
                     setAdmin(true);
                     if (!getCurrentUser()) setCurrentUser({ username: 'Admin' });
+                    bindPresenceDisconnect();
+                    startPresenceHeartbeat();
                     closeModal('adminLoginModal');
                     adminPanelVisible = true;
                     updateUI();
@@ -2374,63 +2630,49 @@
 
             window.closeAdminPanel = function() { adminPanelVisible = false; updateUI(); };
 
-            // ★★★ DÜZELTİLMİŞ levelColors ★★★
-            const levelColors = {
-                'Çaylak': '#95a5a6',
-                'Acemi': '#2ecc71',
-                'Ender': '#3498db',
-                'Usta': '#9b59b6',
-                'Efsanevi': '#f1c40f',
-                'Tanrı': '#00d4ff',
-                'V.I.P': '#00ff88',
-                'Admin': '#ff0000'
-            };
-
             function renderLevels() {
                 const container = document.getElementById('currentLevels');
                 if (!container) return;
                 container.innerHTML = levelsList.map(l => `
                     <div style="display:flex;align-items:center;justify-content:space-between;padding:10px;border-bottom:1px solid var(--border);margin-bottom:5px;">
                         <div style="display:flex;align-items:center;gap:10px;">
-                            <span class="level-badge" style="background-color:${l.color};color:#000;">${l.name}</span>
+                            <span class="level-badge ${l.cssClass || getLevelCssClass(l.name)}">${l.name}</span>
+                            <span style="color:var(--text-secondary);font-size:0.8rem;">${l.desc || ''}</span>
                         </div>
-                        <div style="display:flex;align-items:center;gap:10px;">
-                            <span style="color:var(--text-secondary);">Renk: ${l.color}</span>
-                            <button class="btn-admin btn-admin-danger" style="padding:4px 10px;font-size:0.7rem;" onclick="deleteLevel('${l.id}')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
+                        <button class="btn-admin btn-admin-danger" style="padding:4px 10px;font-size:0.7rem;" onclick="deleteLevel('${l.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </div>
                 `).join('') || '<p>Henüz seviye tanımlanmadı.</p>';
             }
 
-            // ★★★ DÜZELTİLMİŞ renderUserLevelsTable (admin paneli) ★★★
             window.renderUserLevelsTable = function() {
                 const container = document.getElementById('userLevelsTable');
                 if (!container) return;
                 const users = getUsers();
                 if (users.length === 0) {
-                    container.innerHTML = '<tr><td colspan="4" style="text-align:center;">Henüz kullanıcı yok</td></tr>';
+                    container.innerHTML = '<tr><td colspan="4" style="text-align:center;">Henüz kayıtlı kullanıcı yok</td></tr>';
                     return;
                 }
                 container.innerHTML = users.map(u => {
                     const currentLevel = getUserLevel(u.username);
-                    const color = levelColors[currentLevel] || '#666';
-                    const levelOptions = levelsList.map(l => 
+                    const cssClass = getLevelCssClass(currentLevel);
+                    const levelOptions = levelsList.map(l =>
                         `<option value="${l.id}" ${currentLevel === l.name ? 'selected' : ''}>${l.name}</option>`
                     ).join('');
+                    const safeName = u.username.replace(/'/g, "\\'");
                     return `
                         <tr>
-                            <td><b>${u.username}</b></td>
-                            <td><span class="level-badge" style="background:${color};color:#000;">${currentLevel}</span></td>
+                            <td><b>${u.username}</b>${u.isAnon ? ' <small>(anonim)</small>' : ''}</td>
+                            <td><span class="level-badge ${cssClass}">${currentLevel}</span></td>
                             <td>
-                                <select class="admin-select" id="levelSelect_${u.username}" style="width:auto;padding:6px;">
-                                    <option value="">Seviyesiz</option>
+                                <select class="admin-select" id="levelSelect_${encodeUsernameKey(u.username)}" style="width:auto;padding:6px;">
+                                    <option value="">Seviyesiz (Çaylak)</option>
                                     ${levelOptions}
                                 </select>
                             </td>
                             <td>
-                                <button class="btn-admin btn-admin-primary" style="padding:6px 12px;font-size:0.8rem;" onclick="assignLevel('${u.username}')">
+                                <button class="btn-admin btn-admin-primary" style="padding:6px 12px;font-size:0.8rem;" onclick="assignLevel('${safeName}')">
                                     <i class="fas fa-save"></i> Ata
                                 </button>
                             </td>
@@ -2441,19 +2683,18 @@
 
             window.addLevel = function() {
                 const name = document.getElementById('newLevelName').value.trim();
-                const color = document.getElementById('newLevelColor').value;
+                const cssClass = document.getElementById('newLevelTemplate').value;
+                const template = DEFAULT_LEVELS.find(l => l.cssClass === cssClass);
 
-                if (!name) {
-                    return showToast('Lütfen seviye adını girin!');
-                }
+                if (!name) return showToast('Lütfen seviye adını girin!');
 
                 push(levelsRef, {
-                    name: name,
-                    color: color
+                    name,
+                    cssClass,
+                    desc: template?.desc || 'Özel seviye'
                 });
 
                 document.getElementById('newLevelName').value = '';
-                document.getElementById('newLevelColor').value = '#95a5a6';
                 showToast('✅ Seviye eklendi!');
             };
 
@@ -2464,36 +2705,26 @@
                 }
             };
 
-            // ★★★ DÜZELTİLMİŞ assignLevel ★★★
             window.assignLevel = function(username) {
-                const select = document.getElementById('levelSelect_' + username);
+                const select = document.getElementById('levelSelect_' + encodeUsernameKey(username));
                 if (!select) return;
                 const levelId = select.value;
                 const existingEntry = userLevelsList.find(ul => ul.username === username);
                 if (levelId === '') {
-                    if (existingEntry) {
-                        remove(ref(db, 'userLevels/' + existingEntry.id));
-                    }
-                    // localStorage'dan da sil
-                    const levels = JSON.parse(localStorage.getItem('gh_userLevels') || '{}');
-                    delete levels[username];
-                    localStorage.setItem('gh_userLevels', JSON.stringify(levels));
+                    if (existingEntry) remove(ref(db, 'userLevels/' + existingEntry.id));
                 } else {
                     const levelObj = levelsList.find(l => l.id === levelId);
                     if (!levelObj) return;
                     if (existingEntry) {
-                        update(ref(db, 'userLevels/' + existingEntry.id), { levelId: levelId });
+                        update(ref(db, 'userLevels/' + existingEntry.id), { levelId, username });
                     } else {
                         push(userLevelsRef, { username, levelId });
                     }
-                    // localStorage'a da yaz
-                    const levels = JSON.parse(localStorage.getItem('gh_userLevels') || '{}');
-                    levels[username] = levelObj.name;
-                    localStorage.setItem('gh_userLevels', JSON.stringify(levels));
                 }
                 showToast('✅ Seviye atandı!');
                 etkinlikEkle(`⭐ ${username} seviyesi güncellendi`);
                 renderUserLevelsTable();
+                updatePresence();
                 updateUI();
             };
 
@@ -2683,8 +2914,8 @@
                     } else {
                         badge.className = '';
                         const userLevel = getUserLevel(user.username);
-                        const color = levelColors[userLevel] || '#666';
-                        badge.innerHTML = `👤 ${user.username} <span class="level-badge" style="background:${color};color:#000;">${userLevel}</span>`;
+                        const cssClass = getLevelCssClass(userLevel);
+                        badge.innerHTML = `👤 ${user.username} <span class="level-badge ${cssClass}">${userLevel}</span>`;
                         badge.style.cssText = 'background:var(--glass);color:var(--text);padding:8px 16px;border-radius:30px;display:flex;align-items:center;gap:8px;';
                     }
                 } else {
@@ -2724,6 +2955,10 @@
             });
 
             updateUI();
+            if (getCurrentUser()) {
+                bindPresenceDisconnect();
+                startPresenceHeartbeat();
+            }
             etkinlikEkle('🟢 OyunDeposu başlatıldı');
         });
     </script>
@@ -2877,7 +3112,6 @@
 </div>
 
 <script>
-// ★★★ DÜZELTİLMİŞ KULLANICI PANELİ (LEVELS + AÇIKLAMA) ★★★
 (function() {
     const btn = document.getElementById('kpBtn');
     const panel = document.getElementById('kpPanel');
@@ -2886,94 +3120,72 @@
     const title = document.getElementById('kpTitle');
 
     let isOpen = false;
-    let interval = null;
-
-    const LEVELS = {
-        'Çaylak': { color: '#95a5a6', desc: 'Yeni üye' },
-        'Acemi': { color: '#2ecc71', desc: 'Aktif kullanıcı' },
-        'Ender': { color: '#3498db', desc: 'Deneyimli' },
-        'Usta': { color: '#9b59b6', desc: 'Uzman' },
-        'Efsanevi': { color: '#f1c40f', desc: 'Efsane' },
-        'Tanrı': { color: '#00d4ff', desc: 'En üst seviye' },
-        'V.I.P': { color: '#00ff88', desc: 'Özel üye' },
-        'Admin': { color: '#ff0000', desc: 'Yönetici' }
-    };
-
-    function getUsers() {
-        try { return JSON.parse(localStorage.getItem('gh_users') || '[]'); } catch(e) { return []; }
-    }
-    function getCurrentUser() {
-        try { return JSON.parse(localStorage.getItem('gh_user')); } catch(e) { return null; }
-    }
-    function getUserLevel(username) {
-        try {
-            const levels = JSON.parse(localStorage.getItem('gh_userLevels') || '{}');
-            return levels[username] || 'Çaylak';
-        } catch(e) { return 'Çaylak'; }
-    }
-    function getUserStats(username) {
-        let comments = 0, downloads = 0, joinDate = 'Bilinmiyor';
-        try {
-            const allComments = JSON.parse(localStorage.getItem('gh_comments') || '[]');
-            comments = allComments.filter(c => c.author === username).length;
-            const allDownloads = JSON.parse(localStorage.getItem('gh_downloads') || '{}');
-            downloads = allDownloads[username] || 0;
-            const users = getUsers();
-            const user = users.find(u => u.username === username);
-            if (user && user.joinDate) joinDate = user.joinDate;
-        } catch(e) {}
-        return { comments, downloads, joinDate };
-    }
 
     function renderList() {
-        const users = getUsers();
-        const current = getCurrentUser();
-        if (!users || users.length === 0) {
-            listDiv.innerHTML = `<div class="kp-empty">👤 Henüz kayıtlı kullanıcı yok.</div>`;
-            title.textContent = '👥 Kullanıcılar (0)';
+        const onlineUsers = (window.getOnlineUsers && window.getOnlineUsers()) || [];
+        const current = window.getCurrentUserPublic ? window.getCurrentUserPublic() : null;
+        const now = Date.now();
+
+        const active = onlineUsers
+            .filter(u => u.username && u.lastSeen && (now - u.lastSeen) < 30000)
+            .sort((a, b) => (a.username || '').localeCompare(b.username || ''));
+
+        const unique = [];
+        const seen = new Set();
+        active.forEach(u => {
+            if (!seen.has(u.username)) {
+                seen.add(u.username);
+                unique.push(u);
+            }
+        });
+
+        if (unique.length === 0) {
+            listDiv.innerHTML = '<div class="kp-empty">👤 Şu an çevrimiçi kimse yok.<br><small>Giriş yapan kullanıcılar burada görünür.</small></div>';
+            title.textContent = '👥 Kimler Var? (0)';
             return;
         }
+
         let html = '';
-        users.forEach(u => {
-            const level = getUserLevel(u.username);
-            const info = LEVELS[level] || { color: '#666', desc: 'Bilinmiyor' };
-            const color = info.color;
-            const desc = info.desc;
-            const stats = getUserStats(u.username);
+        unique.forEach(u => {
+            const levelName = u.levelName || (window.getUserLevelName ? window.getUserLevelName(u.username) : 'Çaylak');
+            const cssClass = window.getLevelCssClass ? window.getLevelCssClass(levelName) : 'level-caylak';
+            const desc = window.getLevelDesc ? window.getLevelDesc(levelName) : '';
             const isMe = current && current.username === u.username;
-            const online = Math.random() > 0.3;
-            const levelClass = level.toLowerCase().replace(/ /g, '-').replace(/\./g, '');
+            const isFresh = (now - u.lastSeen) < 15000;
+
             html += `
                 <div class="kp-item" style="${isMe ? 'border-color:#fdcb6e;' : ''}">
-                    <div class="avatar" style="background:${color};color:#000;">${isMe ? '👑' : '👤'}</div>
+                    <div class="avatar ${cssClass}" style="display:flex;align-items:center;justify-content:center;">${isMe ? '👑' : (u.isAnon ? '👻' : '👤')}</div>
                     <div class="info">
-                        <div class="name" style="color:${color};">${u.username} ${isMe ? '⭐' : ''}</div>
+                        <div class="name">${u.username} ${isMe ? '⭐' : ''}</div>
                         <div class="level">
-                            🎯 <span class="level-badge level-${levelClass}" style="background:${color};color:#000;">${level}</span>
-                            <span style="font-size:0.6rem;color:#a0a0b0;margin-left:4px;">— ${desc}</span>
+                            🎯 <span class="level-badge ${cssClass}">${levelName}</span>
+                            ${desc ? `<span style="font-size:0.6rem;color:#a0a0b0;margin-left:4px;">— ${desc}</span>` : ''}
                         </div>
-                        <div class="detail">📅 ${stats.joinDate} • 💬 ${stats.comments} • 📥 ${stats.downloads}</div>
+                        <div class="detail">${u.isAnon ? '👻 Anonim oturum' : '✅ Kayıtlı kullanıcı'}</div>
                     </div>
-                    <span class="status ${online ? 'status-on' : 'status-off'}"></span>
-                    <span class="badge">${online ? '🟢 Aktif' : '⚫ Kapalı'}</span>
+                    <span class="status ${isFresh ? 'status-on' : 'status-off'}"></span>
+                    <span class="badge">${isFresh ? '🟢 Aktif' : '🟡 Beklemede'}</span>
                 </div>
             `;
         });
+
         listDiv.innerHTML = html;
-        title.textContent = `👥 Kullanıcılar (${users.length})`;
+        title.textContent = `👥 Kimler Var? (${unique.length})`;
     }
+
+    window.renderKimlerVarPanel = function() {
+        if (isOpen) renderList();
+    };
 
     function openPanel() {
         isOpen = true;
         panel.classList.add('open');
         renderList();
-        if (interval) clearInterval(interval);
-        interval = setInterval(renderList, 5000);
     }
     function closePanel() {
         isOpen = false;
         panel.classList.remove('open');
-        if (interval) { clearInterval(interval); interval = null; }
     }
     function togglePanel() {
         if (isOpen) closePanel();
@@ -2990,8 +3202,6 @@
             togglePanel();
         }
     });
-
-    console.log('👥 Kullanıcı Paneli (düzeltilmiş) hazır! Ctrl+Shift+U ile aç.');
 })();
 </script>
 <!-- ========================================================== -->
