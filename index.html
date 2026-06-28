@@ -3237,17 +3237,179 @@ console.log('👥 Kullanıcı Paneli (sağ üst) hazır! Ctrl+Shift+U ile aç.')
 </div>
 
 <script>
+<!-- ================================================== -->
+<!-- 🤖 GOOGLE AI - SOL ALT KÖŞE (LİNKLER TIKLANABİLİR) -->
+<!-- ================================================== -->
+<style>
+.ai-container-l{
+    position:fixed;
+    bottom:30px;
+    left:30px;
+    z-index:999999;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:12px
+}
+.ai-toggle-l{
+    width:56px;height:56px;border-radius:50%;
+    background:linear-gradient(135deg,#4285f4,#ea4335);
+    border:none;color:#fff;font-size:24px;cursor:pointer;
+    box-shadow:0 8px 32px rgba(66,133,244,0.4);
+    transition:.3s;display:flex;align-items:center;justify-content:center;
+    position:relative
+}
+.ai-toggle-l:hover{transform:scale(1.1)}
+.ai-toggle-l .dot{
+    position:absolute;top:4px;right:4px;width:12px;height:12px;
+    border-radius:50%;background:#2ecc71;border:2px solid #0f0f1a
+}
+.ai-toggle-l .tip{
+    position:absolute;left:70px;
+    background:#1a1a2e;color:#e8e8e8;padding:6px 14px;border-radius:20px;
+    font-size:.8rem;white-space:nowrap;border:1px solid #2a2a3e;
+    opacity:0;transition:opacity .3s;pointer-events:none
+}
+.ai-toggle-l:hover .tip{opacity:1}
+.ai-box-l{
+    width:420px;max-width:90vw;height:560px;max-height:75vh;
+    background:#1a1a2e;border:1px solid #2a2a3e;border-radius:20px;
+    overflow:hidden;display:none;flex-direction:column;
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
+    position:fixed;bottom:100px;left:30px;z-index:999998
+}
+.ai-box-l.open{display:flex}
+.ai-header-l{
+    background:linear-gradient(135deg,#4285f4,#ea4335);
+    padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0
+}
+.ai-header-left-l{display:flex;align-items:center;gap:10px}
+.ai-avatar-l{
+    width:36px;height:36px;border-radius:50%;
+    background:rgba(255,255,255,0.2);
+    display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff
+}
+.ai-header-info-l h4{color:#fff;margin:0;font-size:.95rem}
+.ai-header-info-l small{color:rgba(255,255,255,0.8);font-size:.7rem}
+.ai-close-l{
+    background:rgba(255,255,255,0.15);border:none;color:#fff;
+    width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;transition:.3s
+}
+.ai-close-l:hover{background:rgba(255,255,255,0.3);transform:rotate(90deg)}
+.ai-messages-l{
+    flex:1;padding:14px 18px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;
+    background:#0f0f1a;min-height:300px;max-height:380px
+}
+.ai-messages-l::-webkit-scrollbar{width:4px}
+.ai-messages-l::-webkit-scrollbar-thumb{background:#4285f4;border-radius:4px}
+.ai-msg-l{display:flex;gap:8px;max-width:92%}
+.ai-msg-l.bot{align-self:flex-start}
+.ai-msg-l.user{align-self:flex-end;flex-direction:row-reverse}
+.ai-msg-l .av{
+    width:28px;height:28px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:.8rem
+}
+.ai-msg-l.bot .av{background:linear-gradient(135deg,#4285f4,#ea4335);color:#fff}
+.ai-msg-l.user .av{background:#e94560;color:#000}
+.ai-msg-l .bubble{
+    padding:8px 14px;border-radius:14px;font-size:.85rem;line-height:1.6;
+    word-wrap:break-word;max-width:100%
+}
+.ai-msg-l.bot .bubble{background:#1a1a2e;border:1px solid #2a2a3e;color:#e8e8e8;border-bottom-left-radius:4px}
+.ai-msg-l.user .bubble{background:#e94560;color:#000;border-bottom-right-radius:4px}
+.ai-msg-l .time{font-size:.6rem;color:#a0a0b0;margin-top:3px;display:block}
+.ai-msg-l.user .time{text-align:right}
+.ai-msg-l .bubble a{color:#4285f4;text-decoration:underline;word-break:break-all}
+.ai-msg-l .bubble a:hover{color:#ea4335}
+.ai-typing-l{
+    align-self:flex-start;display:flex;align-items:center;gap:6px;
+    padding:6px 14px;background:#1a1a2e;border:1px solid #2a2a3e;
+    border-radius:18px;border-bottom-left-radius:4px;color:#a0a0b0;font-size:.8rem
+}
+.ai-typing-l .dots{display:flex;gap:4px}
+.ai-typing-l .dots span{
+    width:5px;height:5px;border-radius:50%;background:#4285f4;
+    animation:typingBounceL 1.4s infinite
+}
+.ai-typing-l .dots span:nth-child(2){animation-delay:.2s}
+.ai-typing-l .dots span:nth-child(3){animation-delay:.4s}
+@keyframes typingBounceL{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}
+.ai-input-area-l{
+    padding:10px 14px;border-top:1px solid #2a2a3e;display:flex;gap:8px;background:#1a1a2e;flex-shrink:0
+}
+.ai-input-area-l input{
+    flex:1;padding:8px 14px;border-radius:30px;border:2px solid #2a2a3e;
+    background:#0f0f1a;color:#e8e8e8;font-size:.85rem;outline:none;transition:.3s
+}
+.ai-input-area-l input:focus{border-color:#4285f4;box-shadow:0 0 20px rgba(66,133,244,0.15)}
+.ai-input-area-l .send{
+    padding:8px 16px;border-radius:30px;border:none;
+    background:linear-gradient(135deg,#4285f4,#ea4335);color:#fff;
+    font-weight:700;cursor:pointer;transition:.3s;display:flex;align-items:center;gap:4px;white-space:nowrap
+}
+.ai-input-area-l .send:hover{transform:scale(1.05);box-shadow:0 4px 16px rgba(66,133,244,0.4)}
+.ai-suggest-l{
+    display:flex;gap:4px;flex-wrap:wrap;padding:4px 14px 10px;background:#1a1a2e;border-top:1px solid #2a2a3e
+}
+.ai-suggest-l button{
+    padding:3px 10px;border-radius:16px;border:1px solid #2a2a3e;
+    background:#0f0f1a;color:#a0a0b0;font-size:.65rem;cursor:pointer;transition:.3s;white-space:nowrap
+}
+.ai-suggest-l button:hover{border-color:#4285f4;color:#e8e8e8;background:rgba(255,255,255,0.05)}
+.ai-source-l{font-size:.6rem;color:#4285f4;margin-top:4px;display:block;border-top:1px solid rgba(66,133,244,0.2);padding-top:4px}
+@media(max-width:768px){.ai-box-l{width:100%;max-width:100vw;height:85vh;max-height:85vh;border-radius:0;position:fixed;bottom:0;left:0;top:0}.ai-container-l{bottom:90px;left:16px}.ai-toggle-l{width:50px;height:50px;font-size:20px}}
+</style>
+
+<div class="ai-container-l">
+    <div class="ai-box-l" id="aiBoxL">
+        <div class="ai-header-l">
+            <div class="ai-header-left-l">
+                <div class="ai-avatar-l"><i class="fas fa-google"></i></div>
+                <div class="ai-header-info-l">
+                    <h4>🔍 Google AI</h4>
+                    <small>🟢 Gerçek Sonuç • Tıkla Ara</small>
+                </div>
+            </div>
+            <button class="ai-close-l" onclick="closeAIL()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="ai-messages-l" id="aiMessagesL"></div>
+        <div class="ai-suggest-l">
+            <button onclick="askAIL('Dolar kaç TL')">💵 Dolar</button>
+            <button onclick="askAIL('Euro kaç TL')">💶 Euro</button>
+            <button onclick="askAIL('İstanbul hava durumu')">🌤️ Hava</button>
+            <button onclick="askAIL('En iyi oyunlar 2024')">🎮 Oyun</button>
+            <button onclick="askAIL('Admin şifresi nedir')">🔒 Gizli</button>
+        </div>
+        <div class="ai-input-area-l">
+            <input type="text" id="aiInputL" placeholder="Google'da ne aratmak istersen..." onkeydown="if(event.key==='Enter') askAIL(this.value)">
+            <button class="send" onclick="askAIL(document.getElementById('aiInputL').value)"><i class="fas fa-search"></i> ARA</button>
+        </div>
+    </div>
+    <button class="ai-toggle-l" onclick="toggleAIL()">
+        <i class="fas fa-google"></i>
+        <span class="dot"></span>
+        <span class="tip">🔍 Google AI</span>
+    </button>
+</div>
+
+<script>
 // =============================================
-// GOOGLE AI - SOL ALT
+// GOOGLE AI - SOL ALT (TIKLANABİLİR LİNKLİ)
 // =============================================
 let aiOpenL = false;
 
 async function googleSearchL(soru) {
     const s = soru.toLowerCase().trim();
+    
+    // 🔒 Admin Gizli
     if (s.includes('admin') && (s.includes('şifre') || s.includes('anahtar') || s.includes('kod') || s.includes('key'))) {
-        return { cevap: "🔒 **BU BİLGİ GİZLİDİR!** Admin şifresini asla söyleyemem! 🙏", kaynak: "🔐 Güvenlik" };
+        return {
+            cevap: "🔒 **BU BİLGİ GİZLİDİR!** Admin şifresini asla söyleyemem! 🙏",
+            kaynak: "🔐 Güvenlik"
+        };
     }
-    // Döviz
+    
+    // 💵 Döviz
     if (s.includes('dolar') || s.includes('döviz') || s.includes('kur') || s.includes('euro')) {
         try {
             const r = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
@@ -3258,32 +3420,94 @@ async function googleSearchL(soru) {
             const eur = ed.rates.TRY;
             let cevap = s.includes('dolar') ? `💵 1 USD = ${usd.toFixed(2)} TL` : `💶 1 EUR = ${eur.toFixed(2)} TL`;
             return { cevap: cevap + `\n📅 ${new Date().toLocaleDateString('tr-TR')}`, kaynak: "💱 Google Finans" };
-        } catch(e) { return { cevap: "⏳ Döviz alınamadı. Google'da ara!", kaynak: "⚠️ Hata" }; }
+        } catch(e) {
+            return {
+                cevap: `⏳ Döviz alınamadı. Google'da ara:\n<a href="https://www.google.com/search?q=dolar+ka%C3%A7+tl" target="_blank" style="color:#4285f4;text-decoration:underline;">https://www.google.com/search?q=dolar+kaç+tl</a>`,
+                kaynak: "⚠️ Hata"
+            };
+        }
     }
-    // Hava
+    
+    // 🌤️ Hava
     if (s.includes('hava') || s.includes('weather')) {
         try {
             let city = 'Istanbul';
             if (s.includes('ankara')) city = 'Ankara';
             else if (s.includes('izmir')) city = 'Izmir';
+            else if (s.includes('antalya')) city = 'Antalya';
             const r = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=4efd6c86b49bc1a623981762116267b2&units=metric&lang=tr`);
             const d = await r.json();
-            if (d.cod === 200) return { cevap: `🌤️ ${d.name}: ${Math.round(d.main.temp)}°C, ${d.weather[0].description}`, kaynak: "🌤️ OpenWeather" };
+            if (d.cod === 200) {
+                return {
+                    cevap: `🌤️ **${d.name}**\n🌡️ ${Math.round(d.main.temp)}°C\n☁️ ${d.weather[0].description}\n💧 Nem: ${d.main.humidity}%`,
+                    kaynak: "🌤️ OpenWeather"
+                };
+            }
         } catch(e) {}
-        return { cevap: "⏳ Hava alınamadı. Google'da ara!", kaynak: "⚠️ Hata" };
+        return {
+            cevap: `⏳ Hava alınamadı. Google'da ara:\n<a href="https://www.google.com/search?q=istanbul+hava+durumu" target="_blank" style="color:#4285f4;text-decoration:underline;">https://www.google.com/search?q=istanbul+hava+durumu</a>`,
+            kaynak: "⚠️ Hata"
+        };
     }
-    // Oyun
+    
+    // 🎮 Oyun
     if (s.includes('oyun') && (s.includes('en iyi') || s.includes('popüler'))) {
-        return { cevap: "🎮 En İyi Oyunlar:\n1. The Witcher 3\n2. RDR2\n3. God of War\n4. Zelda BOTW\n5. Half-Life 2", kaynak: "🎮 Google Oyun" };
+        return {
+            cevap: `🎮 **En İyi Oyunlar:**\n1. The Witcher 3\n2. RDR2\n3. God of War\n4. Zelda BOTW\n5. Half-Life 2\n\n🔗 <a href="https://www.google.com/search?q=en+iyi+oyunlar+2024" target="_blank" style="color:#4285f4;text-decoration:underline;">Google'da daha fazla oyun ara</a>`,
+            kaynak: "🎮 Google Oyun"
+        };
     }
-    // Yapay Zeka
-    if (s.includes('yapay zeka') || s.includes('ai') || s.includes('chatgpt')) {
-        return { cevap: "🤖 Yapay Zeka: Makinelerin insan zekasını taklit etmesi. Popüler: ChatGPT, Gemini, Claude.", kaynak: "🤖 Google AI" };
+    
+    // 🤖 Yapay Zeka
+    if (s.includes('yapay zeka') || s.includes('ai') || s.includes('chatgpt') || s.includes('gemini')) {
+        return {
+            cevap: `🤖 **Yapay Zeka:**\nMakinelerin insan zekasını taklit etmesi.\n\n📌 Popüler Modeller:\n• ChatGPT (OpenAI)\n• Gemini (Google)\n• Claude (Anthropic)\n• Llama (Meta)\n\n🔗 <a href="https://www.google.com/search?q=yapay+zeka+nedir" target="_blank" style="color:#4285f4;text-decoration:underline;">Google'da detaylı ara</a>`,
+            kaynak: "🤖 Google AI"
+        };
     }
-    // Genel
-    return { cevap: `🔍 **"${soru}"** hakkında Google sonuçları:\n\nhttps://www.google.com/search?q=${encodeURIComponent(soru)}\n\n💡 Daha spesifik sorarsan detaylı cevap verebilirim!`, kaynak: "🔍 Google Arama" };
+    
+    // 📐 Matematik
+    if (s.includes('integral') || s.includes('türev') || s.includes('matematik')) {
+        return {
+            cevap: `📐 **Matematik:**\n\n📌 İntegral: ∫ f(x) dx = F(x) + C\n📌 Türev: f'(x) = lim[h→0] (f(x+h) - f(x))/h\n📌 Örnek: ∫ x² dx = x³/3 + C\n\n🔗 <a href="https://www.google.com/search?q=integral+nedir" target="_blank" style="color:#4285f4;text-decoration:underline;">Google'da detaylı ara</a>`,
+            kaynak: "📐 Google Matematik"
+        };
+    }
+    
+    // 💬 Sohbet
+    if (s.includes('merhaba') || s.includes('selam')) {
+        return {
+            cevap: "👋 **Merhaba!** Ne aratmak istersen yaz, Google'dan bulup getireyim! 💡 Dene: 'Dolar kaç TL' veya 'İstanbul hava durumu'",
+            kaynak: "💬 Google Asistan"
+        };
+    }
+    if (s.includes('nasılsın')) {
+        return {
+            cevap: "😊 İyiyim, teşekkürler! Sana nasıl yardımcı olabilirim? Google'da ne aratmak istersin?",
+            kaynak: "💬 Google Asistan"
+        };
+    }
+    if (s.includes('teşekkür')) {
+        return {
+            cevap: "🎉 Rica ederim! Başka bir şey aratmak ister misin?",
+            kaynak: "💬 Google Asistan"
+        };
+    }
+    if (s.includes('hikaye') || s.includes('masal')) {
+        return {
+            cevap: `📖 **Küçük Prens:**\n\n"İnsan kalbiyle görür. Gözler asıl olanı göremez."\n\n🔗 <a href="https://www.google.com/search?q=k%C3%BC%C3%A7%C3%BCk+prens+hikaye" target="_blank" style="color:#4285f4;text-decoration:underline;">Google'da daha fazla hikaye ara</a>`,
+            kaynak: "📖 Google Hikaye"
+        };
+    }
+    
+    // ⚡ SON ÇARE - TIKLANABİLİR GOOGLE LİNKİ
+    return {
+        cevap: `🔍 **"${soru}"** hakkında Google sonucu:\n\n<a href="https://www.google.com/search?q=${encodeURIComponent(soru)}" target="_blank" style="color:#4285f4;text-decoration:underline;font-size:1.1rem;">🔗 Tıkla, Google'da ara!</a>\n\n📌 **Alternatif Aramalar (Tıkla):**\n• <a href="https://www.google.com/search?q=dolar+ka%C3%A7+tl" target="_blank" style="color:#4285f4;text-decoration:underline;">Dolar kaç TL</a>\n• <a href="https://www.google.com/search?q=istanbul+hava+durumu" target="_blank" style="color:#4285f4;text-decoration:underline;">İstanbul hava durumu</a>\n• <a href="https://www.google.com/search?q=en+iyi+oyunlar+2024" target="_blank" style="color:#4285f4;text-decoration:underline;">En iyi oyunlar 2024</a>\n• <a href="https://www.google.com/search?q=yapay+zeka+nedir" target="_blank" style="color:#4285f4;text-decoration:underline;">Yapay zeka nedir</a>\n\n💡 **Not:** Admin şifresi GİZLİDİR! 🔒`,
+        kaynak: "🔍 Google Arama"
+    };
 }
 
+// ★ BOT FONKSİYONLARI ★
 function toggleAIL() {
     const box = document.getElementById('aiBoxL');
     aiOpenL = !aiOpenL;
@@ -3340,14 +3564,17 @@ async function askAIL(question) {
         addMsgL('bot', result.cevap, result.kaynak);
     } catch(e) {
         hideTypingL();
-        addMsgL('bot', '⚠️ Hata! Google\'da arat: https://www.google.com/search?q=' + encodeURIComponent(question));
+        addMsgL('bot', `⚠️ Hata! Google'da ara:\n<a href="https://www.google.com/search?q=${encodeURIComponent(question)}" target="_blank" style="color:#4285f4;text-decoration:underline;">🔗 Tıkla</a>`);
     }
 }
+
+// ★ KLAVYE KISAYOLU ★
 document.addEventListener('keydown', function(e) {
     if (e.ctrlKey && e.shiftKey && e.key === 'S') { e.preventDefault(); toggleAIL(); }
     if (e.key === 'Escape' && aiOpenL) closeAIL();
 });
 console.log('🔍 Google AI (sol alt) hazır! Ctrl+Shift+S ile aç.');
+console.log('🔗 Bilinmeyen sorularda tıklanabilir Google linki verir!');
 </script>
 <!-- ================================================== -->
 </body>
